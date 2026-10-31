@@ -1,0 +1,143 @@
+{
+  "version": 1,
+  "owner": "unassigned",
+  "confidence_threshold": 1.0,
+  "evidence_required": "verbatim_quote",
+  "effective_to": null,
+  "supersedes": null,
+  "aliases": [],
+  "status": "draft",
+  "approved_by": null,
+  "approved_at": null,
+  "id": "DPDP-CONSENT-PURPOSE",
+  "title": "Consent notice states data, purpose, rights and complaint route",
+  "obligation": "Every request for consent must be accompanied or preceded by a notice giving the personal data and purpose, how the person may exercise their rights (including withdrawal), and how to complain to the Board; withdrawal must be comparable in ease to giving consent.",
+  "source": {
+    "regulator": "MeitY",
+    "document": "The Digital Personal Data Protection Act, 2023",
+    "reference": "Act No. 22 of 2023",
+    "issue_date": "2023-08-11",
+    "document_status": "in_force",
+    "file": "regulations/dpdp-meity-consumer-telecom/MEITY_2023-08-11_dpdp-act-2023.pdf",
+    "sha256": "4deb23981d3010c8225a2ff6149e7243dc2268455b299e283afebdd7b72a7d15",
+    "text_basis": "native",
+    "provenance": "official",
+    "locator": "section 5(1); section 6(4)",
+    "quotes": [
+      "Every request made to a Data Principal under section 6 for consent shall be accompanied or preceded by a notice given by the Data Fiduciary to the Data Principal, informing her,— (i) the personal data and the purpose for which the same is proposed to be processed; (ii) the manner in which she may exercise her rights under sub-section (4) of section 6 and section 13; and (iii) the manner in which the Data Principal may make a complaint to the Board",
+      "with the ease of doing so being comparable to the ease with which such consent was given"
+    ],
+    "url": "MeitY gazette PDF"
+  },
+  "check": {
+    "type": "must_contain",
+    "tier": "B",
+    "config": {
+      "deterministic": false,
+      "required_notice_elements": [
+        "personal_data_and_purpose",
+        "how_to_exercise_rights_incl_withdrawal_s6_4_and_s13",
+        "how_to_complain_to_the_Board"
+      ],
+      "withdrawal_standard": "comparable ease to giving consent (statutory wording; not 'as easy as')",
+      "authored_by_niyam": true,
+      "matchers": {
+        "consent_topic": [
+          "consent",
+          "personal\\s+data",
+          "privacy",
+          "data\\s+protection",
+          "data\\s+principal",
+          "withdraw",
+          "opt[\\s-]?(?:out|in)",
+          "permission\\s+to\\s+(?:use|collect|share)",
+          "\\bwe\\s+(?:collect|use|process|store|share)\\s+your\\b",
+          "सहमति",
+          "गोपनीयता",
+          "व्यक्तिगत\\s+डेटा",
+          "निजी\\s+डेटा",
+          "डेटा",
+          "sahmati",
+          "अनुमति"
+        ],
+        "withdrawal_forbidden": [
+          "(?:cannot|can't|can\\s+not|unable\\s+to|not\\s+(?:able|allowed|possible)\\s+to)\\s+(?:be\\s+)?(?:withdraw|revoke|take\\s+back|cancel)\\w*\\s+(?:your\\s+|the\\s+)?(?:consent|permission)",
+          "consent\\s+(?:cannot|can't|can\\s+not|may\\s+not|will\\s+not)\\s+be\\s+(?:withdrawn|revoked|taken\\s+back|cancel+ed)",
+          "no\\s+(?:option|way|provision|right)\\s+to\\s+(?:withdraw|revoke)",
+          "(?:withdraw(?:al)?|revoke)\\s+(?:of\\s+)?(?:consent\\s+)?is\\s+not\\s+(?:allowed|possible|permitted)",
+          "irrevocabl[ey]\\s+consent|consent\\s+is\\s+irrevocable",
+          "सहमति\\s+वापस\\s+(?:नहीं|नही)",
+          "सहमति\\s+(?:वापस|रद्द)\\s+नहीं\\s+ली",
+          "वापस\\s+नहीं\\s+ले\\s+सकते",
+          "consent\\s+(?:wapas|withdraw)\\s+(?:nahi|nhi)",
+          "wapas\\s+nahi\\s+(?:le\\s+sakte|liya\\s+ja\\s+sakta)"
+        ],
+        "forbidden_negation": [
+          "(?:false|untrue|myth)\\s+(?:that\\s+)?$"
+        ],
+        "consent_online": [
+          "(?:gave|given|provided|accepted|agreed|granted|captured|taken)[^.!?]{0,40}(?:consent|permission)[^.!?]{0,40}(?:in\\s+the\\s+app|online|in-app|digitally|via\\s+the\\s+app|through\\s+the\\s+app|\\bapp\\b|website)",
+          "(?:consent|permission)\\s+(?:was\\s+)?(?:given|provided|taken|captured)[^.!?]{0,30}(?:in\\s+the\\s+app|online|in-app|digitally)",
+          "you\\s+(?:gave|accepted|agreed|consented|opted\\s+in)[^.!?]{0,30}(?:online|in\\s+the\\s+app|in-app|digitally)"
+        ],
+        "withdraw_offline_only": [
+          "(?:to\\s+withdraw|withdraw(?:al)?|withdrawing)[^.!?]{0,60}(?:must|have\\s+to|need\\s+to|only|should)[^.!?]{0,40}(?:call|visit|branch|write|letter|post|email|helpline|phone)",
+          "no\\s+online\\s+(?:option|way|facility)",
+          "only\\s+(?:by|via|through)\\s+(?:calling|visiting|post|letter|branch)",
+          "call\\s+to\\s+withdraw",
+          "(?:withdraw|withdrawn|revoke)[^.!?]{0,60}(?:written\\s+request|head\\s+office|physical\\s+(?:form|visit))"
+        ],
+        "notice_elements": {
+          "personal_data_and_purpose": [
+            "(?:collect|use|process)[^.!?]{0,60}\\s(?:to|for)\\s",
+            "purpose",
+            "उद्देश्य"
+          ],
+          "how_to_exercise_rights_incl_withdrawal": [
+            "withdraw",
+            "\\brights?\\b",
+            "settings",
+            "अधिकार"
+          ],
+          "how_to_complain_to_the_Board": [
+            "data\\s+protection\\s+board",
+            "\\bboard\\b",
+            "\\bdpb\\b",
+            "शिकायत"
+          ]
+        }
+      },
+      "matchers_unreviewed": true
+    }
+  },
+  "scope": {
+    "surfaces": [
+      "agent_chat",
+      "screen",
+      "script"
+    ],
+    "products": [
+      "all customer-data products"
+    ],
+    "journeys": [
+      "onboarding",
+      "consent_capture",
+      "consent_withdrawal"
+    ],
+    "entities": [
+      "data fiduciary"
+    ]
+  },
+  "severity": "high",
+  "effective_from": "2027-05-13",
+  "notes": [
+    "NOT YET ENFORCEABLE on 31 Oct 2026. The DPDP Rules 2025 (G.S.R. 846(E)) say Rule 4 starts one year, and Rules 3, 5 to 16, 22 and 23 start eighteen months, after Gazette publication (verified in the stored Rules PDF). 13 May 2027 assumes publication on 13 Nov 2025 (agent-reported date).",
+    "The commencement date of the Act's own sections 5 and 6 comes from the separate notification G.S.R. 843(E), which was blocked and is unread. effective_from is therefore provisional.",
+    "CORRECTION: the demo card said withdrawal must be 'as easy as' giving consent. The statute says 'comparable to'.",
+    "Tier A matchers live in check.config.matchers (added by the engine build): regex lists per language, phrase lists and negation cues. All Hinglish/Hindi variants and typo patterns are engineering-authored and UNREVIEWED: a native-speaker compliance reviewer must approve them before activation."
+  ],
+  "open_issues": [
+    "Fetch G.S.R. 843(E) (commencement) and G.S.R. 892(E) (corrigendum to the Rules) before activating.",
+    "The notice must also offer English or an Eighth Schedule language (s.5(3) per agent): not read by this build, so not encoded."
+  ]
+}

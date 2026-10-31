@@ -1,0 +1,11 @@
+node_modules
+dist
+screenshots
+*.tsbuildinfo
+.git
+.gitignore
+.env*
+Dockerfile
+.dockerignore
+README.md
+DESIGN-DELTA.md

@@ -1,0 +1,33 @@
+{"id": "tat-transfer", "query": "UPI transfer beneficiary account not credited auto reversal by beneficiary bank T+1", "expect_file": "rbi-payments/RBI_2019-09-20", "expect_text": "beneficiary bank latest on T + 1"}
+{"id": "tat-merchant", "query": "payment to merchant confirmation not received auto-reversal T+5", "expect_file": "RBI_2019-09-20", "expect_text": "payment to merchant"}
+{"id": "tat-merchant-natural", "query": "how many days to get refund when a UPI merchant payment fails", "expect_file": "RBI_2019-09-20", "expect_text": "T + 5"}
+{"id": "comp-suo-moto", "query": "compensation credited suo moto without waiting for complaint or claim", "expect_file": "RBI_2019-09-20", "expect_text": "suo moto"}
+{"id": "tat-outer-limit", "query": "TAT is the outer limit for resolution of failed transactions", "expect_file": "RBI_2019-09-20", "expect_text": "outer limit"}
+{"id": "cooling-off", "query": "cooling-off period digital loan exit without penalty", "expect_file": "Digital", "expect_text": "cooling"}
+{"id": "kfs-validity", "query": "KFS validity period three working days unique proposal number", "expect_file": "", "expect_text": "three working days"}
+{"id": "kfs-language", "query": "key facts statement written in a language understood by borrowers", "expect_file": "", "expect_text": "language understood"}
+{"id": "dl-complaint-30d", "query": "complaint no reply within 30 days lodge on Complaint Management System", "expect_file": "", "expect_text": "30 days of receipt of complaint"}
+{"id": "dpdp-withdraw", "query": "withdraw consent ease comparable to ease with which consent was given", "expect_file": "dpdp-act-2023", "expect_text": "comparable to the ease"}
+{"id": "dpdp-notice", "query": "notice to data principal personal data purpose how to complain to the Board", "expect_file": "dpdp-act-2023", "expect_text": "accompanied or preceded by a notice"}
+{"id": "sebi-assured", "query": "promise or guarantee of assured or risk free return advertisement investment adviser", "expect_file": "sebi/", "expect_text": "assured or risk free return"}
+{"id": "sebi-ai-16c", "query": "regulated entity solely responsible for artificial intelligence tools procured from third party", "expect_file": "sebi/", "expect_text": "solely responsible"}
+{"id": "npci-mask", "query": "UPI IDs mobile numbers account numbers must be masked customer facing interfaces", "expect_file": "oc234", "expect_text": "must be masked"}
+{"id": "npci-fee", "query": "no surcharge convenience fee disclosed upfront merchant payment page", "expect_file": "consolidated", "expect_text": "disclosed upfront"}
+{"id": "npci-myupi", "query": "MyUPI AI powered multilingual support platform complaints chargeback human in the loop", "expect_file": "oc227a", "expect_text": "AI"}
+{"id": "npci-chargeback-15d", "query": "fraud and wrong credit chargeback response TAT 15 calendar days deemed accepted", "expect_file": "oc235", "expect_text": "15 calendar days"}
+{"id": "kyc-tipping", "query": "tipping off customer suspicious transaction report confidentiality", "expect_file": "169MD|md-kyc", "expect_text": "tipping"}
+{"id": "kyc-refresh", "query": "periodic updation of KYC high risk every two years", "expect_file": "169MD|md-kyc", "expect_text": "two years"}
+{"id": "freeai-redteam", "query": "red teaming AI systems recommendation regulated entities", "expect_file": "FREEAIR", "expect_text": "red team"}
+{"id": "freeai-incident", "query": "AI incident reporting form", "expect_file": "FREEAIR", "expect_text": "incident"}
+{"id": "ombud-scheme", "query": "Integrated Ombudsman Scheme 2026 grounds for complaint against regulated entity", "expect_file": "SCHEME", "expect_text": "ombudsman"}
+{"id": "internal-ombud", "query": "internal ombudsman rejected complaint automatically escalated bank decision", "expect_file": "380MD", "expect_text": "escalat"}
+{"id": "liability", "query": "customer liability unauthorised electronic banking transaction zero liability reported within", "expect_file": "", "expect_text": "zero liability"}
+{"id": "trai-robo", "query": "robo calls pre-recorded artificial voice unsolicited commercial communication", "expect_file": "TRAI", "expect_text": "artificial"}
+{"id": "certin-6h", "query": "report cyber incidents to CERT-In within 6 hours", "expect_file": "CERTIN", "expect_text": "6 hours"}
+{"id": "dark-patterns", "query": "dark patterns false urgency drip pricing basket sneaking", "expect_file": "dark-patterns", "expect_text": "drip pricing"}
+{"id": "moffatt", "query": "chatbot negligent misrepresentation company responsible for information on its website", "expect_file": "", "expect_text": "chatbot"}
+{"id": "freelook", "query": "free look period policyholder refund of premium", "expect_file": "IRDAI", "expect_text": "free look"}
+{"id": "scores-21", "query": "SCORES complaint resolution within 21 calendar days", "expect_file": "", "expect_text": "21 calendar days"}
+{"id": "penal-charges", "query": "penal charges in loan accounts not capitalised additional component of interest", "expect_file": "", "expect_text": "penal"}
+{"id": "pa-settlement", "query": "payment aggregator escrow account settlement timeline merchants", "expect_file": "141MD", "expect_text": "escrow"}
+{"id": "ppi-grievance", "query": "prepaid payment instruments customer grievance redressal", "expect_file": "", "expect_text": "grievance"}

@@ -1,0 +1,26 @@
+# OCR TEXT (macOS Vision, machine-read, may contain errors). The PDF is authoritative.
+# source: NPCI_FY2026-27_oc234_safeguarding-user-information-in-upi.pdf
+# ocr_date: 2026-10-31
+
+--- page 1 ---
+customer interace tor Uri are responsible under the extant applicable laws to ensure user
+privacy.
+Accordingly, amongst other measures adopted by UPI Member Banks and UPI Apps to ensure
+user privacy, user's information namely UPI IDs, mobile numbers, and account numbers, must
+be masked across all customer-facing interfaces and communications of the UPI Member
+Banks and UPI Apps (masking format appended). Additionally, UPI Apps must allow users to
+have non-mobile number-based UP| IDs (as per the defined guidelines) and set it as their
+default UPI ID.
+All UPI Member Banks and UPI Apps must implement the necessary changes on customer
+facing interfaces and communications by 4*h September 2026.
+Yours Sincerely,
+SD/-
+Sourabh Tomar
+Deputy Chief - UPI Product
+Teeshide
+1001A, The Capital, B Wing, 10th Floor,
+Bandra Kurla Complex, Bandra (E), Mumbai 400 051.
+T: +91 22 40009100 F: +91 22 40009101|
+contact@npci.org.in www.npci.org.in
+CIN: U74990MH2008NPL189067
+--- page 2 ---

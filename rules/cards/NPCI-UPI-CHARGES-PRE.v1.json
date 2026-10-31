@@ -1,0 +1,151 @@
+{
+  "version": 1,
+  "owner": "unassigned",
+  "confidence_threshold": 1.0,
+  "evidence_required": "verbatim_quote",
+  "effective_to": null,
+  "supersedes": null,
+  "aliases": [
+    "RBI-CHARGES-PRE"
+  ],
+  "status": "draft",
+  "approved_by": null,
+  "approved_at": null,
+  "id": "NPCI-UPI-CHARGES-PRE",
+  "title": "UPI: no surcharge; convenience fee disclosed before payment mode",
+  "obligation": "The Payee PSP must ensure no surcharge is levied on UPI transactions, and that any convenience fee is disclosed upfront on the merchant payment page before the payment mode is selected. A customer-facing statement about fees must be consistent with that.",
+  "source": {
+    "regulator": "NPCI",
+    "document": "UPI Consolidated Circular Version 1.0",
+    "reference": "NPCI/UPI/CC/01",
+    "issue_date": "2026-09-18",
+    "document_status": "in_force",
+    "file": "regulations/irdai-npci-pfrda/NPCI_2026-09-18_upi-consolidated-circular-v1.pdf",
+    "sha256": "f238f5afbf025ebc7f0a0a452d7b3937918fc42796d79453fb6ecec36ad05264",
+    "text_basis": "native",
+    "provenance": "mirror",
+    "locator": "para 7.5 as extracted (the PDF text layer interleaves later numbering, so confirm the number against the page)",
+    "quotes": [
+      "The Payee PSP shall ensure that no surcharge is levied to Users for UPI transactions. In cases where any convenience fees are charged, the Payee PSP shall ensure that such fees are disclosed upfront to the User on the merchant payment page(s) prior to the selection of the payment mode."
+    ],
+    "url": "third-party mirror; official npci.org.in URL not discoverable (JS-rendered site)"
+  },
+  "check": {
+    "type": "ordering",
+    "tier": "A",
+    "config": {
+      "deterministic": true,
+      "disclose_before": "payment_mode_selection",
+      "disclose_on": "merchant_payment_page",
+      "forbid": [
+        "surcharge on UPI transactions"
+      ],
+      "fail_if": [
+        "agent states there is no fee while the surface shows a convenience fee",
+        "fee first revealed after payment mode is selected"
+      ],
+      "authored_by_niyam": true,
+      "matchers": {
+        "topic_cues": [
+          "\\bfees?\\b",
+          "charges?",
+          "\\bfree\\b",
+          "surcharge",
+          "convenience",
+          "\\bcost\\b",
+          "शुल्क",
+          "चार्ज",
+          "मुफ़्?त",
+          "निःशुल्क",
+          "निशुल्क",
+          "\\bmdr\\b",
+          "\\bpaise\\s+(?:lagte|lagenge)"
+        ],
+        "no_fee_claims": [
+          "\\b(?:no|zero|nil|without|0)\\s+(?:any\\s+|extra\\s+|additional\\s+|hidden\\s+|convenience\\s+|processing\\s+|transaction\\s+|service\\s+)*(?:fees?|charges?|cost)\\b",
+          "free\\s+(?:of|from)\\s+(?:any\\s+)?(?:charges?|fees?|cost)",
+          "\\b(?:is|are|completely|totally|absolutely|bilkul)\\s+(?:completely\\s+|totally\\s+|absolutely\\s+)?free\\b",
+          "\\bfree\\s+of\\s+cost\\b",
+          "\\bfree\\s+upi\\b",
+          "bilkul\\s+free",
+          "koi\\s+(?:extra\\s+)?(?:charge|fee|shulk)\\s+nahi",
+          "\\bcharges?\\s+nahi\\b",
+          "कोई\\s+(?:अतिरिक्त\\s+)?(?:शुल्क|चार्ज)\\s+(?:नहीं|नही)",
+          "शुल्क\\s+(?:नहीं|नही)",
+          "चार्ज\\s+(?:नहीं|नही)",
+          "मुफ़्?त",
+          "निः?शुल्क",
+          "ज़ीरो\\s+चार्ज",
+          "जीरो\\s+चार्ज"
+        ],
+        "claim_negation": [
+          "(?:not|n't|never)\\s*(?:\\w+\\s+)?$"
+        ],
+        "surcharge_claims": [
+          "(?:surcharge|extra\\s+charges?|additional\\s+charges?|extra\\s+fees?|additional\\s+fees?|\\bmdr\\b|markup)[^.!?]{0,45}\\bupi\\b",
+          "\\bupi\\b[^.!?]{0,45}(?:surcharge|extra\\s+charges?|additional\\s+charges?|extra\\s+fees?|additional\\s+fees?|\\bmdr\\b)",
+          "we\\s+(?:charge|levy|add|apply)\\s+[^.!?]{0,40}(?:on|for)\\s+(?:all\\s+)?upi",
+          "upi\\s+(?:payments?|transactions?)\\s+(?:attract|carry|incur)\\s+[^.!?]{0,20}(?:charge|fee)",
+          "upi[^।.!?]{0,30}(?:अतिरिक्त\\s+शुल्क|सरचार्ज)"
+        ],
+        "surcharge_negation": [
+          "\\b(?:no|zero|nil|without|not|never)\\s+(?:any\\s+)?(?:extra\\s+|additional\\s+)?$",
+          "\\b(?:no|zero|nil|without)\\s+(?:any\\s+)?(?:surcharge|extra|additional|mdr)"
+        ],
+        "fee_after_mode": [
+          "(?:fees?|charges?)\\s*[^.!?]{0,60}(?:after|once)\\s+you\\s+(?:select|choose|pick)[^.!?]{0,25}(?:mode|method|upi)",
+          "(?:after|once)\\s+(?:you\\s+)?(?:select|choose|pick)\\w*[^.!?]{0,30}(?:payment\\s+)?(?:mode|method|upi)[^.!?]{0,60}(?:fees?|charges?)\\s+(?:is|are|will|gets?)",
+          "(?:fees?|charges?)\\s+(?:is|are|will\\s+be|gets?)\\s+(?:added|shown|revealed|displayed)\\s+(?:at|on)\\s+the\\s+(?:last|final)\\s+step"
+        ],
+        "surcharge_negation_after": [
+          "^\\s*(?:nahi|nahin|nhi|नहीं|नही)\\b"
+        ],
+        "consistent_statements": [
+          "\\bno\\s+surcharge",
+          "\\bnot\\s+(?:charge|levy)\\s+(?:any\\s+)?surcharge",
+          "surcharge\\s+(?:nahi|नहीं)",
+          "सरचार्ज\\s+(?:नहीं|नही)"
+        ],
+        "fee_upfront": [
+          "before\\s+(?:you\\s+)?(?:select|choos|pick|click)\\w*",
+          "upfront",
+          "up\\s+front",
+          "on\\s+the\\s+(?:merchant\\s+)?payment\\s+page",
+          "prior\\s+to\\s+(?:selecting|the\\s+selection)",
+          "pehle\\s+hi"
+        ]
+      },
+      "matchers_unreviewed": true
+    }
+  },
+  "scope": {
+    "surfaces": [
+      "screen",
+      "agent_chat",
+      "macro"
+    ],
+    "products": [
+      "UPI"
+    ],
+    "journeys": [
+      "merchant_payment",
+      "checkout"
+    ],
+    "entities": [
+      "payee PSP",
+      "payment aggregator",
+      "payments app / TPAP"
+    ]
+  },
+  "severity": "high",
+  "effective_from": "2026-09-18",
+  "notes": [
+    "This replaces the demo card RBI-CHARGES-PRE for the UPI case. Loan fee and APR disclosure is covered by RBI-KFS-LOAN (KFS para 6: APR includes all charges levied by the RE).",
+    "The obligation is addressed to the Payee PSP, not to a chatbot. NIYAM tests whether customer-facing statements stay consistent with it.",
+    "Tier A matchers live in check.config.matchers (added by the engine build): regex lists per language, phrase lists and negation cues. All Hinglish/Hindi variants and typo patterns are engineering-authored and UNREVIEWED: a native-speaker compliance reviewer must approve them before activation."
+  ],
+  "open_issues": [
+    "Source is a third-party mirror: replace with the official NPCI copy before activation.",
+    "effective_from is the circular's date; its own operative date was not recorded."
+  ]
+}

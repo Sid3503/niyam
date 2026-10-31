@@ -1,0 +1,316 @@
+{
+  "version": 1,
+  "owner": "unassigned",
+  "confidence_threshold": 1.0,
+  "evidence_required": "verbatim_quote",
+  "effective_to": null,
+  "supersedes": null,
+  "aliases": [],
+  "status": "draft",
+  "approved_by": null,
+  "approved_at": null,
+  "id": "RBI-TAT-COMP-100",
+  "title": "Failed-transaction compensation is automatic, per day of delay",
+  "obligation": "Where a failed transaction is not resolved within its row's TAT, financial compensation of ₹100 per day of delay must be credited to the customer's account suo moto, without waiting for a complaint or claim. An agent must not describe compensation as discretionary or require the customer to claim it.",
+  "source": {
+    "regulator": "RBI",
+    "document": "Harmonisation of Turn Around Time (TAT) and customer compensation for failed transactions using authorised Payment Systems",
+    "reference": "DPSS.CO.PD No.629/02.01.014/2019-20",
+    "issue_date": "2019-09-20",
+    "document_status": "in_force",
+    "file": "regulations/rbi-payments/RBI_2019-09-20_tat-failed-transactions-dpss629.html",
+    "sha256": "a411ba531e2bdbb55b85ce15d613e4cb6c105912df82d7bd8cb3ec47446bd64b",
+    "text_basis": "native",
+    "provenance": "official_html_extract",
+    "locator": "paras 4 and 5; Annex compensation column",
+    "quotes": [
+      "the prescribed TAT is the outer limit for resolution of failed transactions",
+      "Wherever financial compensation is involved, the same shall be effected to the customer’s account suo moto, without waiting for a complaint or claim from the customer."
+    ],
+    "url": "https://www.rbi.org.in/ (page text extract; rbidocs PDF blocked)"
+  },
+  "check": {
+    "type": "must_contain",
+    "tier": "A+B",
+    "config": {
+      "deterministic": true,
+      "when": "reversal_delayed_beyond_the_applicable_row_deadline",
+      "amount_inr_per_day": 100,
+      "must_convey": [
+        "₹100 per day of delay",
+        "credited automatically, no complaint or claim needed"
+      ],
+      "must_not_convey": [
+        "compensation is at our discretion",
+        "raise a complaint or claim to receive compensation"
+      ],
+      "deadline_source": "the matching TAT row (T+1 or T+5 etc), not a fixed T+1",
+      "authored_by_niyam": true,
+      "matchers": {
+        "row_cues": {
+          "merchant": [
+            "\\bmerchants?\\b",
+            "\\bshops?\\b",
+            "\\bstores?\\b",
+            "\\bqr\\b",
+            "\\bscan(?:ned|ning)?\\b",
+            "\\bretailer\\b",
+            "\\bvendor\\b",
+            "\\bseller\\b",
+            "\\bcheckout\\b",
+            "\\be-?commerce\\b",
+            "\\bonline\\s+(?:order|purchase|shopping)\\b",
+            "\\bpaid\\s+at\\b",
+            "\\bpos\\s+(?:machine|terminal)\\b",
+            "\\bdukaan\\b",
+            "\\bdukan\\b",
+            "\\bdukandar\\b",
+            "\\brestaurant\\b",
+            "\\bpetrol\\s+pump\\b",
+            "दुकान",
+            "मर्चेंट",
+            "मर्चेण्ट",
+            "व्यापारी",
+            "विक्रेता"
+          ],
+          "transfer": [
+            "\\bfriends?\\b",
+            "\\bfamily\\b",
+            "\\brelatives?\\b",
+            "\\bsend(?:ing)?\\s+money\\b",
+            "\\bmoney\\s+transfer\\b",
+            "\\btransfer(?:red|ring)?\\b",
+            "\\b(?:sent|send|paid|transferred)\\s+(?:money\\s+|rs\\.?\\s*[\\d,]+\\s+|[₹][\\d,]+\\s+)?to\\s+(?!you\\b|your\\b|me\\b|us\\b|our\\b|the\\s+(?:original|source)\\b)",
+            "\\bp2p\\b",
+            "\\bpeer\\b",
+            "\\b(?:brother|sister|mother|father|mom|dad|wife|husband|cousin)\\b",
+            "\\bdost(?:o|on)?\\b",
+            "\\bbhai\\b",
+            "\\brecipient\\b",
+            "दोस्त",
+            "भाई",
+            "रिश्तेदार",
+            "परिवार"
+          ]
+        },
+        "topic_cues": [
+          "fail(?:ed|ure)?|pending|stuck|debit(?:ed)?|deduct(?:ed)?|not\\s+(?:been\\s+)?credited|revers|refund|money\\s+back|amount\\s+back|\\bpaisa\\b|\\bpaise\\b|\\bpayment|transaction|\\bupi\\b|credited|wapas|vapas|कट|असफल|फेल|रिफंड|वापस|भुगतान|पैसे|पैसा|लेनदेन|राशि|bhugtan|\\bback\\b"
+        ],
+        "compensation_cues": [
+          "compensat",
+          "₹\\s*100",
+          "rs\\.?\\s*100\\b",
+          "inr\\s*100",
+          "\\b100\\s*(?:rupees|rs\\b|rupaye|₹|रुपये|रुपए)",
+          "मुआवज",
+          "muavz",
+          "हर्जाना",
+          "harjan"
+        ],
+        "row_deadlines": {
+          "upi_transfer": 1,
+          "upi_merchant": 5
+        },
+        "amount_100": [
+          "(?:₹|rs\\.?|inr|rupees?)\\s*100\\b",
+          "\\b100\\s*(?:₹|rs\\b\\.?|inr|rupees?|rupaye|rupay|रुपये|रुपए|रु\\b)"
+        ],
+        "amount_any": [
+          "(?:₹|rs\\.?|inr)\\s*\\d+"
+        ],
+        "per_day": [
+          "(?:each|every|per)\\s+(?:extra\\s+|additional\\s+|delayed\\s+|late\\s+|single\\s+)?days?\\b",
+          "(?:har|हर|प्रत्येक)\\s+(?:extra\\s+|अतिरिक्त\\s+)?(?:din|दिन)",
+          "per\\s+day",
+          "\\ba\\s+day\\b",
+          "each\\s+day",
+          "every\\s+day",
+          "daily",
+          "/\\s*day",
+          "per\\s+din",
+          "har\\s+din",
+          "\\broz\\b",
+          "\\broj\\b",
+          "प्रति\\s*दिन",
+          "प्रतिदिन",
+          "prati\\s*din",
+          "हर\\s*दिन",
+          "रोज़?",
+          "रोज"
+        ],
+        "automatic": [
+          "automatic(?:ally)?",
+          "auto[\\s-]?credit",
+          "suo\\s+moto",
+          "without\\s+(?:any\\s+|the\\s+)?(?:need\\s+(?:for|to)\\s+)?(?:raising\\s+|filing\\s+|making\\s+)?(?:a\\s+|any\\s+)?(?:complaint|claim|request|application)",
+          "no\\s+(?:need\\s+to\\s+(?:claim|raise|apply|file|request)|claim\\s+(?:is\\s+)?(?:needed|required)|complaint\\s+(?:is\\s+)?(?:needed|required)|action\\s+(?:is\\s+)?(?:needed|required))",
+          "you\\s+(?:do\\s*n[o']?t|need\\s+not)\\s+(?:need\\s+to\\s+|have\\s+to\\s+)?(?:claim|raise|apply|file|request)",
+          "apne\\s*aap",
+          "khud\\s+(?:se|hi)",
+          "on\\s+its\\s+own",
+          "by\\s+itself",
+          "self[\\s-]?credit",
+          "without\\s+you\\s+(?:having\\s+to\\s+)?(?:ask|apply|claim)",
+          "bina\\s+(?:kisi\\s+)?(?:complaint|claim|shikayat)",
+          "अपने\\s*आप",
+          "स्वतः",
+          "स्वत:",
+          "ऑटोमैटिक",
+          "बिना\\s+(?:किसी\\s+)?(?:शिकायत|क्लेम|दावा)"
+        ],
+        "not_automatic": [
+          "not\\s+automatic",
+          "isn't\\s+automatic",
+          "automatic\\s+nahi",
+          "automatically\\s+nahi",
+          "ऑटोमैटिक\\s+नहीं",
+          "अपने\\s*आप\\s+नहीं",
+          "apne\\s*aap\\s+nahi"
+        ],
+        "discretionary": [
+          "at\\s+(?:our|the\\s+bank's|the\\s+company's)\\s+discretion",
+          "(?:our|company|bank)\\s+discretion",
+          "discretionary",
+          "goodwill",
+          "case[\\s-]by[\\s-]case",
+          "(?:may|might)\\s+or\\s+may\\s+not",
+          "if\\s+approved",
+          "subject\\s+to\\s+approval",
+          "hamari\\s+marzi",
+          "marzi\\s+se",
+          "विवेक",
+          "हमारी\\s+मर्जी"
+        ],
+        "complaint_instruction": [
+          "\\b(?:raise|file|lodge|register|submit|create|open|log|make|send|fill(?:\\s+out|\\s+in)?)\\s+(?:a|an|the|your|one|this)?\\s*(?:\\w+\\s+){0,2}?(?:complaint|ticket|claim|dispute|grievance|case|request|form|application)\\b",
+          "\\bclaim\\s+(?:the\\s+|your\\s+)?(?:refund|compensation|reversal|money)\\b",
+          "\\bapply\\s+for\\s+(?:the\\s+|a\\s+)?(?:compensation|refund|reversal)\\b",
+          "\\b(?:complaint|ticket|shikayat|claim|dispute|request|application)\\s+(?:form\\s+)?(?:raise\\s+|file\\s+|register\\s+|darj\\s+|log\\s+|create\\s+|submit\\s+|daal\\w*\\s+)?(?:kar(?:ein|o|na|iye|iyega|ni|ke)?|kijiye|bhar(?:ein|o|iye|na)|daal(?:ein|o|na)|banaye(?:n)?|banao|karni|karna)\\b",
+          "(?:शिकायत|टिकट|क्लेम|दावा|रिक्वेस्ट|कंप्लेंट|आवेदन)\\s*(?:दर्ज|रजिस्टर|दायर|बना|भर)?\\s*(?:करें|करिए|कीजिए|करना|कराएं|करवाएं|बनाएं|डालें|भरें|बनाना|भरना|डालना|दर्ज\\s*करना)",
+          "(?:दर्ज|रजिस्टर)\\s*(?:करें|करिए|कीजिए)\\s*(?:शिकायत|टिकट|क्लेम)"
+        ],
+        "complaint_agent_done": [
+          "\\b(?:i|we)(?:'ve|\\s+have|\\s+had)?\\s+(?:already\\s+)?(?:raised|filed|logged|registered|created|submitted|opened)",
+          "on\\s+your\\s+behalf",
+          "has\\s+been\\s+(?:raised|filed|logged|registered|created)",
+          "\\b(?:i|we)(?:'ll|\\s+will)\\s+(?:raise|file|log|register|create)",
+          "\\b(?:maine|humne|hamne)\\b[^.!?]{0,30}(?:kar\\s+diya|kar\\s+di|darj)",
+          "कर\\s+दिया",
+          "कर\\s+दी",
+          "दर्ज\\s+कर\\s+दी"
+        ],
+        "complaint_negation": [
+          "no\\s+need\\s+to",
+          "need\\s+not",
+          "do\\s*n[o']?t\\s+need\\s+to",
+          "don't\\s+have\\s+to",
+          "do\\s+not\\s+have\\s+to",
+          "without\\s+(?:raising|filing|making|any)",
+          "not\\s+required",
+          "zarurat\\s+nahi",
+          "ज़रूरत\\s+नहीं",
+          "जरूरत\\s+नहीं",
+          "\\bbina\\b",
+          "बिना",
+          "जरूरी\\s+नहीं",
+          "आवश्यकता\\s+नहीं",
+          "need\\s+to\\s+(?:raise|file)\\s+no"
+        ],
+        "complaint_negation_after": [
+          "^\\s*(?:ki|karne\\s+ki|करने\\s+की)?\\s*(?:zarurat|ज़रूरत|जरूरत)\\s+(?:nahi|नहीं)",
+          "^\\W*(?:nahi|nahin|नहीं)\\s+(?:karna|करना)",
+          "is\\s+not\\s+required",
+          "not\\s+(?:needed|required|necessary)"
+        ],
+        "escalation_context": [
+          "not\\s+(?:been\\s+)?(?:credited|received|reversed|resolved|refunded|reflected)",
+          "\\bif\\b[^.!?]{0,60}(?:not|nahi|n't)",
+          "still\\s+not",
+          "in\\s+case\\s+(?:it|the|your)",
+          "\\bagar\\b[^.!?]{0,60}(?:nahi|na\\s)",
+          "अगर[^।.!?]{0,60}(?:नहीं|नही)",
+          "ombudsman",
+          "escalate",
+          "unresolved",
+          "not\\s+satisfied",
+          "dissatisfied"
+        ],
+        "reversal_words": [
+          "revers",
+          "refund",
+          "credit",
+          "money\\s+back",
+          "amount\\s+back",
+          "get\\s+your\\s+money",
+          "compensat",
+          "₹\\s*100",
+          "rs\\.?\\s*100",
+          "wapas",
+          "vapas",
+          "paise",
+          "paisa",
+          "muavz",
+          "हर्जाना",
+          "मुआवज",
+          "वापस",
+          "रिफंड",
+          "पैसे",
+          "राशि",
+          "resolve",
+          "solution",
+          "\\bback\\b"
+        ],
+        "precondition_cues": [
+          "to\\s+(?:get|receive|claim|initiate|start|process)",
+          "in\\s+order\\s+to",
+          "only\\s+(?:after|if|when)",
+          "once\\s+you",
+          "after\\s+you",
+          "before\\s+we",
+          "so\\s+that\\s+we",
+          "\\btabhi\\b",
+          "तभी",
+          "uske\\s+baad",
+          "उसके\\s+बाद",
+          "ताकि",
+          "then\\s+we\\s+will",
+          "and\\s+then"
+        ]
+      },
+      "matchers_unreviewed": true
+    }
+  },
+  "scope": {
+    "surfaces": [
+      "agent_chat",
+      "macro",
+      "voice"
+    ],
+    "products": [
+      "UPI",
+      "IMPS",
+      "PPI",
+      "cards"
+    ],
+    "journeys": [
+      "failed_payment",
+      "refund_status",
+      "complaint"
+    ],
+    "entities": [
+      "payments app / TPAP",
+      "bank",
+      "payment service provider"
+    ]
+  },
+  "severity": "high",
+  "effective_from": "2019-09-20",
+  "notes": [
+    "CORRECTION: the demo card tied the ₹100/day to 'beyond T+1' for every case. The per-day amount runs from EACH row's own deadline (T+1 or T+5 etc).",
+    "Paired with RBI-TAT-UPI-TRANSFER and RBI-TAT-UPI-MERCHANT; do not evaluate it without selecting the matching row first.",
+    "Tier A matchers live in check.config.matchers (added by the engine build): regex lists per language, phrase lists and negation cues. All Hinglish/Hindi variants and typo patterns are engineering-authored and UNREVIEWED: a native-speaker compliance reviewer must approve them before activation."
+  ],
+  "open_issues": [
+    "Other rows (IMPS, cards, PPI) are not yet carded; this card needs a row selector before it covers them."
+  ]
+}

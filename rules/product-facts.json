@@ -1,0 +1,86 @@
+{
+  "label": "Paytm-controlled demo data",
+  "note": "SYNTHETIC. These are not Paytm records. They stand in for approved pricing sheets, product eligibility rules, settlement terms and compliance-approved wording that only Paytm can supply. Replace with the real system of record before any use beyond the demo.",
+  "owner": "Merchant Payments Product (demo)",
+  "facts": [
+    {
+      "id": "PF-PG-SETTLEMENT",
+      "category": "settlement",
+      "title": "Payment Gateway settlement cycle",
+      "statement": "Payment Gateway settlements run on a T+2 business-day cycle by default. T+1 is available only on request and subject to risk review. Paytm does not guarantee a settlement time shorter than the cycle in the Merchant Agreement.",
+      "value": {"default_days": 2, "fastest_days": 1, "guaranteed_sub_day": false},
+      "unit": "business days",
+      "superseded": {"values_days": [3, 4, 5], "note": "Earlier terms used a T+3 cycle; the current cycle is T+2."},
+      "approved_wording": "Settlements are processed as per the settlement cycle in your Merchant Agreement (T+2 business days by default), subject to Paytm's risk review."
+    },
+    {
+      "id": "PF-PG-HOLD",
+      "category": "settlement",
+      "title": "Settlement holds",
+      "statement": "Paytm may hold or delay settlement for risk review, chargebacks, disputes or regulatory reasons.",
+      "value": {"holds_possible": true},
+      "unit": null,
+      "approved_wording": "Paytm may hold or delay settlement for risk review, chargebacks, disputes or regulatory reasons, as set out in the Merchant Agreement."
+    },
+    {
+      "id": "PF-PG-FEE-CARD",
+      "category": "pricing",
+      "title": "Domestic card MDR",
+      "statement": "Domestic credit and debit card transactions are charged an MDR of 1.90% plus applicable GST.",
+      "value": {"percent": 1.90},
+      "unit": "percent",
+      "superseded": {"values_percent": [2.0, 2.25, 2.4], "note": "Earlier price sheet; replaced by the current fee schedule."},
+      "approved_wording": "Domestic card transactions are charged at 1.90% plus applicable GST, as per the current fee schedule."
+    },
+    {
+      "id": "PF-PG-FEE-UPI",
+      "category": "pricing",
+      "title": "UPI MDR",
+      "statement": "UPI payments carry no merchant discount rate (MDR). Other charges, if any, are listed in the fee schedule.",
+      "value": {"percent": 0.0},
+      "unit": "percent",
+      "approved_wording": "UPI payments carry no merchant discount rate (MDR); any other applicable charges are listed in the fee schedule."
+    },
+    {
+      "id": "PF-PG-FEES-ALL",
+      "category": "pricing",
+      "title": "Fees apply to non-UPI modes",
+      "statement": "Fees apply to cards, netbanking and other non-UPI modes. Paytm cannot describe all payment modes as free of charge.",
+      "value": {"all_modes_free": false},
+      "unit": null,
+      "approved_wording": "Fees vary by payment mode and are listed in the fee schedule; UPI payments carry no MDR."
+    },
+    {
+      "id": "PF-PG-APPROVAL",
+      "category": "onboarding",
+      "title": "Onboarding approval and KYC",
+      "statement": "Onboarding is subject to KYC and risk verification. Paytm does not guarantee approval or a fixed activation time. Indicative activation is 3-5 working days after complete documents are received.",
+      "value": {"approval_guaranteed": false, "kyc_mandatory": true, "indicative_days_min": 3, "indicative_days_max": 5},
+      "unit": "working days",
+      "approved_wording": "Onboarding is subject to KYC and risk verification. Indicative activation is 3-5 working days after complete documents are received; approval is not guaranteed."
+    },
+    {
+      "id": "PF-PG-ELIGIBILITY",
+      "category": "eligibility",
+      "title": "Merchant eligibility",
+      "statement": "A merchant must be a registered business with a business PAN, a bank account in the business's name, GSTIN where applicable, and complete KYC.",
+      "value": {"requires": ["business PAN", "bank account in business name", "GSTIN where applicable", "KYC"]},
+      "unit": null,
+      "approved_wording": "Eligibility requires a registered business with a business PAN, a bank account in the business's name, GSTIN where applicable, and completed KYC."
+    }
+  ],
+  "required_disclosures": [
+    {"id": "DISC-GRIEVANCE", "title": "Grievance redressal and escalation path", "applies_to": ["agreement", "onboarding", "proposal"], "severity": "high",
+     "patterns": ["grievance", "redressal", "escalation"], "fact_id": "PF-PG-APPROVAL",
+     "approved_wording": "For any complaint, contact Paytm's grievance redressal officer at the address in the Merchant Agreement; unresolved complaints can be escalated as described there."},
+    {"id": "DISC-KYC", "title": "KYC requirement statement", "applies_to": ["agreement", "onboarding", "proposal"], "severity": "high",
+     "patterns": ["kyc", "know your customer"], "fact_id": "PF-PG-APPROVAL",
+     "approved_wording": "Onboarding is subject to completion of KYC and risk verification, and Paytm may request additional documents."},
+    {"id": "DISC-SETTLEMENT-REF", "title": "Reference to settlement terms", "applies_to": ["agreement", "proposal", "order_form"], "severity": "medium",
+     "patterns": ["settlement cycle", "settlement terms", "settled as per", "settlement as per", "t+2", "t+1"], "fact_id": "PF-PG-SETTLEMENT",
+     "approved_wording": "Settlements are processed as per the settlement cycle in your Merchant Agreement (T+2 business days by default), subject to Paytm's risk review."},
+    {"id": "DISC-FEES-REF", "title": "Reference to the fee schedule", "applies_to": ["agreement", "proposal", "order_form"], "severity": "medium",
+     "patterns": ["fee schedule", "pricing schedule", "mdr", "charges are"], "fact_id": "PF-PG-FEE-CARD",
+     "approved_wording": "Fees are as per the fee schedule attached to this document; applicable GST is charged additionally."}
+  ]
+}

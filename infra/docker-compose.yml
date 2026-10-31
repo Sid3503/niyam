@@ -1,0 +1,64 @@
+# Niyam local/prod-shaped stack.  Usage:  make up   (see Makefile)   |   docker compose -f infra/docker-compose.yml --env-file infra/.env up
+name: niyam
+services:
+  db:
+    image: pgvector/pgvector:pg16
+    restart: unless-stopped
+    environment:
+      POSTGRES_DB: niyam
+      POSTGRES_USER: niyam
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:?set POSTGRES_PASSWORD in infra/.env}
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+    ports:
+      - "127.0.0.1:${DB_PORT:-5433}:5432"       # localhost only
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U niyam -d niyam"]
+      interval: 5s
+      timeout: 3s
+      retries: 20
+
+  api:
+    build:
+      context: ../apps/api
+      args:
+        INSTALL_DEV: ${INSTALL_DEV:-1}
+    restart: unless-stopped
+    depends_on:
+      db:
+        condition: service_healthy
+    environment:
+      NIYAM_ENV: ${NIYAM_ENV:-dev}
+      NIYAM_DATABASE_URL: postgresql+psycopg://niyam:${POSTGRES_PASSWORD}@db:5432/niyam
+      NIYAM_API_KEY: ${NIYAM_API_KEY:-}
+      NIYAM_STORE_CHECK_TEXT: ${NIYAM_STORE_CHECK_TEXT:-true}
+      NIYAM_AS_OF_OVERRIDE: ${NIYAM_AS_OF_OVERRIDE:-}
+      SARVAM_API_KEY: ${SARVAM_API_KEY:-}
+      OLLAMA_API_KEY: ${OLLAMA_API_KEY:-}
+      NIYAM_OLLAMA_MODEL: ${NIYAM_OLLAMA_MODEL:-gpt-oss:120b}
+      NIYAM_LLM_PROVIDER: ${NIYAM_LLM_PROVIDER:-auto}
+    volumes:                                      # corpus + cards are read-only inside the container
+      - ../regulations:/data/regulations:ro
+      - ../paytm-terms:/data/paytm-terms:ro
+      - ../rules:/data/rules:ro
+      - ../library:/data/library:ro
+    ports:
+      - "127.0.0.1:${API_PORT:-8000}:8000"
+    read_only: true
+    tmpfs: [/tmp]
+    security_opt: ["no-new-privileges:true"]
+    cap_drop: [ALL]
+
+  web:
+    build:
+      context: ../apps/web
+    restart: unless-stopped
+    depends_on:
+      api:
+        condition: service_healthy
+    ports:
+      - "127.0.0.1:${WEB_PORT:-8080}:80"
+    profiles: ["web"]                             # enable once apps/web exists:  --profile web
+
+volumes:
+  pgdata:

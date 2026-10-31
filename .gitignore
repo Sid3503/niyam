@@ -1,0 +1,46 @@
+# ---- secrets and local configuration (never commit) ----
+.env
+.env.*
+!.env.example
+infra/.env
+*.pem
+*.key
+
+# ---- dependencies and build output ----
+node_modules/
+.venv/
+dist/
+__pycache__/
+*.pyc
+.pytest_cache/
+*.tsbuildinfo
+.DS_Store
+
+# ---- local runtime data ----
+# content-addressed PDF/audio blobs written by the API
+var/
+# frozen snapshot of earlier files, reference only
+_ref/
+apps/web/screenshots/
+# screenshots of the earlier console design
+screens/
+rules/tools/bin/
+*.log
+
+# ---- chat/session transcripts (they can contain pasted API keys) ----
+apps/api/20??-??-??-*.txt
+*local-command-caveat*
+
+# ---- the regulatory corpus is NOT committed wholesale ----
+# One file alone is 138 MB (over GitHub's 100 MB limit) and most documents are other organisations' publications.
+# Only the files that the rule cards cite are force-added (so every card still verifies), plus the manifests of source URLs and hashes.
+regulations/*/*
+!regulations/*/MANIFEST.csv
+!regulations/*/README.md
+paytm-terms/*
+!paytm-terms/MANIFEST.csv
+
+# ---- earlier pitch material (stale numbers; add deliberately if wanted) ----
+Niyam-Pitch-Deck.pdf
+Niyam-Pitch-Deck.pptx
+Niyam-Product-Guide.pdf

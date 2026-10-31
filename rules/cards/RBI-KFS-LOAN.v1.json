@@ -1,0 +1,175 @@
+{
+  "version": 1,
+  "owner": "unassigned",
+  "confidence_threshold": 1.0,
+  "evidence_required": "verbatim_quote",
+  "effective_to": null,
+  "supersedes": null,
+  "aliases": [],
+  "status": "draft",
+  "approved_by": null,
+  "approved_at": null,
+  "id": "RBI-KFS-LOAN",
+  "title": "Key Fact Statement given before the loan contract",
+  "obligation": "A regulated lender must give each prospective borrower a Key Fact Statement in the standardised format, in a language the borrower understands, with a unique proposal number, a validity period, an APR computation sheet and the amortisation schedule, before the loan contract is executed.",
+  "source": {
+    "regulator": "RBI",
+    "document": "Key Facts Statement (KFS) for Loans & Advances",
+    "reference": "RBI/2024-25/18 DOR.STR.REC.13/13.03.00/2024-25",
+    "issue_date": "2024-04-15",
+    "document_status": "in_force",
+    "file": "regulations/rbi-lending-ai-governance/RBI_2024-04-15_circular-key-facts-statement-loans-advances.md",
+    "sha256": "eacb075b70ca067f2b62bdef93e78bf5f90e92576589c4d78599957d25bb2d42",
+    "text_basis": "native",
+    "provenance": "official_html_extract",
+    "locator": "paras 4, 5 and 6",
+    "quotes": [
+      "REs shall provide a KFS to all prospective borrowers to help them take an informed view before executing the loan contract, as per the standardised format given in the Annex A. The KFS shall be written in a language understood by such borrowers.",
+      "the KFS shall be provided with a unique proposal number and shall have a validity period of at least three working days for loans having tenor of seven days or more, and a validity period of one working day for loans having tenor of less than seven days",
+      "The KFS shall also include a computation sheet of annual percentage rate (APR), and the amortisation schedule of the loan over the loan tenor."
+    ],
+    "url": "https://www.rbi.org.in/Scripts/NotificationUser.aspx?Id=12663"
+  },
+  "check": {
+    "type": "must_contain",
+    "tier": "A+B",
+    "config": {
+      "deterministic": true,
+      "required_elements": [
+        "kfs_provided_before_loan_contract_executed",
+        "kfs_language_understood_by_borrower",
+        "unique_proposal_number",
+        "validity_at_least_3_working_days_if_tenor_7_days_or_more_else_1_working_day",
+        "apr_computation_sheet",
+        "amortisation_schedule"
+      ],
+      "annex_a_field_list": "NOT READ: Annex A is a blocked PDF; field-level checks cannot be built yet",
+      "authored_by_niyam": true,
+      "matchers": {
+        "kfs_marker": [
+          "key\\s+facts?\\s+statement",
+          "\\bkfs\\b",
+          "मुख्य\\s+तथ्य\\s+(?:विवरण|कथन)",
+          "की\\s+फैक्ट"
+        ],
+        "loan_cues": [
+          "\\bloan",
+          "\\bemi\\b",
+          "lender",
+          "borrower",
+          "nbfc",
+          "disburs",
+          "tenor",
+          "tenure",
+          "interest\\s+rate",
+          "\\bapr\\b",
+          "लोन",
+          "ऋण",
+          "कर्ज"
+        ],
+        "min_doc_features": 3,
+        "doc_features": {
+          "loan_amount": [
+            "loan\\s+amount",
+            "sanctioned\\s+amount",
+            "principal\\s+amount",
+            "ऋण\\s+राशि",
+            "लोन\\s+राशि"
+          ],
+          "tenor": [
+            "tenor",
+            "tenure",
+            "अवधि"
+          ],
+          "interest_rate": [
+            "interest\\s+rate",
+            "rate\\s+of\\s+interest",
+            "ब्याज\\s+दर",
+            "\\broi\\b"
+          ],
+          "apr": [
+            "\\bapr\\b",
+            "annual\\s+percentage\\s+rate"
+          ],
+          "fees": [
+            "processing\\s+fee",
+            "\\bfees?\\b",
+            "शुल्क"
+          ],
+          "repayment": [
+            "\\bemi\\b",
+            "instal?lment",
+            "repayment"
+          ]
+        },
+        "elements": {
+          "language": [
+            "language\\s*[:\\-]",
+            "in\\s+(?:a\\s+)?language\\s+(?:you|that|understood|the\\s+borrower)",
+            "भाषा",
+            "bhasha",
+            "available\\s+in\\s+(?:hindi|english|tamil|telugu|marathi|bengali|gujarati|kannada|malayalam)"
+          ],
+          "proposal_number": [
+            "proposal\\s*(?:no\\.?|number|id|#|ref(?:erence)?)\\s*[:\\-#]?\\s*[a-z0-9][a-z0-9\\-/]{3,}",
+            "प्रस्ताव\\s*(?:संख्या|क्रमांक|नंबर)\\s*[:\\-]?\\s*[a-z0-9]{3,}"
+          ],
+          "validity": [
+            "validity(?:\\s+period)?\\s*[:\\-]?\\s*(?:of\\s+|for\\s+)?(?:\\d+|one|two|three|four|five)\\s*(?:working|business)?\\s*days?",
+            "valid\\s+(?:for|till|until|up\\s*to)\\s+(?:\\d+|one|two|three)",
+            "वैधता"
+          ],
+          "apr_computation_sheet": [
+            "apr\\s+(?:computation|calculation)\\s+sheet",
+            "(?:computation|calculation)\\s+sheet\\s+(?:of|for)\\s+(?:annual\\s+percentage\\s+rate|apr)",
+            "apr\\s+sheet",
+            "एपीआर\\s*(?:गणना|कंप्यूटेशन)"
+          ],
+          "amortisation_schedule": [
+            "amorti[sz]ation\\s+(?:schedule|table|chart)",
+            "repayment\\s+schedule",
+            "emi\\s+schedule",
+            "instal?lment\\s+schedule",
+            "परिशोधन",
+            "अमॉर्टाइजेशन"
+          ]
+        },
+        "validity_value": "valid(?:ity)?(?:\\s+period)?\\s*[:\\-]?\\s*(?:of\\s+|for\\s+|till\\s+|until\\s+)?(?P<n>\\d+|one|two|three|four|five|ek|do|teen)\\s*(?P<wd>working|business)?\\s*days?",
+        "tenor_value": "(?:tenor|tenure)\\s*[:\\-]?\\s*(?P<n>\\d+)\\s*(?P<u>days?|months?|years?|yrs?)"
+      },
+      "matchers_unreviewed": true
+    }
+  },
+  "scope": {
+    "surfaces": [
+      "agent_chat",
+      "script",
+      "screen"
+    ],
+    "products": [
+      "personal loan",
+      "pay later",
+      "digital lending"
+    ],
+    "journeys": [
+      "loan_application",
+      "loan_offer"
+    ],
+    "entities": [
+      "regulated entity (bank/NBFC)",
+      "lending service provider"
+    ]
+  },
+  "severity": "critical",
+  "effective_from": "2024-04-15",
+  "notes": [
+    "CORRECTION: the demo card said the KFS must show the cooling-off period. The current KFS circular body does not list cooling-off as a KFS field; that came from the repealed 2022 Guidelines. Cooling-off is now in RBI-COOLING-OFF (Digital Lending Directions para 10).",
+    "effective_from is the circular's issue date; any later operative date for new vs existing loans was not recorded.",
+    "The 15 Apr 2024 circular itself says it is issued as amended from time to time; the Digital Lending Directions 2025 (para 8) point back to it.",
+    "Tier A matchers live in check.config.matchers (added by the engine build): regex lists per language, phrase lists and negation cues. All Hinglish/Hindi variants and typo patterns are engineering-authored and UNREVIEWED: a native-speaker compliance reviewer must approve them before activation."
+  ],
+  "open_issues": [
+    "Annex A field list unread (blocked PDF on rbidocs.rbi.org.in): download and re-check before building field-level assertions.",
+    "The 'penal charges' disclosure duty sits in a separate circular and is not part of this card."
+  ]
+}

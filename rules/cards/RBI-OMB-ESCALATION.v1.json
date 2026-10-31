@@ -1,0 +1,131 @@
+{
+  "version": 1,
+  "owner": "unassigned",
+  "confidence_threshold": 1.0,
+  "evidence_required": "verbatim_quote",
+  "effective_to": null,
+  "supersedes": null,
+  "aliases": [],
+  "status": "draft",
+  "approved_by": null,
+  "approved_at": null,
+  "id": "RBI-OMB-ESCALATION",
+  "title": "Digital lending: tell borrower the complaint escalation route",
+  "obligation": "In digital lending, if a complaint is rejected wholly or partly, the borrower is not satisfied with the reply, or no reply is received within 30 days, the borrower can escalate to RBI's Complaint Management System under the Integrated Ombudsman Scheme, and the borrower must be told so.",
+  "source": {
+    "regulator": "RBI",
+    "document": "Reserve Bank of India (Digital Lending) Directions, 2025",
+    "reference": "RBI/2025-26/36 DOR.STR.REC.19/21.07.001/2025-26",
+    "issue_date": "2025-05-08",
+    "document_status": "in_force",
+    "file": "regulations/rbi-lending-ai-governance/RBI_2025-05-08_digital-lending-directions-2025.md",
+    "sha256": "f415a6c4ec53f90f5349446f59b401e8be7309a467008d98e0fce0ec0e4503b6",
+    "text_basis": "native",
+    "provenance": "official_html_extract",
+    "locator": "Chapter III para 11(iv)",
+    "quotes": [
+      "or the borrower has not received any reply within 30 days of receipt of complaint by the RE, the said borrower can lodge a complaint over the Complaint Management System",
+      "This information shall be suitably conveyed to the borrower."
+    ],
+    "url": "https://www.rbi.org.in/scripts/FS_Notification.aspx?Id=12848"
+  },
+  "check": {
+    "type": "escalation_required",
+    "tier": "B",
+    "config": {
+      "deterministic": false,
+      "trigger_any": [
+        "complaint rejected wholly or partly by the RE",
+        "borrower not satisfied with the reply",
+        "no reply within 30 days of receipt of complaint"
+      ],
+      "must_convey": [
+        "borrower can escalate on RBI's Complaint Management System (CMS) under the Integrated Ombudsman Scheme"
+      ],
+      "scope_limit": "digital lending complaints only",
+      "authored_by_niyam": true,
+      "matchers": {
+        "lending_cues": [
+          "\\bloan",
+          "\\bemi\\b",
+          "disburs",
+          "lender",
+          "borrower",
+          "nbfc",
+          "digital\\s+lend",
+          "pay\\s*later",
+          "lending\\s+app",
+          "लोन",
+          "ऋण"
+        ],
+        "complaint_topic": [
+          "complain",
+          "grievance",
+          "ombudsman",
+          "escalat",
+          "शिकायत",
+          "shikayat",
+          "dispute"
+        ],
+        "route_cues": [
+          "complaint\\s+management\\s+system",
+          "\\bcms\\b",
+          "cms\\.rbi",
+          "integrated\\s+ombudsman",
+          "rbi\\s+ombudsman",
+          "ombudsman\\s+scheme",
+          "banking\\s+ombudsman",
+          "\\bombudsman\\b",
+          "शिकायत\\s+प्रबंधन\\s+प्रणाली",
+          "लोकपाल",
+          "ओम्बड्समैन"
+        ],
+        "route_negated": [
+          "(?:cannot|can't|not|no)\\s+(?:\\w+\\s+){0,3}(?:ombudsman|cms|escalate|approach)",
+          "ombudsman\\s+(?:will\\s+)?not",
+          "नहीं\\s+कर\\s+सकते"
+        ],
+        "text_trigger": [
+          "(?:complaint|request|case|shikayat|शिकायत)[^.!?]{0,40}(?:reject|declin|denied|closed|not\\s+(?:upheld|valid|accepted)|resolved\\s+as)",
+          "(?:reject|declin|deny|denied|unable\\s+to\\s+(?:accept|refund))[^.!?]{0,40}(?:complaint|request|claim)",
+          "we\\s+(?:cannot|can't|are\\s+unable\\s+to)\\s+(?:refund|reverse|waive)",
+          "cannot\\s+refund",
+          "खारिज",
+          "closing\\s+(?:your|the)\\s+(?:complaint|case)"
+        ]
+      },
+      "matchers_unreviewed": true
+    }
+  },
+  "scope": {
+    "surfaces": [
+      "agent_chat",
+      "macro",
+      "voice"
+    ],
+    "products": [
+      "digital lending",
+      "pay later",
+      "personal loan"
+    ],
+    "journeys": [
+      "complaint",
+      "grievance"
+    ],
+    "entities": [
+      "regulated entity (bank/NBFC)",
+      "lending service provider"
+    ]
+  },
+  "severity": "high",
+  "effective_from": "2025-05-08",
+  "notes": [
+    "CORRECTION and NARROWING: the demo card generalised '30 days then Ombudsman' to every complaint. The primary text read here covers DIGITAL LENDING complaints (para 11(iv)). Other regimes (payments, banks, insurance, SEBI) have their own routes and timelines; do not reuse this number.",
+    "Whether the closing agent 'may not close without it' is NIYAM design, not in the quoted text. It is a test expectation, not a regulatory quote.",
+    "Tier A matchers live in check.config.matchers (added by the engine build): regex lists per language, phrase lists and negation cues. All Hinglish/Hindi variants and typo patterns are engineering-authored and UNREVIEWED: a native-speaker compliance reviewer must approve them before activation."
+  ],
+  "open_issues": [
+    "The Integrated Ombudsman Scheme 2026 text (in force 1 Jul 2026, per agent) was blocked and is unread. Fetch it before generalising this card.",
+    "Footnotes in the extracted page text (CMS, RB-IOS) were not read."
+  ]
+}

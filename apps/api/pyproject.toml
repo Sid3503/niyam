@@ -1,0 +1,35 @@
+[project]
+name = "niyam-api"
+version = "0.1.0"
+description = "Niyam: compliance assurance for AI agents in Indian financial services (API, knowledge base, check engine)"
+requires-python = ">=3.12"
+dependencies = [
+  "fastapi>=0.115,<1",
+  "uvicorn[standard]>=0.30,<1",
+  "sqlalchemy>=2.0.30,<2.1",
+  "psycopg[binary,pool]>=3.2,<4",
+  "alembic>=1.13,<2",
+  "pydantic>=2.7,<3",
+  "pydantic-settings>=2.3,<3",
+  "pymupdf>=1.24,<2",
+  "beautifulsoup4>=4.12,<5",
+  "lxml>=5,<7",
+  "pyyaml>=6,<7",
+  "httpx>=0.27,<1",
+  "mcp>=1.2,<2",
+]
+
+[project.optional-dependencies]
+dev = ["pytest>=8,<9"]
+
+[build-system]
+requires = ["setuptools>=68"]
+build-backend = "setuptools.build_meta"
+
+[tool.setuptools.packages.find]
+include = ["niyam*"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+addopts = "-q"
+markers = ["db: needs a Postgres (run via `make test`)"]

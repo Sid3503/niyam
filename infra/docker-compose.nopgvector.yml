@@ -1,0 +1,6 @@
+# Override for machines that cannot pull pgvector/pgvector (e.g. a TLS-inspecting proxy blocks the registry CDN).
+# Uses a locally available plain Postgres 16 image. The `vector` extension is optional in migration 0001.
+#   docker compose -f infra/docker-compose.yml -f infra/docker-compose.nopgvector.yml --env-file infra/.env up -d db
+services:
+  db:
+    image: postgres:16-alpine

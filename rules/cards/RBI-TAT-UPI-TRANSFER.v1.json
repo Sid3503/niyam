@@ -1,0 +1,919 @@
+{
+  "version": 1,
+  "owner": "unassigned",
+  "confidence_threshold": 1.0,
+  "evidence_required": "verbatim_quote",
+  "effective_to": null,
+  "supersedes": null,
+  "aliases": [
+    "RBI-TAT-UPI-P2P"
+  ],
+  "status": "draft",
+  "approved_by": null,
+  "approved_at": null,
+  "id": "RBI-TAT-UPI-TRANSFER",
+  "title": "UPI transfer not credited: beneficiary bank reverses by T+1",
+  "obligation": "Where a UPI account is debited but the beneficiary account is not credited (transfer of funds), the beneficiary bank must auto-reverse by T+1, and ₹100 per day is payable for delay beyond T+1. A customer-facing agent must not give a later deadline or omit the compensation.",
+  "source": {
+    "regulator": "RBI",
+    "document": "Harmonisation of Turn Around Time (TAT) and customer compensation for failed transactions using authorised Payment Systems",
+    "reference": "DPSS.CO.PD No.629/02.01.014/2019-20",
+    "issue_date": "2019-09-20",
+    "document_status": "in_force",
+    "file": "regulations/rbi-payments/RBI_2019-09-20_tat-failed-transactions-dpss629.html",
+    "sha256": "a411ba531e2bdbb55b85ce15d613e4cb6c105912df82d7bd8cb3ec47446bd64b",
+    "text_basis": "native",
+    "provenance": "official_html_extract",
+    "locator": "Annex, UPI row 4a; general instruction 4",
+    "quotes": [
+      "Unified Payments Interface (UPI) a Account debited but the beneficiary account is not credited (transfer of funds). If unable to credit the beneficiary account, auto reversal (R) by the Beneficiary bank latest on T + 1 day. ₹100/- per day if delay is beyond T + 1 day.",
+      "T is the day of transaction and refers to the calendar date."
+    ],
+    "url": "https://www.rbi.org.in/ (page text extract; rbidocs PDF blocked)"
+  },
+  "check": {
+    "type": "timeline_consistency",
+    "tier": "A",
+    "config": {
+      "deterministic": true,
+      "deadline_days": 1,
+      "day_basis": "calendar_date_of_transaction",
+      "compensation_per_day_inr": 100,
+      "compensation_automatic": true,
+      "reversal_actor": "beneficiary_bank",
+      "fail_if": [
+        "promised_days_gt_deadline",
+        "customer_told_to_raise_complaint_or_ticket_to_get_reversal_or_compensation",
+        "compensation_omitted_when_delay_is_beyond_deadline"
+      ],
+      "review_if": [
+        "unconditional_same_day_promise (over-promise: agent cannot control the beneficiary bank)"
+      ],
+      "authored_by_niyam": true,
+      "matchers": {
+        "timeline": {
+          "number_words": {
+            "a": 1,
+            "an": 1,
+            "one": 1,
+            "two": 2,
+            "three": 3,
+            "four": 4,
+            "five": 5,
+            "six": 6,
+            "seven": 7,
+            "eight": 8,
+            "nine": 9,
+            "ten": 10,
+            "twelve": 12,
+            "fifteen": 15,
+            "twenty": 20,
+            "thirty": 30,
+            "ek": 1,
+            "do": 2,
+            "teen": 3,
+            "char": 4,
+            "chaar": 4,
+            "paanch": 5,
+            "panch": 5,
+            "paach": 5,
+            "chhe": 6,
+            "chah": 6,
+            "cheh": 6,
+            "saat": 7,
+            "aath": 8,
+            "nau": 9,
+            "das": 10,
+            "gyarah": 11,
+            "barah": 12,
+            "pandrah": 15,
+            "bees": 20,
+            "tees": 30,
+            "एक": 1,
+            "दो": 2,
+            "तीन": 3,
+            "चार": 4,
+            "पांच": 5,
+            "पाँच": 5,
+            "पाच": 5,
+            "छह": 6,
+            "छः": 6,
+            "छे": 6,
+            "सात": 7,
+            "आठ": 8,
+            "नौ": 9,
+            "दस": 10,
+            "ग्यारह": 11,
+            "बारह": 12,
+            "पंद्रह": 15,
+            "बीस": 20,
+            "तीस": 30
+          },
+          "units": {
+            "days": [
+              "day",
+              "days",
+              "din",
+              "dino",
+              "dinon",
+              "दिन",
+              "दिनों",
+              "divas",
+              "दिवस"
+            ],
+            "weeks": [
+              "week",
+              "weeks",
+              "wk",
+              "wks",
+              "hafte",
+              "hafta",
+              "haftey",
+              "haphte",
+              "हफ्ते",
+              "हफ्ता",
+              "हफ़्ते",
+              "हफ़्ता",
+              "सप्ताह",
+              "saptah"
+            ],
+            "hours": [
+              "hour",
+              "hours",
+              "hr",
+              "hrs",
+              "ghante",
+              "ghanta",
+              "ghantey",
+              "ghnte",
+              "घंटे",
+              "घंटा",
+              "घण्टे",
+              "घंटों"
+            ],
+            "months": [
+              "month",
+              "months",
+              "mahine",
+              "mahina",
+              "महीने",
+              "महीना"
+            ],
+            "minutes": [
+              "minute",
+              "minutes",
+              "min",
+              "mins",
+              "minat",
+              "मिनट"
+            ]
+          },
+          "working_markers": [
+            "working",
+            "business",
+            "banking",
+            "कार्य",
+            "कामकाजी",
+            "वर्किंग",
+            "बिजनेस",
+            "बैंकिंग"
+          ],
+          "calendar_markers": [
+            "calendar",
+            "कैलेंडर"
+          ],
+          "range_separators": [
+            "-",
+            "to",
+            "or",
+            "se",
+            "से",
+            "aur",
+            "और"
+          ],
+          "pre_words": [
+            "within(?:\\s+(?:the\\s+)?next)?",
+            "in(?:side)?",
+            "by",
+            "up\\s*to",
+            "upto",
+            "max(?:imum)?(?:\\s+of)?",
+            "around",
+            "about",
+            "approx(?:imately)?\\.?",
+            "takes?",
+            "taking",
+            "after",
+            "nearly",
+            "under",
+            "for",
+            "over",
+            "next"
+          ],
+          "tplus": "\\bt\\s*(?:\\+|plus)\\s*(?P<n>\\d+)(?:\\s*(?:calendar\\s+)?(?:days?|din|दिन))?",
+          "skip_before": [
+            "delay(?:ed)?(?:\\s+of|\\s+by)?",
+            "late\\s+by",
+            "overdue\\s+by",
+            "\\bper",
+            "every",
+            "each",
+            "last",
+            "past",
+            "previous",
+            "tenor(?:e)?(?:\\s+of)?",
+            "validity(?:\\s+of)?",
+            "since"
+          ],
+          "skip_after": [
+            "of\\s+delay",
+            "ago\\b",
+            "pehle",
+            "पहले",
+            "late\\b",
+            "delay",
+            "overdue"
+          ],
+          "fixed": [
+            {
+              "regex": "\\btonight\\b",
+              "days": 0,
+              "kind": "same_day",
+              "label": "tonight",
+              "lang": "en"
+            },
+            {
+              "regex": "\\bthis\\s+evening\\b",
+              "days": 0,
+              "kind": "same_day",
+              "label": "this evening",
+              "lang": "en"
+            },
+            {
+              "regex": "\\b(?:by\\s+)?(?:the\\s+)?end\\s+of\\s+(?:the\\s+|today|business\\s+)?day\\b|\\bby\\s+eod\\b|\\beod\\b",
+              "days": 0,
+              "kind": "same_day",
+              "label": "end of day",
+              "lang": "en"
+            },
+            {
+              "regex": "\\bsame[\\s-]?day\\b",
+              "days": 0,
+              "kind": "same_day",
+              "label": "same day",
+              "lang": "en"
+            },
+            {
+              "regex": "\\btoday\\b",
+              "days": 0,
+              "kind": "same_day",
+              "label": "today",
+              "lang": "en"
+            },
+            {
+              "regex": "\\bwithin\\s+(?:the\\s+day|today)\\b",
+              "days": 0,
+              "kind": "same_day",
+              "label": "within the day",
+              "lang": "en"
+            },
+            {
+              "regex": "\\b(?:immediately|instantly|right\\s+away|at\\s+once|in\\s+real[\\s-]?time)\\b",
+              "days": 0,
+              "kind": "same_day",
+              "label": "immediately",
+              "lang": "en"
+            },
+            {
+              "regex": "\\b(?:in|within)\\s+(?:a\\s+)?(?:few|couple\\s+of)\\s+hours\\b",
+              "days": 0,
+              "kind": "same_day",
+              "label": "within a few hours",
+              "lang": "en"
+            },
+            {
+              "regex": "\\btomorrow\\b",
+              "days": 1,
+              "kind": "next_day",
+              "label": "tomorrow",
+              "lang": "en"
+            },
+            {
+              "regex": "\\bnext[\\s-]day\\b|\\bthe\\s+following\\s+day\\b|\\bovernight\\b",
+              "days": 1,
+              "kind": "next_day",
+              "label": "next day",
+              "lang": "en"
+            },
+            {
+              "regex": "\\bnext\\s+(?:working|business|banking)\\s+day\\b",
+              "days": 1,
+              "kind": "next_day",
+              "working": true,
+              "label": "next working day",
+              "lang": "en"
+            },
+            {
+              "regex": "\\b(?:a\\s+)?day\\s+or\\s+two\\b",
+              "days": 2,
+              "min_days": 1,
+              "kind": "duration",
+              "label": "a day or two",
+              "lang": "en"
+            },
+            {
+              "regex": "\\b(?:a\\s+)?couple\\s+of\\s+days\\b|\\bcouple\\s+days\\b",
+              "days": 2,
+              "min_days": 2,
+              "kind": "duration",
+              "label": "couple of days",
+              "lang": "en"
+            },
+            {
+              "regex": "\\b(?:a\\s+)?few\\s+days\\b|\\bseveral\\s+days\\b",
+              "days": null,
+              "min_days": 2,
+              "kind": "vague",
+              "label": "a few days",
+              "lang": "en"
+            },
+            {
+              "regex": "\\baaj\\s+(?:raat|rat|shaam|sham)(?:\\s+tak)?\\b",
+              "days": 0,
+              "kind": "same_day",
+              "label": "aaj raat",
+              "lang": "hinglish"
+            },
+            {
+              "regex": "\\baaj\\b(?:\\s+hi)?(?=[^.!?]{0,45}(?:milega|milegi|milenge|mil\\s*jayega|mil\\s*jayegi|aayega|aayegi|ayega|ayegi|aa\\s*jayega|aajayega|aa\\s*jayegi|aa\\s*jayenge|aa\\s*jaenge|aa\\s*jaye|ho\\s*jayega|ho\\s*jayegi|ho\\s*jayenge|jayega|jayegi|jayenge|hoga|hogi|honge|wapas|credit\\s*ho|karenge|kar\\s*denge|kar\\s*dunga|denge|dunga|bhej|reflect|process|resolve))",
+              "days": 0,
+              "kind": "same_day",
+              "label": "aaj",
+              "lang": "hinglish"
+            },
+            {
+              "regex": "\\babhi\\b(?!\\s+tak)(?=[^.!?]{0,45}(?:milega|milegi|milenge|mil\\s*jayega|mil\\s*jayegi|aayega|aayegi|ayega|ayegi|aa\\s*jayega|aajayega|aa\\s*jayegi|aa\\s*jayenge|aa\\s*jaenge|aa\\s*jaye|ho\\s*jayega|ho\\s*jayegi|ho\\s*jayenge|jayega|jayegi|jayenge|hoga|hogi|honge|wapas|credit\\s*ho|karenge|kar\\s*denge|kar\\s*dunga|denge|dunga|bhej|reflect|process|resolve))",
+              "days": 0,
+              "kind": "same_day",
+              "label": "abhi",
+              "lang": "hinglish"
+            },
+            {
+              "regex": "\\b(?:turant|turat|fauran|foran)\\b",
+              "days": 0,
+              "kind": "same_day",
+              "label": "turant",
+              "lang": "hinglish"
+            },
+            {
+              "regex": "\\bkuch\\s+(?:hi\\s+)?ghant\\w*\\b",
+              "days": 0,
+              "kind": "same_day",
+              "label": "kuch ghante",
+              "lang": "hinglish"
+            },
+            {
+              "regex": "\\bkal(?:\\s+(?:subah|shaam))?\\s+tak\\b",
+              "days": 1,
+              "kind": "next_day",
+              "label": "kal tak",
+              "lang": "hinglish"
+            },
+            {
+              "regex": "\\bkal\\b(?=[^.!?]{0,45}(?:milega|milegi|milenge|mil\\s*jayega|mil\\s*jayegi|aayega|aayegi|ayega|ayegi|aa\\s*jayega|aajayega|aa\\s*jayegi|aa\\s*jayenge|aa\\s*jaenge|aa\\s*jaye|ho\\s*jayega|ho\\s*jayegi|ho\\s*jayenge|jayega|jayegi|jayenge|hoga|hogi|honge|wapas|credit\\s*ho|karenge|kar\\s*denge|kar\\s*dunga|denge|dunga|bhej|reflect|process|resolve))",
+              "days": 1,
+              "kind": "next_day",
+              "label": "kal",
+              "lang": "hinglish"
+            },
+            {
+              "regex": "\\bagle\\s+din\\b",
+              "days": 1,
+              "kind": "next_day",
+              "label": "agle din",
+              "lang": "hinglish"
+            },
+            {
+              "regex": "\\bparso\\b(?=[^.!?]{0,45}(?:milega|milegi|milenge|mil\\s*jayega|mil\\s*jayegi|aayega|aayegi|ayega|ayegi|aa\\s*jayega|aajayega|aa\\s*jayegi|aa\\s*jayenge|aa\\s*jaenge|aa\\s*jaye|ho\\s*jayega|ho\\s*jayegi|ho\\s*jayenge|jayega|jayegi|jayenge|hoga|hogi|honge|wapas|credit\\s*ho|karenge|kar\\s*denge|kar\\s*dunga|denge|dunga|bhej|reflect|process|resolve)|\\s+tak)",
+              "days": 2,
+              "kind": "duration",
+              "label": "parso",
+              "lang": "hinglish"
+            },
+            {
+              "regex": "\\bhafte\\s+bhar\\b",
+              "days": 7,
+              "kind": "duration",
+              "label": "hafte bhar",
+              "lang": "hinglish"
+            },
+            {
+              "regex": "आज\\s*(?:रात|शाम)(?:\\s*तक)?",
+              "days": 0,
+              "kind": "same_day",
+              "label": "आज रात",
+              "lang": "hi"
+            },
+            {
+              "regex": "आज(?:\\s*ही)?(?=[^।.!?]{0,45}(?:आए[ंँ]गे|आएगा|आएगी|आ\\s*जाएगा|आ\\s*जाएगी|आ\\s*जाए[ंँ]गे|आ\\s*जायेगा|मिलेगा|मिलेगी|मिलेंगे|मिल\\s*जाएगा|मिल\\s*जाएगी|हो\\s*जाएगा|हो\\s*जाएगी|हो\\s*जाए[ंँ]गे|जाएगा|जाएगी|जाए[ंँ]गे|होगा|होगी|होंगे|वापस|करेंगे|कर\\s*देंगे|देंगे|भेज))",
+              "days": 0,
+              "kind": "same_day",
+              "label": "आज",
+              "lang": "hi"
+            },
+            {
+              "regex": "अभी(?!\\s*तक)(?=[^।.!?]{0,45}(?:आए[ंँ]गे|आएगा|आएगी|आ\\s*जाएगा|आ\\s*जाएगी|आ\\s*जाए[ंँ]गे|आ\\s*जायेगा|मिलेगा|मिलेगी|मिलेंगे|मिल\\s*जाएगा|मिल\\s*जाएगी|हो\\s*जाएगा|हो\\s*जाएगी|हो\\s*जाए[ंँ]गे|जाएगा|जाएगी|जाए[ंँ]गे|होगा|होगी|होंगे|वापस|करेंगे|कर\\s*देंगे|देंगे|भेज))",
+              "days": 0,
+              "kind": "same_day",
+              "label": "अभी",
+              "lang": "hi"
+            },
+            {
+              "regex": "तुरंत|फ़?ौरन",
+              "days": 0,
+              "kind": "same_day",
+              "label": "तुरंत",
+              "lang": "hi"
+            },
+            {
+              "regex": "कल\\s*तक",
+              "days": 1,
+              "kind": "next_day",
+              "label": "कल तक",
+              "lang": "hi"
+            },
+            {
+              "regex": "कल(?=[^।.!?]{0,45}(?:आए[ंँ]गे|आएगा|आएगी|आ\\s*जाएगा|आ\\s*जाएगी|आ\\s*जाए[ंँ]गे|आ\\s*जायेगा|मिलेगा|मिलेगी|मिलेंगे|मिल\\s*जाएगा|मिल\\s*जाएगी|हो\\s*जाएगा|हो\\s*जाएगी|हो\\s*जाए[ंँ]गे|जाएगा|जाएगी|जाए[ंँ]गे|होगा|होगी|होंगे|वापस|करेंगे|कर\\s*देंगे|देंगे|भेज))",
+              "days": 1,
+              "kind": "next_day",
+              "label": "कल",
+              "lang": "hi"
+            },
+            {
+              "regex": "अगले\\s*दिन",
+              "days": 1,
+              "kind": "next_day",
+              "label": "अगले दिन",
+              "lang": "hi"
+            },
+            {
+              "regex": "परसों(?=[^।.!?]{0,45}(?:आए[ंँ]गे|आएगा|आएगी|आ\\s*जाएगा|आ\\s*जाएगी|आ\\s*जाए[ंँ]गे|आ\\s*जायेगा|मिलेगा|मिलेगी|मिलेंगे|मिल\\s*जाएगा|मिल\\s*जाएगी|हो\\s*जाएगा|हो\\s*जाएगी|हो\\s*जाए[ंँ]गे|जाएगा|जाएगी|जाए[ंँ]गे|होगा|होगी|होंगे|वापस|करेंगे|कर\\s*देंगे|देंगे|भेज)|\\s*तक)",
+              "days": 2,
+              "kind": "duration",
+              "label": "परसों",
+              "lang": "hi"
+            }
+          ]
+        },
+        "row_cues": {
+          "merchant": [
+            "\\bmerchants?\\b",
+            "\\bshops?\\b",
+            "\\bstores?\\b",
+            "\\bqr\\b",
+            "\\bscan(?:ned|ning)?\\b",
+            "\\bretailer\\b",
+            "\\bvendor\\b",
+            "\\bseller\\b",
+            "\\bcheckout\\b",
+            "\\be-?commerce\\b",
+            "\\bonline\\s+(?:order|purchase|shopping)\\b",
+            "\\bpaid\\s+at\\b",
+            "\\bpos\\s+(?:machine|terminal)\\b",
+            "\\bdukaan\\b",
+            "\\bdukan\\b",
+            "\\bdukandar\\b",
+            "\\brestaurant\\b",
+            "\\bpetrol\\s+pump\\b",
+            "दुकान",
+            "मर्चेंट",
+            "मर्चेण्ट",
+            "व्यापारी",
+            "विक्रेता"
+          ],
+          "transfer": [
+            "\\bfriends?\\b",
+            "\\bfamily\\b",
+            "\\brelatives?\\b",
+            "\\bsend(?:ing)?\\s+money\\b",
+            "\\bmoney\\s+transfer\\b",
+            "\\btransfer(?:red|ring)?\\b",
+            "\\b(?:sent|send|paid|transferred)\\s+(?:money\\s+|rs\\.?\\s*[\\d,]+\\s+|[₹][\\d,]+\\s+)?to\\s+(?!you\\b|your\\b|me\\b|us\\b|our\\b|the\\s+(?:original|source)\\b)",
+            "\\bp2p\\b",
+            "\\bpeer\\b",
+            "\\b(?:brother|sister|mother|father|mom|dad|wife|husband|cousin)\\b",
+            "\\bdost(?:o|on)?\\b",
+            "\\bbhai\\b",
+            "\\brecipient\\b",
+            "दोस्त",
+            "भाई",
+            "रिश्तेदार",
+            "परिवार"
+          ]
+        },
+        "topic_cues": [
+          "fail(?:ed|ure)?|pending|stuck|debit(?:ed)?|deduct(?:ed)?|not\\s+(?:been\\s+)?credited|revers|refund|money\\s+back|amount\\s+back|\\bpaisa\\b|\\bpaise\\b|\\bpayment|transaction|\\bupi\\b|credited|wapas|vapas|कट|असफल|फेल|रिफंड|वापस|भुगतान|पैसे|पैसा|लेनदेन|राशि|bhugtan|\\bback\\b"
+        ],
+        "money_cues": [
+          "revers",
+          "refund",
+          "credit",
+          "\\bback\\b(?!\\s+to\\s+you|\\s+in\\s+touch|\\s+with\\s+you)",
+          "\\breturn(?:ed|s)?\\b",
+          "settle",
+          "resolv",
+          "reflect",
+          "wapas",
+          "vapas",
+          "वापस",
+          "रिफंड",
+          "रिवर्स",
+          "जमा",
+          "क्रेडिट",
+          "debited\\s+amount",
+          "accounts?\\s+(?:me|mein|main)\\s+(?:aa|aayega|ayega)",
+          "खाते\\s+में"
+        ],
+        "initiation_cues": [
+          "(?:initiat|started|raised|registered|logged|escalat|forwarded|submitted)\\w*[^.!?]{0,25}$",
+          "शुरू",
+          "shuru"
+        ],
+        "update_topic_prefix": [
+          "(?:regarding|about|status\\s+of|update\\s+(?:on|about)|information\\s+(?:on|about)|on)\\s+(?:your\\s+|the\\s+|this\\s+)?(?:\\w+\\s+){0,2}$",
+          "ke\\s+(?:baare|bare)\\s+me",
+          "के\\s+बारे\\s+में"
+        ],
+        "money_weak": [
+          "\\bamount\\b",
+          "\\bmoney\\b",
+          "\\bpaisa\\b",
+          "\\bpaise\\b",
+          "पैसे",
+          "पैसा",
+          "राशि",
+          "\\bpayment\\b",
+          "भुगतान"
+        ],
+        "contact_cues": [
+          "get\\s+back\\s+to\\s+you",
+          "update\\s+you",
+          "updates?\\b",
+          "contact\\s+you",
+          "call\\s+you",
+          "call\\s*back",
+          "respond",
+          "revert",
+          "inform\\s+you",
+          "reach\\s+out",
+          "\\breply",
+          "follow\\s*up",
+          "notify",
+          "get\\s+in\\s+touch",
+          "संपर्क",
+          "अपडेट",
+          "batayenge",
+          "bataenge",
+          "jaankari",
+          "update\\s+kar",
+          "contact\\s+karenge",
+          "call\\s+karenge",
+          "sampark",
+          "बताएंगे",
+          "बताएँगे",
+          "संपर्क\\s+करेंगे"
+        ],
+        "negation": [
+          "\\b(?:cannot|can't|can\\s*not|cant|unable|no\\s+guarantee|nobody\\s+can|no\\s+one\\s+can)\\b",
+          "\\bnot\\s+(?:able|sure|possible)\\b",
+          "\\bnahi\\s+bata\\b",
+          "bata\\s+nahi",
+          "नहीं\\s+बता",
+          "कह\\s+नहीं",
+          "\\bkah\\s+nahi\\b"
+        ],
+        "negation_near": [
+          "\\b(?:not|no|never|won't|wont|will\\s+not|shall\\s+not|do\\s+not|don't|dont|nahi|nahin|nhi|mat)\\b",
+          "नहीं",
+          "नही",
+          "मत"
+        ],
+        "negation_guard": [
+          "no\\s+later\\s+than",
+          "not\\s+later\\s+than",
+          "not\\s+more\\s+than",
+          "no\\s+more\\s+than",
+          "not\\s+exceed",
+          "never\\s+later",
+          "do\\s*n[o']?t\\s+worry",
+          "do\\s+not\\s+worry",
+          "no\\s+worr",
+          "not\\s+to\\s+worry",
+          "dont\\s+worry",
+          "चिंता\\s*(?:न|मत)",
+          "chinta\\s+(?:na|mat)",
+          "fikar\\s+(?:na|mat)",
+          "tension\\s+(?:na|mat)",
+          "no\\s+need\\s+to\\s+(?:worry|wait)",
+          "at\\s+most"
+        ],
+        "negation_after": [
+          "\\b(?:nahi|nahin|nhi)\\b(?!\\s+to\\b)",
+          "नहीं(?!\\s+तो)",
+          "नही(?!\\s+तो)"
+        ],
+        "hedges": [
+          "\\bshould\\b",
+          "\\bmay\\b",
+          "\\bmight\\b",
+          "\\bcould\\b",
+          "\\bexpected\\b",
+          "\\busually\\b",
+          "\\btypically\\b",
+          "\\bgenerally\\b",
+          "\\bnormally\\b",
+          "\\bideally\\b",
+          "\\bhopefully\\b",
+          "\\blikely\\b",
+          "\\bprobably\\b",
+          "\\btry(?:ing)?\\b",
+          "\\battempt",
+          "\\bsubject\\s+to\\b",
+          "\\bdepends?\\b",
+          "\\bif\\b",
+          "\\bagar\\b",
+          "अगर",
+          "\\bshayad\\b",
+          "शायद",
+          "\\bsakta\\b",
+          "\\bsakti\\b",
+          "सकता",
+          "सकती",
+          "aam\\s+taur",
+          "आम\\s+तौर",
+          "\\bumeed\\b",
+          "उम्मीद",
+          "\\bkoshish\\b",
+          "कोशिश",
+          "\\blagbhag\\b",
+          "\\btakriban\\b",
+          "\\baksar\\b",
+          "अक्सर",
+          "\\bapprox",
+          "\\baround\\b",
+          "\\bup\\s*to\\b"
+        ],
+        "conditional": [
+          "\\bif\\b",
+          "\\bagar\\b",
+          "अगर",
+          "\\bin\\s+case\\b",
+          "\\bprovided\\b",
+          "\\bunless\\b",
+          "\\bjab\\s+tak\\b",
+          "\\botherwise\\b",
+          "\\bwarna\\b",
+          "वरना",
+          "\\byadi\\b",
+          "यदि",
+          "\\bnahi\\s+to\\b",
+          "नहीं\\s+तो",
+          "\\bsubject\\s+to\\b",
+          "\\bdepending\\s+on\\b"
+        ],
+        "escalation_cues": [
+          "not\\s+(?:been\\s+)?(?:credited|received|reversed|resolved|refunded|reflected|got|get)",
+          "hasn't",
+          "haven't",
+          "isn't",
+          "still\\s+not",
+          "\\braise\\b",
+          "complain",
+          "escalate",
+          "ombudsman",
+          "contact\\s+(?:us|your\\s+bank|the\\s+bank)",
+          "reach\\s+out",
+          "let\\s+us\\s+know",
+          "tell\\s+us",
+          "inform\\s+us",
+          "nahi\\s+(?:aaya|mila|aayi|hua|hui)",
+          "नहीं\\s+(?:आया|मिला|हुआ)",
+          "शिकायत",
+          "\\bticket\\b"
+        ],
+        "regulatory_cues": [
+          "\\brbi\\b",
+          "reserve\\s+bank",
+          "regulat",
+          "guideline",
+          "\\brules?\\b",
+          "circular",
+          "\\bnpci\\b",
+          "as\\s+per",
+          "according\\s+to",
+          "mandate",
+          "\\bnorms?\\b",
+          "\\bpolicy\\b",
+          "नियम",
+          "दिशानिर्देश",
+          "आरबीआई"
+        ],
+        "complaint_instruction": [
+          "\\b(?:raise|file|lodge|register|submit|create|open|log|make|send|fill(?:\\s+out|\\s+in)?)\\s+(?:a|an|the|your|one|this)?\\s*(?:\\w+\\s+){0,2}?(?:complaint|ticket|claim|dispute|grievance|case|request|form|application)\\b",
+          "\\bclaim\\s+(?:the\\s+|your\\s+)?(?:refund|compensation|reversal|money)\\b",
+          "\\bapply\\s+for\\s+(?:the\\s+|a\\s+)?(?:compensation|refund|reversal)\\b",
+          "\\b(?:complaint|ticket|shikayat|claim|dispute|request|application)\\s+(?:form\\s+)?(?:raise\\s+|file\\s+|register\\s+|darj\\s+|log\\s+|create\\s+|submit\\s+|daal\\w*\\s+)?(?:kar(?:ein|o|na|iye|iyega|ni|ke)?|kijiye|bhar(?:ein|o|iye|na)|daal(?:ein|o|na)|banaye(?:n)?|banao|karni|karna)\\b",
+          "(?:शिकायत|टिकट|क्लेम|दावा|रिक्वेस्ट|कंप्लेंट|आवेदन)\\s*(?:दर्ज|रजिस्टर|दायर|बना|भर)?\\s*(?:करें|करिए|कीजिए|करना|कराएं|करवाएं|बनाएं|डालें|भरें|बनाना|भरना|डालना|दर्ज\\s*करना)",
+          "(?:दर्ज|रजिस्टर)\\s*(?:करें|करिए|कीजिए)\\s*(?:शिकायत|टिकट|क्लेम)"
+        ],
+        "complaint_agent_done": [
+          "\\b(?:i|we)(?:'ve|\\s+have|\\s+had)?\\s+(?:already\\s+)?(?:raised|filed|logged|registered|created|submitted|opened)",
+          "on\\s+your\\s+behalf",
+          "has\\s+been\\s+(?:raised|filed|logged|registered|created)",
+          "\\b(?:i|we)(?:'ll|\\s+will)\\s+(?:raise|file|log|register|create)",
+          "\\b(?:maine|humne|hamne)\\b[^.!?]{0,30}(?:kar\\s+diya|kar\\s+di|darj)",
+          "कर\\s+दिया",
+          "कर\\s+दी",
+          "दर्ज\\s+कर\\s+दी"
+        ],
+        "complaint_negation": [
+          "no\\s+need\\s+to",
+          "need\\s+not",
+          "do\\s*n[o']?t\\s+need\\s+to",
+          "don't\\s+have\\s+to",
+          "do\\s+not\\s+have\\s+to",
+          "without\\s+(?:raising|filing|making|any)",
+          "not\\s+required",
+          "zarurat\\s+nahi",
+          "ज़रूरत\\s+नहीं",
+          "जरूरत\\s+नहीं",
+          "\\bbina\\b",
+          "बिना",
+          "जरूरी\\s+नहीं",
+          "आवश्यकता\\s+नहीं",
+          "need\\s+to\\s+(?:raise|file)\\s+no"
+        ],
+        "complaint_negation_after": [
+          "^\\s*(?:ki|karne\\s+ki|करने\\s+की)?\\s*(?:zarurat|ज़रूरत|जरूरत)\\s+(?:nahi|नहीं)",
+          "^\\W*(?:nahi|nahin|नहीं)\\s+(?:karna|करना)",
+          "is\\s+not\\s+required",
+          "not\\s+(?:needed|required|necessary)"
+        ],
+        "escalation_context": [
+          "not\\s+(?:been\\s+)?(?:credited|received|reversed|resolved|refunded|reflected)",
+          "\\bif\\b[^.!?]{0,60}(?:not|nahi|n't)",
+          "still\\s+not",
+          "in\\s+case\\s+(?:it|the|your)",
+          "\\bagar\\b[^.!?]{0,60}(?:nahi|na\\s)",
+          "अगर[^।.!?]{0,60}(?:नहीं|नही)",
+          "ombudsman",
+          "escalate",
+          "unresolved",
+          "not\\s+satisfied",
+          "dissatisfied"
+        ],
+        "reversal_words": [
+          "revers",
+          "refund",
+          "credit",
+          "money\\s+back",
+          "amount\\s+back",
+          "get\\s+your\\s+money",
+          "compensat",
+          "₹\\s*100",
+          "rs\\.?\\s*100",
+          "wapas",
+          "vapas",
+          "paise",
+          "paisa",
+          "muavz",
+          "हर्जाना",
+          "मुआवज",
+          "वापस",
+          "रिफंड",
+          "पैसे",
+          "राशि",
+          "resolve",
+          "solution",
+          "\\bback\\b"
+        ],
+        "precondition_cues": [
+          "to\\s+(?:get|receive|claim|initiate|start|process)",
+          "in\\s+order\\s+to",
+          "only\\s+(?:after|if|when)",
+          "once\\s+you",
+          "after\\s+you",
+          "before\\s+we",
+          "so\\s+that\\s+we",
+          "\\btabhi\\b",
+          "तभी",
+          "uske\\s+baad",
+          "उसके\\s+बाद",
+          "ताकि",
+          "then\\s+we\\s+will",
+          "and\\s+then"
+        ],
+        "compensation_cues": [
+          "compensat",
+          "₹\\s*100",
+          "rs\\.?\\s*100\\b",
+          "inr\\s*100",
+          "\\b100\\s*(?:rupees|rs\\b|rupaye|₹|रुपये|रुपए)",
+          "मुआवज",
+          "muavz",
+          "हर्जाना",
+          "harjan"
+        ],
+        "amount_100": [
+          "(?:₹|rs\\.?|inr|rupees?)\\s*100\\b",
+          "\\b100\\s*(?:₹|rs\\b\\.?|inr|rupees?|rupaye|rupay|रुपये|रुपए|रु\\b)"
+        ],
+        "amount_any": [
+          "(?:₹|rs\\.?|inr)\\s*\\d+"
+        ],
+        "per_day": [
+          "(?:each|every|per)\\s+(?:extra\\s+|additional\\s+|delayed\\s+|late\\s+|single\\s+)?days?\\b",
+          "(?:har|हर|प्रत्येक)\\s+(?:extra\\s+|अतिरिक्त\\s+)?(?:din|दिन)",
+          "per\\s+day",
+          "\\ba\\s+day\\b",
+          "each\\s+day",
+          "every\\s+day",
+          "daily",
+          "/\\s*day",
+          "per\\s+din",
+          "har\\s+din",
+          "\\broz\\b",
+          "\\broj\\b",
+          "प्रति\\s*दिन",
+          "प्रतिदिन",
+          "prati\\s*din",
+          "हर\\s*दिन",
+          "रोज़?",
+          "रोज"
+        ],
+        "automatic": [
+          "automatic(?:ally)?",
+          "auto[\\s-]?credit",
+          "suo\\s+moto",
+          "without\\s+(?:any\\s+|the\\s+)?(?:need\\s+(?:for|to)\\s+)?(?:raising\\s+|filing\\s+|making\\s+)?(?:a\\s+|any\\s+)?(?:complaint|claim|request|application)",
+          "no\\s+(?:need\\s+to\\s+(?:claim|raise|apply|file|request)|claim\\s+(?:is\\s+)?(?:needed|required)|complaint\\s+(?:is\\s+)?(?:needed|required)|action\\s+(?:is\\s+)?(?:needed|required))",
+          "you\\s+(?:do\\s*n[o']?t|need\\s+not)\\s+(?:need\\s+to\\s+|have\\s+to\\s+)?(?:claim|raise|apply|file|request)",
+          "apne\\s*aap",
+          "khud\\s+(?:se|hi)",
+          "on\\s+its\\s+own",
+          "by\\s+itself",
+          "self[\\s-]?credit",
+          "without\\s+you\\s+(?:having\\s+to\\s+)?(?:ask|apply|claim)",
+          "bina\\s+(?:kisi\\s+)?(?:complaint|claim|shikayat)",
+          "अपने\\s*आप",
+          "स्वतः",
+          "स्वत:",
+          "ऑटोमैटिक",
+          "बिना\\s+(?:किसी\\s+)?(?:शिकायत|क्लेम|दावा)"
+        ],
+        "not_automatic": [
+          "not\\s+automatic",
+          "isn't\\s+automatic",
+          "automatic\\s+nahi",
+          "automatically\\s+nahi",
+          "ऑटोमैटिक\\s+नहीं",
+          "अपने\\s*आप\\s+नहीं",
+          "apne\\s*aap\\s+nahi"
+        ],
+        "row": "upi_transfer"
+      },
+      "matchers_unreviewed": true
+    }
+  },
+  "scope": {
+    "surfaces": [
+      "agent_chat",
+      "macro",
+      "voice"
+    ],
+    "products": [
+      "UPI"
+    ],
+    "journeys": [
+      "failed_payment",
+      "refund_status"
+    ],
+    "entities": [
+      "payments app / TPAP",
+      "payment service provider"
+    ]
+  },
+  "severity": "critical",
+  "effective_from": "2019-09-20",
+  "notes": [
+    "T is the day of transaction and refers to the calendar date (circular, general instruction 4). TAT is the outer limit; banks 'shall endeavour towards quicker resolution'.",
+    "RBI's table does not use the words P2P or P2M. Row 4a is 'transfer of funds'; row 4b is 'payment to merchant'. This card replaces the demo card RBI-TAT-UPI-P2P and corrects who reverses: the BENEFICIARY bank, not the originating bank.",
+    "effective_from is the circular's issue date; the operative date inside the circular was not recorded.",
+    "The RBI circular of 4 Jun 2020 (DPSS 1897) temporarily read 'calendar days' as 'working days' only until 31 Dec 2020, so it has lapsed (regulations/rbi-payments/RBI_2020-06-04_extension-timeline-payment-systems-dpss1897.html).",
+    "The 2019 circular cites the 'Integrated Ombudsman Scheme, 2021 (as amended)'. A 2026 scheme is reported to have replaced it; see RBI-OMB-ESCALATION.",
+    "Tier A matchers live in check.config.matchers (added by the engine build): regex lists per language, phrase lists and negation cues. All Hinglish/Hindi variants and typo patterns are engineering-authored and UNREVIEWED: a native-speaker compliance reviewer must approve them before activation."
+  ],
+  "open_issues": [
+    "How NPCI's P2PM category maps onto rows 4a/4b is unresolved (NPCI defers to RBI for TAT)."
+  ]
+}

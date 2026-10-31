@@ -1,0 +1,8 @@
+{
+  "title": "Merchant Agreement - BlueCart Retail (demo)",
+  "doc_type": "agreement",
+  "product": "Payment Gateway",
+  "owner": "ravi.menon@demo.paytm.example",
+  "merchant": "BlueCart Retail Pvt Ltd (synthetic)",
+  "channel": "contract"
+}

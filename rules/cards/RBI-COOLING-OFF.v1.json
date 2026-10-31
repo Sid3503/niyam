@@ -1,0 +1,163 @@
+{
+  "version": 1,
+  "owner": "unassigned",
+  "confidence_threshold": 1.0,
+  "evidence_required": "verbatim_quote",
+  "effective_to": null,
+  "supersedes": null,
+  "aliases": [],
+  "status": "draft",
+  "approved_by": null,
+  "approved_at": null,
+  "id": "RBI-COOLING-OFF",
+  "title": "Digital loan: penal-free exit during cooling-off period",
+  "obligation": "A borrower of a digital loan must be given an explicit option to exit by repaying the principal and proportionate APR without penalty during an initial cooling-off period fixed by the lender's Board (not less than one day); a reasonable one-time processing fee may be retained if disclosed upfront in the KFS.",
+  "source": {
+    "regulator": "RBI",
+    "document": "Reserve Bank of India (Digital Lending) Directions, 2025",
+    "reference": "RBI/2025-26/36 DOR.STR.REC.19/21.07.001/2025-26",
+    "issue_date": "2025-05-08",
+    "document_status": "in_force",
+    "file": "regulations/rbi-lending-ai-governance/RBI_2025-05-08_digital-lending-directions-2025.md",
+    "sha256": "f415a6c4ec53f90f5349446f59b401e8be7309a467008d98e0fce0ec0e4503b6",
+    "text_basis": "native",
+    "provenance": "official_html_extract",
+    "locator": "Chapter III para 10(i) and 10(ii)",
+    "quotes": [
+      "The borrower shall be given an explicit option to exit a digital loan by paying the principal and the proportionate APR without any penalty during an initial “cooling-off period”.",
+      "subject to the period so determined not being less than one day",
+      "RE may retain a reasonable one-time processing fee, if the customer exits the loan during the cooling-off period. This, if applicable, shall be disclosed to the customer upfront in KFS."
+    ],
+    "url": "https://www.rbi.org.in/scripts/FS_Notification.aspx?Id=12848"
+  },
+  "check": {
+    "type": "must_contain",
+    "tier": "A+B",
+    "config": {
+      "deterministic": true,
+      "when": "customer_asks_about_exit_prepayment_or_cancellation_of_a_digital_loan",
+      "must_convey": [
+        "an explicit penal-free exit option exists during the cooling-off period",
+        "exit by repaying principal and proportionate APR"
+      ],
+      "must_not_convey": [
+        "no cancellation once the loan is disbursed",
+        "a penalty is charged for exit within the cooling-off period"
+      ],
+      "minimum_period_days": 1,
+      "period_set_by": "the lender's Board policy: the agent must state the lender's actual period, not invent one",
+      "authored_by_niyam": true,
+      "matchers": {
+        "topic_cues": [
+          "exit",
+          "cancel",
+          "prepay",
+          "pre-pay",
+          "foreclos",
+          "pre-?clos",
+          "close\\s+(?:the\\s+|my\\s+|your\\s+)?loan",
+          "repay\\s+early",
+          "early\\s+repayment",
+          "cooling",
+          "रद्द",
+          "कूलिंग",
+          "बाहर\\s+निकल",
+          "clos(?:e|ed|ing)\\b[^.!?]{0,20}loan",
+          "loan[^.!?]{0,30}clos(?:e|ed|ing)\\b"
+        ],
+        "lending_cues": [
+          "\\bloan",
+          "\\bemi\\b",
+          "disburs",
+          "lender",
+          "borrower",
+          "nbfc",
+          "digital\\s+lend",
+          "pay\\s*later",
+          "credit\\s+line",
+          "लोन",
+          "ऋण"
+        ],
+        "must_not_convey": [
+          "no\\s+(?:loan\\s+)?cancell?ation[^.!?]{0,30}(?:after|once|post)[^.!?]{0,15}disburs",
+          "(?:cannot|can't|can\\s+not|not\\s+possible\\s+to|unable\\s+to|will\\s+not\\s+be\\s+able\\s+to|won't\\s+be\\s+able\\s+to)\\s+(?:be\\s+)?(?:cancel|exit|close)\\w*[^.!?]{0,40}(?:after|once|post)[^.!?]{0,15}disburs",
+          "(?:once|after)\\s+(?:the\\s+)?(?:loan\\s+)?(?:is\\s+)?disburs\\w*[^.!?]{0,40}(?:cannot|can't|can\\s+not|no)\\s+(?:be\\s+)?cancel",
+          "non[\\s-]?cancel+able",
+          "disburs\\w*\\s+(?:ke\\s+baad|hone\\s+ke\\s+baad)[^.!?]{0,30}(?:cancel|exit|band)[^.!?]{0,15}nahi",
+          "(?:penalty|penal\\s+charges?|foreclosure\\s+(?:charges?|fee)|prepayment\\s+(?:penalty|charges?|fee)|exit\\s+(?:fee|charges?))[^.!?]{0,70}(?:within|during|in)\\s+(?:the\\s+)?(?:\\d+[\\s-]*days?\\s+)?(?:initial\\s+)?cooling",
+          "(?:within|during|in)\\s+(?:the\\s+)?(?:\\d+[\\s-]*days?\\s+)?(?:initial\\s+)?cooling[\\s-]?off(?:\\s+period)?[^.!?]{0,70}(?:penalty|penal\\s+charges?|foreclosure\\s+(?:charges?|fee)|prepayment\\s+(?:penalty|charges?|fee)|exit\\s+(?:fee|charges?))",
+          "cooling[\\s-]?off[^.!?]{0,30}(?:me|mein|main)\\s+(?:bhi\\s+)?(?:penalty|charges?)\\s+(?:lagegi|lagega|lagenge|lagta|lagti)",
+          "वितरण\\s+के\\s+बाद[^।.!?]{0,30}रद्द\\s+(?:नहीं|नही)",
+          "\\bno\\s+way\\s+(?:out|to\\s+(?:exit|cancel|get\\s+out))",
+          "\\b(?:loan|it)\\s+(?:is|becomes)\\s+(?:final|irreversible|binding\\s+and\\s+cannot)",
+          "(?:once|after)[^.!?]{0,40}(?:money|amount|funds)[^.!?]{0,30}(?:in\\s+your\\s+account|credited|received|disburs\\w*)[^.!?]{0,60}(?:final|cannot\\s+be\\s+(?:cancel|reversed|undone)|no\\s+cancell?ation)",
+          "(?:loan\\s+)?(?:cannot|can't|can\\s+not)\\s+be\\s+(?:cancel\\w*|exited|undone|reversed)\\b[^.!?]{0,40}(?:once|after)[^.!?]{0,20}(?:taken|disburs\\w*|credited)",
+          "(?:paisa|paise|amount)\\s+(?:account\\s+(?:me|mein)\\s+)?aa\\s+(?:gaya|jane)[^.!?]{0,40}(?:cancel|exit|wapas)\\s+nahi"
+        ],
+        "penalty_negation": [
+          "(?:no|without|zero|nil|not|free\\s+of|bina|nahi|बिना)\\s+(?:any\\s+|kisi\\s+|koi\\s+)?(?:\\w+\\s+){0,2}?(?:penalty|penal|charges?|fee|jurmana)",
+          "penalty[\\s-]free",
+          "penal[\\s-]free"
+        ],
+        "after_cooling_exception": [
+          "after\\s+(?:the\\s+)?(?:\\d+[\\s-]*days?\\s+)?cooling",
+          "cooling[\\s-]?off(?:\\s+period)?\\s+(?:is\\s+|has\\s+)?(?:over|ends?|ended|expires?|expired|completed)",
+          "beyond\\s+(?:the\\s+)?cooling",
+          "outside\\s+(?:the\\s+)?cooling"
+        ],
+        "penal_free_exit": [
+          "(?:without|no|zero|nil)\\s+(?:any\\s+)?(?:\\w+\\s+){0,2}?(?:penalty|penal\\s+charges?|penalties)",
+          "penalty[\\s-]free",
+          "penal[\\s-]free",
+          "free\\s+of\\s+(?:any\\s+)?penalty",
+          "bina\\s+(?:kisi\\s+)?(?:penalty|jurmane)",
+          "बिना\\s+(?:किसी\\s+)?(?:जुर्माने|पेनल्टी|दंड)",
+          "जुर्माने\\s+के\\s+बिना"
+        ],
+        "cooling_mention": [
+          "cooling[\\s-]?off",
+          "कूलिंग"
+        ],
+        "principal_apr": [
+          "principal[^.!?]{0,40}(?:proportionate|apr|annual\\s+percentage|interest)",
+          "(?:proportionate|apr)[^.!?]{0,30}principal",
+          "मूलधन[^।.!?]{0,40}(?:ब्याज|apr)"
+        ],
+        "period_value": "cooling[\\s-]?off(?:\\s+period)?\\s*(?:of|is|:|for)?\\s*(?P<n>\\d+(?:\\.\\d+)?)[\\s-]*(?P<u>hours?|hrs?|days?|din|ghante)"
+      },
+      "matchers_unreviewed": true
+    }
+  },
+  "scope": {
+    "surfaces": [
+      "agent_chat",
+      "script",
+      "screen"
+    ],
+    "products": [
+      "digital lending",
+      "pay later",
+      "personal loan"
+    ],
+    "journeys": [
+      "loan_cancellation",
+      "prepayment",
+      "loan_application"
+    ],
+    "entities": [
+      "regulated entity (bank/NBFC)",
+      "lending service provider"
+    ]
+  },
+  "severity": "high",
+  "effective_from": "2025-05-08",
+  "notes": [
+    "NEW card split out of RBI-KFS-LOAN. The 2022 floor of three days is gone; the 2025 text says not less than one day.",
+    "Applies to digital loans only, per the Directions' own scope.",
+    "Tier A matchers live in check.config.matchers (added by the engine build): regex lists per language, phrase lists and negation cues. All Hinglish/Hindi variants and typo patterns are engineering-authored and UNREVIEWED: a native-speaker compliance reviewer must approve them before activation."
+  ],
+  "open_issues": [
+    "Confirm the scope definition of 'digital loan' in the Directions before applying to non-app channels.",
+    "Check whether the commercial banks / NBFC Credit Facilities Directions re-issue this duty in different words."
+  ]
+}

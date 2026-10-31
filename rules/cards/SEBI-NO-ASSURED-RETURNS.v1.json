@@ -1,0 +1,278 @@
+{
+  "version": 1,
+  "owner": "unassigned",
+  "confidence_threshold": 1.0,
+  "evidence_required": "verbatim_quote",
+  "effective_to": null,
+  "supersedes": null,
+  "aliases": [
+    "RBI-MIS-SELL-GUARANTEE"
+  ],
+  "status": "draft",
+  "approved_by": null,
+  "approved_at": null,
+  "id": "SEBI-NO-ASSURED-RETURNS",
+  "title": "No promise of assured or risk-free returns (SEBI advisers)",
+  "obligation": "A SEBI-registered investment adviser must not make any promise or guarantee of assured or risk-free return in advertisements, and must not hold out advice implying assured, minimum or target returns, or percentage accuracy, in service to clients.",
+  "source": {
+    "regulator": "SEBI",
+    "document": "Master Circular for Investment Advisers",
+    "reference": "SEBI Master Circular (IA)",
+    "issue_date": "2026-02-06",
+    "document_status": "in_force",
+    "file": "regulations/sebi/SEBI_2026-02-06_master-circular-investment-advisers.pdf",
+    "sha256": "ab1d6f24e184cc2766052b9c3a0fc28ee237b9c2e02fae8d5129f5dd1970cdce",
+    "text_basis": "native",
+    "provenance": "official",
+    "locator": "advertisement code para 10.1(c)(x) (agent-reported number); service-to-client prohibition (Annexure A, agent-reported)",
+    "quotes": [
+      "Any promise or guarantee of assured or risk free return to the investors.",
+      "Investment Adviser shall not, in the course of performing its services to the client, hold out any investment advice implying any assured returns or minimum returns or target return or percentage accuracy"
+    ],
+    "url": "sebi.gov.in master circular PDF"
+  },
+  "check": {
+    "type": "must_not_claim",
+    "tier": "A+B",
+    "config": {
+      "deterministic": true,
+      "forbidden_phrases": [
+        "assured return",
+        "assured returns",
+        "guaranteed return",
+        "guaranteed returns",
+        "risk free return",
+        "risk-free return",
+        "minimum return",
+        "minimum returns",
+        "target return",
+        "percentage accuracy"
+      ],
+      "semantic_check": "implied guarantees (Tier B) must quote the offending line",
+      "variants_unreviewed": [
+        "pakka return",
+        "guaranteed profit",
+        "100% sure profit",
+        "nuksan nahi hoga"
+      ],
+      "variants_need_native_review": true,
+      "authored_by_niyam": true,
+      "matchers": {
+        "claims": [
+          {
+            "regex": "\\bg(?:u?a|au)r+u?[ae]?n+t[eiy]{0,2}(?:e?d|s|ing)?\\b(?:\\s+[\\w%.]+){0,3}?\\s+(?:returns?|retur?ns?|retrn?s?|profits?|prof+it?s?|gains?|income|munafa|munaafa|fayda|labh|growth|payouts?|yield|interest|earnings?)\\b",
+            "label": "guaranteed return",
+            "kind": "claim"
+          },
+          {
+            "regex": "\\b(?:returns?|retur?ns?|retrn?s?|profits?|prof+it?s?|gains?|income|munafa|munaafa|fayda|labh|growth|payouts?|yield|interest|earnings?)\\b\\s+(?:are\\s+|is\\s+|will\\s+be\\s+|hai\\s+|hain\\s+)?(?:(?:fully|100%|completely|totally|absolutely|bilkul)\\s+)?\\bg(?:u?a|au)r+u?[ae]?n+t[eiy]{0,2}(?:e?d|s|ing)?\\b",
+            "label": "returns guaranteed",
+            "kind": "claim"
+          },
+          {
+            "regex": "\\ba(?:ss?)u?r(?:e?d|ed|e|ance)\\b(?:\\s+[\\w%.]+){0,2}?\\s+(?:returns?|retur?ns?|retrn?s?|profits?|prof+it?s?|gains?|income|munafa|munaafa|fayda|labh|growth|payouts?|yield|interest|earnings?)\\b",
+            "label": "assured return",
+            "kind": "claim"
+          },
+          {
+            "regex": "\\b(?:returns?|retur?ns?|retrn?s?|profits?|prof+it?s?|gains?|income|munafa|munaafa|fayda|labh|growth|payouts?|yield|interest|earnings?)\\b\\s+(?:are\\s+|is\\s+|will\\s+be\\s+)?\\ba(?:ss?)u?r(?:e?d|ed|e|ance)\\b",
+            "label": "returns assured",
+            "kind": "claim"
+          },
+          {
+            "regex": "risk[\\s-]?free(?!\\s+(?:rate|asset|interest))|riskfree|risk[\\s-]?less|zero[\\s-]?risk|no[\\s-]risk|without\\s+(?:any\\s+)?risk|100\\s*%\\s*(?:safe|secure)",
+            "label": "risk-free",
+            "kind": "claim"
+          },
+          {
+            "regex": "\\bpakka\\s+\\d+(?:\\.\\d+)?\\s*%|\\bpakka\\s+(?:return|returns|profit|munafa|munaafa|fayda)|\\bsure[\\s-]?shot\\b|\\bsure\\s+(?:profit|returns?|gains?)|100\\s*%\\s*(?:sure|certain|pakka|guaranteed)\\s*(?:\\w+\\s+){0,2}?(?:profit|returns?|gains?|munafa)|\\bconfirm(?:ed)?\\s+(?:returns?|profit)",
+            "label": "sure/pakka return",
+            "kind": "claim"
+          },
+          {
+            "regex": "nuksan\\s+nahi\\s+(?:hoga|hota|hogi)|loss\\s+nahi\\s+(?:hoga|hota)|koi\\s+(?:risk|jokhim|nuksan|loss)\\s+nahi|\\bno\\s+loss\\b|never\\s+(?:lose|loss)|can't\\s+lose|cannot\\s+lose",
+            "label": "no loss",
+            "kind": "claim"
+          },
+          {
+            "regex": "\\b(?:minimum|min\\.?|minimal)\\s+(?:guaranteed\\s+)?returns?\\b|\\btarget\\s+returns?\\b|\\bpercentage\\s+accuracy\\b",
+            "label": "minimum/target return",
+            "kind": "claim"
+          },
+          {
+            "regex": "\\d+(?:\\.\\d+)?\\s*%\\s*(?:accuracy|accurate|hit\\s*rate|success\\s*rate|strike\\s*rate)|\\b(?:accuracy|hit\\s*rate|success\\s*rate)\\s*(?:of|is|:|-)?\\s*\\d+(?:\\.\\d+)?\\s*%",
+            "label": "percentage accuracy",
+            "kind": "claim"
+          },
+          {
+            "regex": "\\breturns?\\s+(?:ki|ka)\\s+(?:koi\\s+)?guarantee",
+            "label": "returns ki guarantee",
+            "kind": "claim"
+          },
+          {
+            "regex": "(?:गारंटीड|गारण्टीड|गारंटेड|गारण्टेड|गारंटी)\\s*(?:रिटर्न|मुनाफ़?ा|प्रॉफिट|लाभ|ब्याज)",
+            "label": "गारंटीड रिटर्न",
+            "kind": "claim"
+          },
+          {
+            "regex": "(?:रिटर्न|मुनाफ़?ा)\\s*(?:की\\s*)?(?:कोई\\s*)?गारंटी",
+            "label": "रिटर्न की गारंटी",
+            "kind": "claim"
+          },
+          {
+            "regex": "(?:पक्का|पक्की|पक्के)\\s*(?:रिटर्न|मुनाफ़?ा|लाभ|प्रॉफिट|फायदा)",
+            "label": "पक्का मुनाफा",
+            "kind": "claim"
+          },
+          {
+            "regex": "नुकसान\\s*(?:नहीं|नही)\\s*(?:होगा|होता|होगी)",
+            "label": "नुकसान नहीं होगा",
+            "kind": "claim"
+          },
+          {
+            "regex": "(?:जोखिम|रिस्क)[\\s-]*(?:मुक्त|फ्री|रहित)|बिना\\s+(?:किसी\\s+)?(?:जोखिम|रिस्क)|(?:कोई\\s+)?(?:जोखिम|रिस्क)\\s+(?:नहीं|नही)",
+            "label": "जोखिम मुक्त",
+            "kind": "claim"
+          },
+          {
+            "regex": "(?:निश्चित|सुनिश्चित)\\s*(?:रिटर्न|मुनाफ़?ा|लाभ)",
+            "label": "निश्चित रिटर्न",
+            "kind": "claim"
+          },
+          {
+            "regex": "\\bfixed\\s+(?:returns?|income|rate\\s+of\\s+return)|\\bfix\\s+returns?|double\\s+(?:your\\s+)?(?:money|investment)|(?:paisa|paise|money)\\s+double|money\\s+will\\s+double|दोगुना|capital\\s+(?:protected|protection|guaranteed)",
+            "label": "ambiguous assured-return wording",
+            "kind": "ambiguous"
+          }
+        ],
+        "exemption_cues": [
+          "government",
+          "sovereign",
+          "\\bppf\\b",
+          "\\bnsc\\b",
+          "sukanya",
+          "post\\s+office",
+          "\\bdicgc\\b",
+          "deposit\\s+insurance",
+          "सरकार",
+          "sarkar"
+        ],
+        "bare_guarantee": "\\bg(?:u?a|au)r+u?[ae]?n+t[eiy]{0,2}(?:e?d|s|ing)?\\b|गारंटी",
+        "negation": [
+          "\\b(?:not|no|never|cannot|can't|cant|can\\s+not|won't|wont|don't|dont|doesn't|doesnt|do\\s+not|does\\s+not|did\\s+not|isn't|isnt|aren't|arent|without|neither|nor|unable\\s+to|nothing\\s+like|nobody|no\\s+one|nahi|nahin|nhi)\\b",
+          "नहीं",
+          "नही"
+        ],
+        "negation_after": [
+          "\\b(?:nahi|nahin|nhi)\\b(?!\\s+to\\b)",
+          "नहीं(?!\\s+तो)",
+          "नही(?!\\s+तो)"
+        ],
+        "negation_guard": [
+          "don't\\s+miss",
+          "do\\s+not\\s+miss",
+          "don't\\s+wait",
+          "no\\s+doubt",
+          "no\\s+wonder",
+          "not\\s+only",
+          "no\\s+matter",
+          "no\\s+worr",
+          "no\\s+hassle",
+          "without\\s+doubt",
+          "miss\\s+mat",
+          "chuko\\s+mat"
+        ],
+        "warning_cues": [
+          "beware",
+          "be\\s+careful",
+          "\\bscam",
+          "fraud",
+          "ponzi",
+          "red\\s+flag",
+          "too\\s+good\\s+to\\s+be\\s+true",
+          "never\\s+trust",
+          "do\\s+not\\s+trust",
+          "don't\\s+trust",
+          "avoid\\s+anyone",
+          "anyone\\s+who",
+          "if\\s+(?:anyone|someone|a\\s+firm)",
+          "some\\s+(?:firms|companies|advisors|advisers|people|apps|sellers|agents)",
+          "others?\\s+(?:promise|claim|say|offer)",
+          "be\\s+aware",
+          "savdhan",
+          "सावधान",
+          "धोखा",
+          "फ्रॉड",
+          "कुछ\\s+लोग",
+          "कुछ\\s+कंपनियां"
+        ],
+        "invest_cues": [
+          "invest",
+          "\\bfunds?\\b",
+          "mutual",
+          "\\bsips?\\b",
+          "\\bstocks?\\b",
+          "\\bshares?\\b",
+          "equity",
+          "portfolio",
+          "advis",
+          "\\breturns?\\b",
+          "profit",
+          "nifty",
+          "sensex",
+          "trading",
+          "\\bipo\\b",
+          "demat",
+          "securit",
+          "market",
+          "\\betf\\b",
+          "\\bbonds?\\b",
+          "निवेश",
+          "म्यूचुअल",
+          "रिटर्न",
+          "मुनाफ",
+          "शेयर",
+          "बाज़ार",
+          "बाजार",
+          "nivesh",
+          "munafa",
+          "research\\s+(?:call|report)"
+        ]
+      },
+      "matchers_unreviewed": true
+    }
+  },
+  "scope": {
+    "surfaces": [
+      "agent_chat",
+      "macro",
+      "script",
+      "screen"
+    ],
+    "products": [
+      "investment advice",
+      "research",
+      "mutual funds"
+    ],
+    "journeys": [
+      "sales",
+      "advice",
+      "advertisement"
+    ],
+    "entities": [
+      "SEBI-registered investment adviser / research analyst"
+    ]
+  },
+  "severity": "high",
+  "effective_from": "2026-02-06",
+  "notes": [
+    "CORRECTION: the demo card attributed 'no guaranteed returns' to RBI. No plain RBI ban was found; the closest RBI provisions (Commercial Banks RBC Second Amendment 4(20A)(ii), 85N(10)) take effect on 1 Jan 2027 (agent-reported). The firm anchor read here is SEBI's.",
+    "Applies to SEBI-regulated intermediaries only. IRDAI (illustration rules) and RBI need their own cards: do not stretch this one.",
+    "The Intermediaries Regulations Chapter IIID incl. Reg 16O is footnoted 'w.e.f. 08.04.2027' as printed, so this card cites the master circular, which is in force.",
+    "Tier A matchers live in check.config.matchers (added by the engine build): regex lists per language, phrase lists and negation cues. All Hinglish/Hindi variants and typo patterns are engineering-authored and UNREVIEWED: a native-speaker compliance reviewer must approve them before activation."
+  ],
+  "open_issues": [
+    "The Annexure paragraph numbers are agent-reported, not re-read by this build: confirm before citing a number externally.",
+    "Hinglish and regional variants are unreviewed placeholders. Have a native reviewer approve them."
+  ]
+}

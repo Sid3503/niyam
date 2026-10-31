@@ -1,0 +1,114 @@
+@import "tailwindcss";
+
+/* ── Niyam tokens ─────────────────────────────────────────────
+   Warm taupe brand, off-white canvas, charcoal text. Colour is
+   reserved for compliance states. Mapped onto the shadcn contract
+   so primitives (including components/ui/sidebar.tsx) read the same
+   variables the rest of the design system uses. */
+
+@theme {
+  --font-sans: "Raleway", ui-sans-serif, system-ui, sans-serif;
+  --font-mono: "JetBrains Mono", ui-monospace, monospace;
+}
+
+:root {
+  /* canvas & surfaces */
+  --background: #faf9f7;
+  --foreground: #1c1b1a;
+  --card: #ffffff;
+  --card-foreground: #1c1b1a;
+  --popover: #ffffff;
+  --popover-foreground: #1c1b1a;
+  --primary: #786253;
+  --primary-foreground: #ffffff;
+  --secondary: #f5f1ed;
+  --secondary-foreground: #1c1b1a;
+  --muted: #f5f1ed;
+  --muted-foreground: #77716c;
+  --accent: #e9e2dc;
+  --accent-foreground: #1c1b1a;
+  --destructive: #d64545;
+  --destructive-foreground: #ffffff;
+  --border: #e9e4df;
+  --input: #e9e4df;
+  --ring: #b8a397;
+  --radius: 0.875rem;
+
+  /* brand */
+  --taupe: #a18a7d;
+  --taupe-strong: #786253;
+  --sand: #e9e2dc;
+  --hover: #f5f1ed;
+  --surface-hover: #f5f1ed;
+
+  /* semantic — status only */
+  --ok: #16845b;
+  --ok-ink: #126b4a;
+  --warn: #b7791f;
+  --warn-ink: #8f5e17;
+  --bad: #d64545;
+  --bad-ink: #b23b3b;
+  --info: #3975b7;
+
+  /* primitive layer used by the sidebar */
+  --primitive-radius-item: 0.5625rem;
+  --primitive-radius-surface: 1rem;
+  --primitive-radius-control-sm: 0.5rem;
+  --primitive-text-secondary: #6f6862;
+  --primitive-surface-hover: #f5f1ed;
+  --primitive-surface-selected: #efe9e4;
+  --primitive-surface-elevated: var(--card);
+  --primitive-ring: #b8a397;
+  --primitive-shadow-raised: 0 1px 2px rgba(28, 27, 26, 0.04),
+    0 14px 34px -24px rgba(28, 27, 26, 0.28);
+}
+
+/* Light rail skin. Applied to <Sidebar className="rail-light">. The rail is a
+   hair lighter than the canvas and separated by a hairline border. */
+.rail-light {
+  --background: #fbfaf8;
+  --border: #e9e4df;
+  --primitive-text-secondary: #3f3b38;
+  --primitive-surface-hover: #f5f1ed;
+  --primitive-surface-selected: #e9e2dc;
+  --primitive-ring: #b8a397;
+}
+
+/* Icons carry the brand taupe; the label carries the contrast. */
+.rail-light [data-slot="sidebar-item-icon"],
+.rail-light [data-slot="sidebar-nested-icon"] {
+  color: var(--taupe);
+}
+
+.rail-light [data-slot="sidebar-item"][data-active="true"] [data-slot="sidebar-item-icon"] {
+  color: var(--taupe-strong);
+}
+
+html,
+body,
+#root {
+  height: 100%;
+}
+
+body {
+  margin: 0;
+  background: var(--background);
+  color: var(--foreground);
+  font-family: var(--font-sans);
+  font-optical-sizing: auto;
+  -webkit-font-smoothing: antialiased;
+  font-feature-settings: "ss01" 1;
+}
+
+::selection {
+  background: #e9e2dc;
+  color: #1c1b1a;
+}
+
+a:focus-visible,
+button:focus-visible,
+input:focus-visible,
+[tabindex]:focus-visible {
+  outline: 2px solid var(--ring);
+  outline-offset: 2px;
+}
