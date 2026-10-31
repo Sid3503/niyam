@@ -1,0 +1,6 @@
+{
+  "title": "Synthetic circular: failed UPI merchant payments (T+5)",
+  "kind": "circular",
+  "institution": "RBI (synthetic demo text)",
+  "product_area": "UPI merchant payments"
+}

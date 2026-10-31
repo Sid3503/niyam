@@ -1,0 +1,8 @@
+{
+  "title": "Order Form - Sunrise Foods (demo)",
+  "doc_type": "order_form",
+  "product": "Payment Gateway",
+  "owner": "asha.verma@demo.paytm.example",
+  "merchant": "Sunrise Foods LLP (synthetic)",
+  "channel": "contract"
+}

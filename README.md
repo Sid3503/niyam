@@ -25,7 +25,8 @@ circular → rule approved → library scanned → fix drafted → named approve
 | `apps/api/` | FastAPI + Postgres: knowledge base, rule cards, deterministic Tier A engine, Tier B language-model judge, document review, PDF workbench, voice check |
 | `apps/web/` | React 19 + Vite + TypeScript console and the public landing page |
 | `rules/` | Rule cards (`cards/*.json`), product facts (`product-facts.json`, synthetic) and the card validator |
-| `library/` | Synthetic demo documents (PDF and text) and synthetic demo voice clips |
+| `library/` | Synthetic BlueCart / Sunrise **PDFs** (scanned on demo seed) plus voice clips. See `library/README.md` |
+| `samples/` | Extra dummy PDFs you **upload yourself** (a fake circular, a stale proposal, a brochure). See `samples/README.md` |
 | `regulations/` | Manifests of source documents, plus only the source files the rule cards cite (see below) |
 | `docs/` | Product, contract and architecture documents. Start with `docs/README.md` |
 | `tools/` | `reset_demo.sh`, `seed_demo.py`, `make_demo_pdfs.py` |
@@ -57,6 +58,30 @@ cd apps/web && npm install && npm run dev      # http://localhost:5173
 ```
 
 Load the sales demo: `tools/reset_demo.sh && python3 tools/seed_demo.py`. Start over any time with `tools/reset_demo.sh`.
+
+## Demo PDFs
+
+Everything in `library/` and `samples/` is **synthetic**. Each PDF has a real text layer so Niyam can quote the sentence (image-only scans are not supported).
+
+**Already in the pack** (`library/`, picked up by Scan documents):
+
+- BlueCart proposal — still says UPI refunds in **7 working days**
+- BlueCart agreement, pitch deck, brochure, WhatsApp script
+- Sunrise order form and onboarding checklist (mostly current, as a control)
+
+**Upload these yourself** (`samples/`):
+
+| File | In the console |
+| --- | --- |
+| `samples/circular-rbi-upi-tat-synthetic.pdf` | Rules → **Add a circular** |
+| `samples/proposal-stale-upi-refunds-synthetic.pdf` | Documents → **Add a document** |
+| `samples/brochure-zero-fees-synthetic.pdf` | Documents → **Add a document** |
+
+Rebuild the PDFs from the markdown sources:
+
+```bash
+apps/api/.venv/bin/python tools/make_demo_pdfs.py
+```
 
 ## Deploy on Render
 

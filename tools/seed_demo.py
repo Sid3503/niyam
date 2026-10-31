@@ -8,7 +8,7 @@ What it sets up (all synthetic):
   1. A real circular: RBI Master Direction on Payment Aggregators (settlement and merchant terms), taken from the knowledge base.
      Niyam drafts rules from it; counsel approves the one that bites on sales documents and REJECTS the three that do not.
   2. The rules that fire on the demo documents are approved; the rest of the queue is left pending, as it would be in real life.
-  3. The library is scanned (2 PDFs, 5 text documents). The BlueCart proposal gets one wording committed as version 2 through the PDF workbench.
+  3. The library is scanned (synthetic PDFs in library/). The BlueCart proposal gets one wording committed as version 2 through the PDF workbench.
   4. Fixes are drafted on the agreement and the proposal; one is approved by a named person, the others wait. (So "you can see when a fix is approved" is visible.)
   5. Two synthetic voice notes are checked.
 Nothing here is real merchant data. Needs Ollama or Sarvam keys configured for the AI-drafted fix and for speech-to-text.
@@ -45,8 +45,8 @@ def main() -> int:
         print("API not reachable or not ready at", API)
         return 1
     step("1. Circular: RBI Payment Aggregator directions")
-    kb = call("GET", "/kb/documents?q=payment%20aggregators&regulator=RBI")
-    doc = next((d for d in kb if "Payment Aggregators" in d["title"]), None) if isinstance(kb, list) else None
+    kb = call("GET", "/kb/documents?q=payment%20aggregator&regulator=RBI")
+    doc = next((d for d in kb if "Payment Aggregator" in d.get("title", "")), None) if isinstance(kb, list) else None
     if not doc:
         print("knowledge-base document not found; run the ingest first")
         return 1
