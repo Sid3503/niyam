@@ -2,6 +2,8 @@ import * as React from "react";
 import { useSearchParams } from "react-router-dom";
 import { Download, FileDown } from "lucide-react";
 import { ApprovalChip, Chip, FindingChip } from "@/components/Badges";
+import { Hint, HintLabel } from "@/components/Hint";
+import { HINT } from "@/lib/hints";
 import { Drawer } from "@/components/Drawer";
 import { PageHeader } from "@/components/Page";
 import { EmptyState, ErrorState, LoadingBlock } from "@/components/States";
@@ -41,14 +43,14 @@ function EvidenceBody({ id }: { id: string }) {
       <div>
         <div className="flex flex-wrap items-center gap-1.5">
           <span className="chip chip-plain" data-testid="evidence-format">{format === "pdf" ? "PDF" : format === "voice" ? "Voice note" : "Text"}</span>
-          <Chip tone={r.chain_ok ? "ok" : "bad"} title="Each log entry is chained to the one before it. Intact means no entry was altered.">{r.chain_ok ? "audit log intact" : "audit log broken"}</Chip>
-          <span className="chip chip-plain">{format === "voice" ? "Synthetic demo audio" : "Synthetic demo document"}</span>
+          <Chip tone={r.chain_ok ? "ok" : "bad"} title={r.chain_ok ? HINT.chainOk : HINT.chainBad}>{r.chain_ok ? "audit log intact" : "audit log broken"}</Chip>
+          <Hint text={HINT.synthetic}><span className="chip chip-plain">{format === "voice" ? "Synthetic demo audio" : "Synthetic demo document"}</span></Hint>
         </div>
         <h2 className="mt-3 text-[22px] font-light leading-tight">{r.document.title}</h2>
         <div className="mt-3 flex flex-col gap-1.5" aria-label="SHA-256 fingerprints">
           <HashRow label={`original v${r.hashes?.original.version ?? r.original.version}`} sha={r.hashes?.original.sha256 ?? r.original.sha256} />
           {r.hashes ? <HashRow label={`current v${r.hashes.current.version}`} sha={r.hashes.current.sha256} /> : null}
-          <p className="text-[11.5px] text-[var(--muted-foreground)]">SHA-256 of the file bytes. The original is never changed; each committed edit is a new version with its own hash.</p>
+          <p className="text-[11.5px] text-[var(--muted-foreground)]"><HintLabel label="SHA-256 of the file bytes" hint={HINT.sha} />. The original is never changed; each committed edit is a new version with its own hash.</p>
         </div>
         <div className="mt-3 flex flex-wrap gap-2">
           <button type="button" className="btn btn-sm btn-primary" disabled={busy} onClick={() => void exportMd()}><Download size={13} /> {busy ? "Preparing…" : "Export record (.md)"}</button>
@@ -84,7 +86,7 @@ function EvidenceBody({ id }: { id: string }) {
       </section>
 
       <section><div className="label mb-2">Re-tests ({r.retests.length})</div>
-        <ul className="flex flex-col gap-2">{r.retests.map((t, i) => <li key={i} className="flex flex-wrap items-center gap-2 text-[12.5px]"><Chip tone={t.passed ? "ok" : "bad"}>{t.passed ? "passed" : "not passed"}</Chip>{fmtDateTime(t.ts)} · {t.before.open} open before, {t.after.open} after</li>)}</ul>
+        <ul className="flex flex-col gap-2">{r.retests.map((t, i) => <li key={i} className="flex flex-wrap items-center gap-2 text-[12.5px]"><Chip tone={t.passed ? "ok" : "bad"} title={t.passed ? HINT.retestPass : HINT.retestFail}>{t.passed ? "passed" : "not passed"}</Chip>{fmtDateTime(t.ts)} · {t.before.open} open before, {t.after.open} after</li>)}</ul>
         {r.retests.length === 0 ? <p className="text-[12.5px] text-[var(--muted-foreground)]">No re-test yet. Run one after a fix is approved.</p> : null}
       </section>
 
@@ -110,14 +112,14 @@ export default function Evidence() {
           <div className="overflow-x-auto">
             <table className="tbl min-w-[760px]">
               <caption className="sr-only">Evidence per document. Select a row to open the record.</caption>
-              <thead><tr><th scope="col">Document</th><th scope="col">Versions</th><th scope="col">Findings</th><th scope="col">Approvals</th><th scope="col">Last event</th><th scope="col">Re-test</th></tr></thead>
+              <thead><tr><th scope="col">Document</th><th scope="col">Versions</th><th scope="col"><HintLabel label="Findings" hint={HINT.openFindings} /></th><th scope="col"><HintLabel label="Approvals" hint={HINT.fixStatus} /></th><th scope="col">Last event</th><th scope="col"><HintLabel label="Re-test" hint={HINT.retestNone} /></th></tr></thead>
               <tbody>
                 {rows.map((e) => (
                   <tr key={e.document_id} className="row" onClick={() => setParams({ document: e.document_id })}>
                     <td><button type="button" className="text-left font-medium" aria-label={`Open evidence for ${e.title}`} onClick={(ev) => { ev.stopPropagation(); setParams({ document: e.document_id }); }}>{e.title}</button></td>
                     <td className="num">{e.versions}</td><td className="num">{e.findings}</td><td className="num">{e.approvals}</td>
                     <td className="whitespace-nowrap">{fmtDateTime(e.last_event_at)}</td>
-                    <td><Chip tone={e.retest === "passed" ? "ok" : e.retest === "failed" ? "bad" : "neutral"}>{e.retest === "none" ? "not yet" : e.retest}</Chip></td>
+                    <td><Chip tone={e.retest === "passed" ? "ok" : e.retest === "failed" ? "bad" : "neutral"} title={e.retest === "passed" ? HINT.retestPass : e.retest === "failed" ? HINT.retestFail : HINT.retestNone}>{e.retest === "none" ? "not yet" : e.retest}</Chip></td>
                   </tr>
                 ))}
               </tbody>

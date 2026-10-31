@@ -1,6 +1,8 @@
 import * as React from "react";
 import { Link, Outlet, useLocation, useNavigate } from "react-router-dom";
 import { Activity, BookOpenCheck, ClipboardCheck, Gauge, Library, Map, Settings as SettingsIcon, ShieldCheck } from "lucide-react";
+import { Hint } from "@/components/Hint";
+import { HINT } from "@/lib/hints";
 import { useTour } from "@/components/Tour";
 import {
   Sidebar,
@@ -124,7 +126,7 @@ function WorkspaceFooter() {
   if (collapsed) {
     return (
       <span className="flex flex-col items-center gap-2">
-        <span className="size-1.5 rounded-full bg-[var(--taupe)]" title="Synthetic demo data" />
+        <Hint text={HINT.synthetic}><span className="size-1.5 rounded-full bg-[var(--taupe)]" /></Hint>
         {settingsBtn}
       </span>
     );
@@ -133,7 +135,7 @@ function WorkspaceFooter() {
     <>
       <div className="flex min-w-0 flex-1 flex-col leading-tight">
         <span className="flex items-center gap-1.5 text-[12px] font-medium">
-          <span className="size-1.5 shrink-0 rounded-full bg-[var(--taupe)]" />
+          <Hint text={HINT.synthetic}><span className="size-1.5 shrink-0 rounded-full bg-[var(--taupe)]" /></Hint>
           BlueCart sales pack
         </span>
         <span className="mt-0.5 truncate text-[10.5px] text-[var(--muted-foreground)]">Synthetic merchant docs</span>

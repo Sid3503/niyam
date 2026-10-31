@@ -4,7 +4,9 @@ import { FilePicker } from "@/components/FilePicker";
 import { Link, useSearchParams } from "react-router-dom";
 import { FilePlus2 } from "lucide-react";
 import { Drawer } from "@/components/Drawer";
-import { EnforceChip, ProvenanceBadge, Severity, StatusBadge } from "@/components/Badges";
+import { EnforceChip, ProvenanceBadge, Severity, StatusBadge, Tag } from "@/components/Badges";
+import { HintLabel } from "@/components/Hint";
+import { HINT, tierHint } from "@/lib/hints";
 import { FilterSelect, uniq } from "@/components/Filters";
 import { Notice } from "@/components/Notice";
 import { Field, HereStrip, PageHeader } from "@/components/Page";
@@ -64,7 +66,7 @@ function RuleCards() {
           <div className="overflow-x-auto">
             <table className="tbl min-w-[1000px]">
               <caption className="sr-only">Rule cards. Select a row to open its details.</caption>
-              <thead><tr><th scope="col">Rule</th><th scope="col">Status</th><th scope="col">Severity</th><th scope="col" title="Tier A is checked by code. Tier B is checked by a language model.">Checked by</th><th scope="col">Effective period</th><th scope="col">Approver</th><th scope="col">In scans</th><th scope="col">Source</th></tr></thead>
+              <thead><tr><th scope="col">Rule</th><th scope="col"><HintLabel label="Status" hint={HINT.ruleStatus} /></th><th scope="col">Severity</th><th scope="col"><HintLabel label="Checked by" hint={HINT.checkedBy} /></th><th scope="col">Effective period</th><th scope="col">Approver</th><th scope="col"><HintLabel label="In scans" hint={HINT.inScans} /></th><th scope="col">Source</th></tr></thead>
               <tbody>
                 {rows.map((r) => (
                   <tr key={r.id} className="row" onClick={() => open(r.id)}>
@@ -76,10 +78,10 @@ function RuleCards() {
                     </td>
                     <td><StatusBadge status={r.status} /></td>
                     <td><Severity value={r.severity} /></td>
-                    <td><span className="chip chip-plain" title={String(r.tier) === "A" ? "Tier A: checked by code" : String(r.tier) === "B" ? "Tier B: checked by a language model" : undefined}>{r.tier}</span></td>
+                    <td><Tag title={tierHint(String(r.tier))}>{r.tier}</Tag></td>
                     <td><Period r={r} /></td>
                     <td><ApproverCell r={r} /></td>
-                    <td><span className="chip chip-plain" title={r.scan_active ? "Niyam uses this rule when it scans documents" : "Not live yet: this rule is not used in scans"}>{r.scan_active ? "Used in scans" : "Not live yet"}</span></td>
+                    <td><Tag title={r.scan_active ? HINT.scanOn : HINT.scanOff}>{r.scan_active ? "Used in scans" : "Not live yet"}</Tag></td>
                     <td><ProvenanceBadge provenance={r.source.provenance} /></td>
                   </tr>
                 ))}
@@ -109,7 +111,7 @@ function Facts() {
         {q.isLoading ? <LoadingBlock rows={6} label="Loading product facts" /> : q.isError ? <ErrorState error={q.error} onRetry={() => void q.refetch()} /> : rows.length === 0 ? <EmptyState title="No product facts yet" hint="Product facts are your approved terms. Without them Niyam can only check documents against circulars." /> : (
           <div className="overflow-x-auto">
             <table className="tbl min-w-[860px]">
-              <thead><tr><th scope="col">Fact</th><th scope="col">Category</th><th scope="col">Statement</th><th scope="col">Value</th><th scope="col">Owner</th></tr></thead>
+              <thead><tr><th scope="col"><HintLabel label="Fact" hint={HINT.productFact} /></th><th scope="col">Category</th><th scope="col">Statement</th><th scope="col">Value</th><th scope="col">Owner</th></tr></thead>
               <tbody>
                 {rows.map((x) => (
                   <tr key={x.id}>
@@ -137,8 +139,8 @@ function CircularResultView({ r }: { r: CircularResult }) {
       {r.drafts.map((d) => (
         <article key={d.rule_id} className="rounded-lg border border-[var(--border)] p-3.5">
           <div className="flex flex-wrap items-center gap-1.5">
-            <span className="chip chip-warn chip-dot">draft, pending approval</span><Severity value={d.severity} /><span className="chip chip-plain" title="Tier A: checked by code. Tier B: checked by a language model.">tier {d.tier}</span>
-            <span className={d.quote_verified ? "chip chip-ok chip-plain" : "chip chip-warn chip-plain"}>{d.quote_verified ? "quote verified in source" : "quote not verified"}</span>
+            <Tag className="chip-warn" title={HINT.rule.draft}>draft, pending approval</Tag><Severity value={d.severity} /><Tag title={tierHint(String(d.tier))}>tier {d.tier}</Tag>
+            <Tag className={d.quote_verified ? "chip-ok" : "chip-warn"} title={d.quote_verified ? HINT.quoteVerified : HINT.quoteUnverified}>{d.quote_verified ? "quote verified in source" : "quote not verified"}</Tag>
           </div>
           <h3 className="mt-2 text-[14px] font-medium">{d.title}</h3>
           <p className="font-mono text-[11px] text-[var(--muted-foreground)]">{d.rule_id}</p>

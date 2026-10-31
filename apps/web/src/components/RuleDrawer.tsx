@@ -3,6 +3,8 @@ import { useSearchParams } from "react-router-dom";
 import { CheckCircle2, ChevronDown, TriangleAlert } from "lucide-react";
 import { Drawer } from "@/components/Drawer";
 import { EnforceChip, OcrBadge, ProvenanceBadge, Severity, StatusBadge, Tag } from "@/components/Badges";
+import { HintLabel } from "@/components/Hint";
+import { HINT, tierHint } from "@/lib/hints";
 import { KV } from "@/components/Page";
 import { ErrorState, LoadingBlock } from "@/components/States";
 import { useRule } from "@/lib/api";
@@ -38,7 +40,7 @@ function RuleDrawerBody({ id }: { id: string }) {
         <div className="flex flex-wrap items-center gap-1.5">
           <StatusBadge status={r.status} />
           <Severity value={r.severity} />
-          <span className="chip chip-plain" title="Tier A: checked by code. Tier B: checked by a language model.">tier {r.check.tier}</span>
+          <Tag title={tierHint(r.check.tier)}>tier {r.check.tier}</Tag>
           <Tag>{humanize(r.check.type)}</Tag>
         </div>
         <h2 className="mt-3 text-[22px] font-light leading-tight tracking-[-0.01em]">{r.title}</h2>
@@ -76,7 +78,7 @@ function RuleDrawerBody({ id }: { id: string }) {
       </section>
 
       <section>
-        <div className="label mb-2">How it is checked</div>
+        <div className="label mb-2"><HintLabel label="How it is checked" hint={HINT.checkedBy} /></div>
         {scalars.length ? (
           <dl className="mb-2 rounded-lg border border-[var(--border)] px-3 py-1.5">
             {scalars.map(([k, val]) => <KV key={k} k={humanize(k)}><span className="font-mono text-[12px]">{String(val)}</span></KV>)}
@@ -94,9 +96,9 @@ function RuleDrawerBody({ id }: { id: string }) {
           <div className="label">Source</div>
           <ProvenanceBadge provenance={r.source.provenance} />
           <OcrBadge basis={r.source.text_basis} />
-          <span className={v.quotes_verified ? "inline-flex items-center gap-1 text-[11.5px] text-[var(--ok-ink)]" : "inline-flex items-center gap-1 text-[11.5px] text-[var(--warn-ink)]"}>
+          <Tag className={v.quotes_verified ? "chip-ok" : "chip-warn"} title={v.quotes_verified ? HINT.quoteVerified : HINT.quoteUnverified}>
             {v.quotes_verified ? <><CheckCircle2 size={13} aria-hidden="true" /> quotes verified</> : <><TriangleAlert size={13} aria-hidden="true" /> quotes not verified</>}
-          </span>
+          </Tag>
         </div>
         <p className="text-[13px] font-medium">{r.source.document}</p>
         <p className="text-[12px] text-[var(--muted-foreground)]">{[r.source.reference, r.source.locator, r.source.issue_date ? fmtDate(r.source.issue_date) : null].filter(Boolean).join(" · ")}</p>

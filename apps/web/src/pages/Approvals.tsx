@@ -1,6 +1,8 @@
 import * as React from "react";
 import { Link, useSearchParams } from "react-router-dom";
 import { ApprovalChip, Severity, Tag } from "@/components/Badges";
+import { HintLabel } from "@/components/Hint";
+import { HINT } from "@/lib/hints";
 import { FilterSelect } from "@/components/Filters";
 import { HereStrip, PageHeader } from "@/components/Page";
 import { Redline } from "@/components/Redline";
@@ -19,10 +21,10 @@ export function ApprovalCard({ a }: { a: Approval }) {
   return (
     <article className="sheet p-4" aria-label={`Approval ${a.id}`} data-status={a.status}>
       <div className="flex flex-wrap items-center gap-1.5">
-        <Tag>{a.kind === "rule" ? "Rule" : "Fix"}</Tag>
+        <Tag title={a.kind === "rule" ? HINT.kindRule : HINT.kindFix}>{a.kind === "rule" ? "Rule" : "Fix"}</Tag>
         <ApprovalChip status={a.status} />
         <Severity value={a.severity} />
-        {a.confidence !== null ? <span className="chip chip-plain" title="How sure Niyam is. A person decides.">confidence {Math.round(a.confidence * 100)}%</span> : null}
+        {a.confidence !== null ? <Tag title={HINT.confidence}>confidence {Math.round(a.confidence * 100)}%</Tag> : null}
         <span className="ml-auto text-[11px] text-[var(--muted-foreground)]">{fmtDateTime(a.created_at)}</span>
       </div>
       <h2 className="mt-2 text-[15px] font-medium leading-snug">{a.title}</h2>
@@ -34,11 +36,11 @@ export function ApprovalCard({ a }: { a: Approval }) {
       ) : null}
 
       <div className="mt-3">
-        <div className="label mb-1">Source</div>
+        <div className="label mb-1"><HintLabel label="Source" hint={HINT.source} /></div>
         <blockquote className="border-l-2 border-[var(--taupe)] bg-[var(--background)] px-3 py-2 text-[12.5px] leading-relaxed">
           {a.source.quote ? <>“{a.source.quote}”</> : <span className="text-[var(--muted-foreground)]">No quote supplied</span>}
           <footer className="mt-1.5 text-[11.5px] text-[var(--muted-foreground)]">
-            {[a.source.document, a.source.reference, a.source.locator].filter(Boolean).join(" · ")} · {a.source.quote_verified ? "quote verified in source" : "quote not verified"}
+            {[a.source.document, a.source.reference, a.source.locator].filter(Boolean).join(" · ")} · <Tag title={a.source.quote_verified ? HINT.quoteVerified : HINT.quoteUnverified}>{a.source.quote_verified ? "quote verified in source" : "quote not verified"}</Tag>
           </footer>
         </blockquote>
       </div>

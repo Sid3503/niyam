@@ -7,12 +7,14 @@ import { ErrorState, LoadingBlock } from "@/components/States";
 import { useApprovals, useOverview } from "@/lib/api";
 import { fmtElapsed, pct } from "@/lib/format";
 import { liveElapsed, packClock, packSteps } from "@/lib/overview";
+import { HINT } from "@/lib/hints";
+import { HintLabel } from "@/components/Hint";
 import type { Overview as OverviewT, PackStep } from "@/lib/types";
 
-function Stat({ label, value, note }: { label: string; value: React.ReactNode; note?: string }) {
+function Stat({ label, value, note, hint }: { label: string; value: React.ReactNode; note?: string; hint: string }) {
   return (
     <div className="sheet px-4 py-3.5">
-      <div className="label">{label}</div>
+      <div className="label"><HintLabel label={label} hint={hint} /></div>
       <div className="num mt-2 text-[30px] font-medium leading-none">{value}</div>
       {note ? <div className="mt-2 text-[11.5px] text-[var(--muted-foreground)]">{note}</div> : null}
     </div>
@@ -50,7 +52,7 @@ function ClockCard({ o, fetchedAt }: { o: OverviewT; fetchedAt: number }) {
   return (
     <section className="sheet clock-card grid gap-6 p-5 sm:p-6 lg:grid-cols-[1.3fr_1fr]" aria-label="From circular to a pack you can send">
       <div>
-        <div className="label">Time from circular to a pack you can send</div>
+        <div className="label"><HintLabel label="Time from circular to a pack you can send" hint={HINT.clock} /></div>
         <p className="mt-2 text-[13px] text-[var(--muted-foreground)]">{pack.circular_title ?? "No circular added yet. Add the one that landed this morning to start the clock."}</p>
         <div className="clock-num num mt-3" aria-live="off">{secs === null ? "Not started" : fmtElapsed(secs)}</div>
         <p className="mt-2 text-[12px] text-[var(--muted-foreground)]">
@@ -59,9 +61,9 @@ function ClockCard({ o, fetchedAt }: { o: OverviewT; fetchedAt: number }) {
         </p>
       </div>
       <dl className="grid grid-cols-3 gap-3 self-end">
-        {([["Documents", pack.documents_total], ["Affected", pack.documents_affected], ["Clear", pack.documents_clear]] as const).map(([k, v]) => (
+        {([["Documents", pack.documents_total, HINT.clockDocuments], ["Affected", pack.documents_affected, HINT.clockAffected], ["Clear", pack.documents_clear, HINT.clockClear]] as const).map(([k, v, hint]) => (
           <div key={k} className="rounded-xl border border-[var(--border)] bg-[var(--background)] px-3 py-3">
-            <dt className="label">{k}</dt>
+            <dt className="label"><HintLabel label={k} hint={hint} /></dt>
             <dd className="num mt-2 text-[26px] leading-none">{known || k === "Documents" ? v : "—"}</dd>
           </div>
         ))}
@@ -81,12 +83,12 @@ export default function Overview() {
       {q.isLoading ? <div className="sheet"><LoadingBlock rows={4} label="Loading overview" /></div> : q.isError ? <div className="sheet"><ErrorState error={q.error} onRetry={() => void q.refetch()} /></div> : d ? (
         <div className="flex flex-col gap-5">
           <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
-            <Stat label="Decks scanned" value={d.documents_scanned} note="Proposals, agreements, brochures in this pack" />
-            <Stat label="Stale claims still in the pack" value={d.open_findings} note="Sentences a merchant could still read" />
-            <Stat label="Fixes a named person signed" value={approved.isError || !Array.isArray(approved.data) ? "—" : approved.data.length} note="Clear to send, with a name on them" />
-            <Stat label="Fixes waiting for a name" value={d.fixes_awaiting_approval} note="Wording is drafted. Do not send yet." />
-            <Stat label="Rules waiting for a name" value={d.rules_pending_approval} note="Draft checks are not used on decks" />
-            <Stat label="Every finding has a quote" value={pct(d.citation_coverage)} note="The sentence plus the rule behind it" />
+            <Stat label="Decks scanned" value={d.documents_scanned} note="Proposals, agreements, brochures in this pack" hint={HINT.statScanned} />
+            <Stat label="Stale claims still in the pack" value={d.open_findings} note="Sentences a merchant could still read" hint={HINT.statOpen} />
+            <Stat label="Fixes a named person signed" value={approved.isError || !Array.isArray(approved.data) ? "—" : approved.data.length} note="Clear to send, with a name on them" hint={HINT.statSigned} />
+            <Stat label="Fixes waiting for a name" value={d.fixes_awaiting_approval} note="Wording is drafted. Do not send yet." hint={HINT.statWaitingFix} />
+            <Stat label="Rules waiting for a name" value={d.rules_pending_approval} note="Draft checks are not used on decks" hint={HINT.statWaitingRule} />
+            <Stat label="Every finding has a quote" value={pct(d.citation_coverage)} note="The sentence plus the rule behind it" hint={HINT.statQuote} />
           </div>
           <StepRibbon steps={packSteps(d)} />
           <ClockCard o={d} fetchedAt={q.dataUpdatedAt || Date.now()} />

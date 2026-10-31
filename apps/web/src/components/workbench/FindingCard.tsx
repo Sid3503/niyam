@@ -1,9 +1,11 @@
 import { Link, useLocation } from "react-router-dom";
 import { FlaskConical, Send } from "lucide-react";
 import { ApprovalChip, FindingChip, Tag } from "@/components/Badges";
+import { Hint, HintLabel } from "@/components/Hint";
 import { Redline } from "@/components/Redline";
 import { ruleLink } from "@/components/RuleDrawer";
 import { useApprovals, useSendForApproval } from "@/lib/api";
+import { HINT, tierHint } from "@/lib/hints";
 import { fmtDateTime, humanize } from "@/lib/format";
 import type { Approval, ApprovalStatus } from "@/lib/types";
 import { isFactSource, type Clause, type Finding } from "@/lib/types";
@@ -46,17 +48,17 @@ export function FindingCard({ f, clause, onRetest, docId, selected, onSelect, ex
     >
       <div className="flex flex-wrap items-center gap-1.5">
         <FindingChip status={f.status} />
-        <span className="chip chip-plain">{humanize(f.severity)} severity</span>
-        <span className="chip chip-plain" title="How sure Niyam is about this finding. A person decides.">confidence {Math.round(f.confidence * 100)}%</span>
-        <span className="chip chip-plain" title="Tier A: checked by code. Tier B: checked by a language model.">tier {f.tier}</span>
+        <Tag title={HINT.severity[f.severity as keyof typeof HINT.severity]}>{humanize(f.severity)} severity</Tag>
+        <Tag title={HINT.confidence}>confidence {Math.round(f.confidence * 100)}%</Tag>
+        <Tag title={tierHint(f.tier)}>tier {f.tier}</Tag>
         {f.page ? <Tag>page {f.page}</Tag> : null}
         <span className="ml-auto font-mono text-[11px] text-[var(--muted-foreground)]">{clause ? clause.locator : f.locator || "no clause"}</span>
       </div>
-      <p className="mt-2.5 text-[13px] leading-relaxed"><span className="label mr-1.5">Why it is flagged</span>{f.reason}</p>
+      <p className="mt-2.5 text-[13px] leading-relaxed"><span className="label mr-1.5"><HintLabel label="Why it is flagged" hint={HINT.whyFlagged} /></span>{f.reason}</p>
       {f.quote ? <p className="mt-2 border-l-2 border-[var(--border)] pl-2.5 text-[12.5px] italic text-[var(--muted-foreground)]">“{f.quote}”</p> : null}
 
       <div className="mt-3">
-        <div className="label mb-1">Source</div>
+        <div className="label mb-1"><HintLabel label="Source" hint={HINT.source} /></div>
         {isFactSource(src) ? (
           <blockquote className="border-l-2 border-[var(--taupe)] bg-[var(--background)] px-3 py-2 text-[12.5px] leading-relaxed">
             {src.statement}
@@ -71,7 +73,7 @@ export function FindingCard({ f, clause, onRetest, docId, selected, onSelect, ex
                 <>
                   {" · "}
                   <Link to={ruleLink(loc.search, f.rule_id)} className="font-mono underline underline-offset-2" onClick={(e) => e.stopPropagation()}>{f.rule_id} v{f.rule_version}</Link>
-                  {f.rule_status && f.rule_status !== "active" ? <span className="ml-1.5 chip chip-warn chip-plain">{f.rule_status}, not approved</span> : null}
+                  {f.rule_status && f.rule_status !== "active" ? <Tag className="ml-1.5 chip-warn" title={HINT.rule[f.rule_status as keyof typeof HINT.rule] ?? HINT.scanOff}>{f.rule_status}, not approved</Tag> : null}
                 </>
               ) : null}
             </footer>
@@ -83,8 +85,8 @@ export function FindingCard({ f, clause, onRetest, docId, selected, onSelect, ex
       {f.suggested_fix ? (
         <div className="mt-3">
           <div className="mb-1 flex flex-wrap items-center gap-2">
-            <div className="label">Corrected wording</div>
-            <span className={f.suggested_fix.validated ? "chip chip-ok chip-plain" : "chip chip-warn chip-plain"}>{f.suggested_fix.validated ? "re-check passed" : "not re-checked"}</span>
+            <div className="label"><HintLabel label="Corrected wording" hint={HINT.wording} /></div>
+            <Tag className={f.suggested_fix.validated ? "chip-ok" : "chip-warn"} title={f.suggested_fix.validated ? HINT.recheckPass : HINT.recheckFail}>{f.suggested_fix.validated ? "re-check passed" : "not re-checked"}</Tag>
           </div>
           {clause ? <Redline before={f.quote ?? clause.text} after={f.suggested_fix.wording} /> : <p className="rounded-lg border border-[var(--border)] bg-[var(--background)] p-3 text-[12.5px] leading-relaxed"><ins className="rl-ins">{f.suggested_fix.wording}</ins></p>}
           <p className="mt-1.5 text-[11.5px] text-[var(--muted-foreground)]">{f.suggested_fix.rationale}</p>
@@ -102,13 +104,17 @@ export function FindingCard({ f, clause, onRetest, docId, selected, onSelect, ex
             <Link to="/approvals" className="text-[12px] underline underline-offset-2">Open in approvals</Link>
           </>
         ) : (
-          <button type="button" className="btn btn-sm btn-primary" disabled={!f.suggested_fix || send.isPending || readOnly} title={readOnly ? "Open the latest version to send this for approval" : f.suggested_fix ? undefined : "No suggested wording to send yet"} onClick={() => send.mutate(f.id)}>
-            <Send size={13} /> {send.isPending ? "Sending…" : "Send for approval"}
-          </button>
+          <Hint text={readOnly ? HINT.sendReadOnly : f.suggested_fix ? HINT.send : HINT.sendNoWording}>
+            <span className="inline-flex">
+              <button type="button" className="btn btn-sm btn-primary" disabled={!f.suggested_fix || send.isPending || readOnly} onClick={() => send.mutate(f.id)}>
+                <Send size={13} /> {send.isPending ? "Sending…" : "Send for approval"}
+              </button>
+            </span>
+          </Hint>
         )}
         {!approval && f.suggested_fix ? <span className="text-[12px] text-[var(--muted-foreground)]" data-testid="fix-status">Fix drafted, not yet sent for approval</span> : null}
         <button type="button" className="btn btn-sm" onClick={onRetest} data-doc={docId}><FlaskConical size={13} /> Re-test</button>
-        {f.needs_human ? <span className="text-[11.5px] text-[var(--muted-foreground)]">Needs a person to decide</span> : null}
+        {f.needs_human ? <Hint text={HINT.needsHuman}><span className="text-[11.5px] text-[var(--muted-foreground)]">Needs a person to decide</span></Hint> : null}
       </div>
     </article>
   );

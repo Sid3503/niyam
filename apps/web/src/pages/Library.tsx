@@ -5,6 +5,8 @@ import { Link, useNavigate } from "react-router-dom";
 import { FileText, FileType2, Mic, Plus, ScanSearch } from "lucide-react";
 import { Drawer } from "@/components/Drawer";
 import { DocStatusChip } from "@/components/Badges";
+import { Hint, HintLabel } from "@/components/Hint";
+import { HINT } from "@/lib/hints";
 import { Notice } from "@/components/Notice";
 import { Field, HereStrip, PageHeader } from "@/components/Page";
 import { EmptyState, ErrorState, LoadingBlock } from "@/components/States";
@@ -190,8 +192,9 @@ function ownerName(o: string): string {
 
 function FixCell({ s, failed }: { s: FixSummary | undefined; failed: boolean }) {
   if (failed) return <span className="text-[var(--muted-foreground)]" aria-label="Fix status unavailable">—</span>;
-  const tip = s?.approvals.length ? s.approvals.map((a) => `Approved by ${a.by ?? "approver not recorded"}${a.at ? `, ${fmtDateTime(a.at)}` : ""}`).join("\n") : undefined;
-  return <span className="text-[12.5px]" title={tip}>{fixStatusText(s)}</span>;
+  const named = s?.approvals.length ? s.approvals.map((a) => `Approved by ${a.by ?? "approver not recorded"}${a.at ? `, ${fmtDateTime(a.at)}` : ""}`).join(". ") : "";
+  const tip = named || HINT.fixStatus;
+  return <Hint text={tip}><span className="text-[12.5px]">{fixStatusText(s)}</span></Hint>;
 }
 
 function FormatCell({ d }: { d: Document }) {
@@ -237,16 +240,16 @@ export default function Library() {
           <div className="overflow-x-auto">
             <table className="tbl min-w-[880px]">
               <caption className="sr-only">Documents. Select a row to open the review.</caption>
-              <thead><tr><th scope="col">Document</th><th scope="col">Type</th><th scope="col">Owner</th><th scope="col">Updated</th><th scope="col">Review status</th><th scope="col">Fix status</th><th scope="col" className="text-right">Open findings</th></tr></thead>
+              <thead><tr><th scope="col">Document</th><th scope="col">Type</th><th scope="col"><HintLabel label="Owner" hint={HINT.owner} /></th><th scope="col">Updated</th><th scope="col"><HintLabel label="Review status" hint={HINT.reviewStatus} /></th><th scope="col"><HintLabel label="Fix status" hint={HINT.fixStatus} /></th><th scope="col" className="text-right"><HintLabel label="Open findings" hint={HINT.openFindings} /></th></tr></thead>
               <tbody>
                 {rows.map((d) => (
                   <tr key={d.id} className="row" onClick={() => navigate(`/library/${d.id}`)}>
                     <td className="min-w-[250px] max-w-[340px]">
                       <Link to={`/library/${d.id}`} className="block font-medium underline-offset-2 hover:underline" onClick={(e) => e.stopPropagation()}>{d.title}</Link>
-                      <span className="mt-1 flex flex-wrap items-center gap-x-2 text-[11px] font-normal text-[var(--muted-foreground)]"><FormatCell d={d} /><span>{d.product}</span>{d.demo_data ? <span>{d.format === "voice" ? "Synthetic demo audio" : "Synthetic demo document"}</span> : null}</span>
+                      <span className="mt-1 flex flex-wrap items-center gap-x-2 text-[11px] font-normal text-[var(--muted-foreground)]"><FormatCell d={d} /><span>{d.product}</span>{d.demo_data ? <Hint text={HINT.synthetic}><span>{d.format === "voice" ? "Synthetic demo audio" : "Synthetic demo document"}</span></Hint> : null}</span>
                     </td>
                     <td className="whitespace-nowrap">{humanize(d.doc_type)}</td>
-                    <td className="whitespace-nowrap" title={d.owner}>{ownerName(d.owner)}</td>
+                    <td className="whitespace-nowrap"><Hint text={d.owner} label={d.owner}><span>{ownerName(d.owner)}</span></Hint></td>
                     <td className="whitespace-nowrap">v{d.version}<span className="block text-[11px] text-[var(--muted-foreground)]">{fmtDate(d.last_modified)}</span></td>
                     <td><DocStatusChip status={d.status} /></td>
                     <td><FixCell s={fixes.get(d.id)} failed={fixesQ.isError || fixesQ.isLoading} /></td>

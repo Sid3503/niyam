@@ -2,7 +2,9 @@ import * as React from "react";
 import { Link, useParams, useSearchParams } from "react-router-dom";
 import { useQuery, keepPreviousData } from "@tanstack/react-query";
 import { ArrowLeft, FlaskConical } from "lucide-react";
-import { DocStatusChip, FindingChip } from "@/components/Badges";
+import { DocStatusChip, FindingChip, Tag } from "@/components/Badges";
+import { Hint, HintLabel } from "@/components/Hint";
+import { HINT } from "@/lib/hints";
 import { Drawer } from "@/components/Drawer";
 import { Notice } from "@/components/Notice";
 import { PageHeader } from "@/components/Page";
@@ -68,13 +70,17 @@ function RetestDrawer({ open, onClose, detail }: { open: boolean; onClose: () =>
               {retest.isPending ? "Re-testing…" : "Re-test edited version"}
             </button>
           ) : null}
-          <button type="button" className={editable ? "btn" : "btn btn-primary"} disabled={retest.isPending} onClick={() => retest.mutate({ id: detail.document.id })} title="Re-check the latest version against the rules that are active now">Re-test against current rules</button>
+          <Hint text="Re-check the latest version against the rules that are active now.">
+            <span className="inline-flex">
+              <button type="button" className={editable ? "btn" : "btn btn-primary"} disabled={retest.isPending} onClick={() => retest.mutate({ id: detail.document.id })}>Re-test against current rules</button>
+            </span>
+          </Hint>
         </div>
         {retest.isError ? <ErrorState error={retest.error} /> : null}
         {r ? (
           <section aria-label="Re-test result" className="flex flex-col gap-3">
             <div className="flex items-center gap-2">
-              <span className={r.passed ? "chip chip-ok chip-dot" : "chip chip-bad chip-dot"}>{r.passed ? "passed" : "not passed"}</span>
+              <Tag className={r.passed ? "chip-ok" : "chip-bad"} title={r.passed ? HINT.retestPass : HINT.retestFail}>{r.passed ? "passed" : "not passed"}</Tag>
               <span className="text-[12.5px] text-[var(--muted-foreground)]">{r.comparison.resolved.length} resolved · {r.comparison.remaining.length} remaining · {r.comparison.new.length} new</span>
             </div>
             <div className="grid grid-cols-2 gap-3">
@@ -112,7 +118,7 @@ function VersionsPanel({ d, latest }: { d: DocumentDetail; latest: number }) {
   return (
     <div className="sheet p-4" aria-label="Versions">
       <div className="mb-2 flex flex-wrap items-center justify-between gap-2">
-        <h2 className="label">Versions</h2>
+        <h2 className="label"><HintLabel label="Versions" hint={HINT.sha} /></h2>
         {d.versions.length > 1 ? (
           <div className="flex gap-1.5 text-[12px]">
             <Link to={link(first.id)} className="btn btn-sm" aria-current={d.version.id === first.id}>View original (v{first.version})</Link>
@@ -126,7 +132,7 @@ function VersionsPanel({ d, latest }: { d: DocumentDetail; latest: number }) {
             <span className="num font-medium">v{v.version}</span>
             <span className="chip chip-plain">{v.trigger}</span>
             <span>{fmtDateTime(v.created_at)}</span>
-            <span className="font-mono text-[11px] text-[var(--muted-foreground)]" title={v.sha256}>{shortSha(v.sha256)}</span>
+            <Hint text={v.sha256 ? `${HINT.sha} ${v.sha256}` : HINT.sha}><span className="font-mono text-[11px] text-[var(--muted-foreground)]">{shortSha(v.sha256)}</span></Hint>
             <span className="ml-auto">{v.open_findings} open</span>
             {v.id === d.version.id ? <span className="chip chip-plain">shown</span> : <Link to={link(v.version === latest ? null : v.id)} className="text-[12px] underline underline-offset-2">View</Link>}
           </li>
@@ -161,7 +167,7 @@ function Body({ d }: { d: DocumentDetail }) {
         eyebrow="A file sales would send"
         title={doc.title}
         lede={`${humanize(doc.doc_type)} · ${FORMAT_LABEL[format]}${size} · ${doc.product} · owner ${doc.owner} · version ${d.version.version}${readOnly ? ` of ${latest}` : ""} · reviewed ${fmtDateTime(doc.last_reviewed_at)}. Stale sentences are marked. The original is never changed.`}
-        actions={<div className="flex items-center gap-2"><DocStatusChip status={doc.status} />{doc.demo_data ? <span className="chip chip-plain">{format === "voice" ? "Synthetic demo audio" : "Synthetic demo document"}</span> : null}<button type="button" className="btn btn-primary" onClick={retest}><FlaskConical size={14} /> Re-test</button></div>}
+        actions={<div className="flex items-center gap-2"><DocStatusChip status={doc.status} />{doc.demo_data ? <Hint text={HINT.synthetic}><span className="chip chip-plain">{format === "voice" ? "Synthetic demo audio" : "Synthetic demo document"}</span></Hint> : null}<button type="button" className="btn btn-primary" onClick={retest}><FlaskConical size={14} /> Re-test</button></div>}
       />
       <details className="mb-4 text-[12.5px] text-[var(--muted-foreground)]">
         <summary className="cursor-pointer font-medium text-[var(--foreground)]">What do the statuses mean?</summary>

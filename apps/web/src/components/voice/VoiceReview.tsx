@@ -4,6 +4,8 @@ import { Notice } from "@/components/Notice";
 import { EmptyState, ErrorState } from "@/components/States";
 import { FilterSelect } from "@/components/Filters";
 import { FindingCard } from "@/components/workbench/FindingCard";
+import { Hint } from "@/components/Hint";
+import { HINT } from "@/lib/hints";
 import { useBlobUrl } from "@/components/workbench/useBlobUrl";
 import { FINDING_LABEL, FINDING_RANK, FINDING_TONE, humanize } from "@/lib/format";
 import type { DocumentDetail, Finding, FindingStatus } from "@/lib/types";
@@ -49,7 +51,7 @@ export function VoiceReview({ d, onRetest, readOnly }: { d: DocumentDetail; onRe
               <span className="chip chip-warn chip-plain" data-testid="synthetic-audio">Synthetic demo audio</span>
               <span className="chip chip-plain">{humanize(v.language)}</span>
               <span className="chip chip-plain">{fmtClock(v.duration_seconds)} long</span>
-              <span className="chip chip-plain" title="Speech-to-text used to produce the transcript">STT: {v.stt.provider} · {v.stt.model}</span>
+              <Hint text={HINT.stt}><span className="chip chip-plain">STT: {v.stt.provider} · {v.stt.model}</span></Hint>
             </div>
             {media.loading ? <p role="status" className="text-[12.5px] text-[var(--muted-foreground)]">Loading audio…</p> : media.error ? <ErrorState error={media.error} /> : (
               <audio ref={audioRef} controls preload="metadata" src={media.src ?? undefined} className="w-full" onTimeUpdate={(e) => setT(e.currentTarget.currentTime)} aria-label="Voice note audio" />
