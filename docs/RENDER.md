@@ -1,23 +1,8 @@
 # Deploy Niyam on Render
 
-One Docker web service serves the API and the web console on the same host. A Render Postgres holds the data. A 5 GB disk at `/data/var` keeps uploaded PDFs and audio across deploys.
+One Docker web service serves the API and the web console on the same host. A Render Postgres holds the data.
 
-This is a **demo**: synthetic documents, a single shared API key (not user accounts), and local-disk blobs on that volume.
-
-## What you pay for (check current prices)
-
-A demo that stays up needs a paid web instance (the free web plan sleeps and **cannot attach a disk**) and a paid Postgres (free databases expire after 30 days).
-
-Approximate, from Render's public pricing around late October 2026 — **confirm on [render.com/pricing](https://render.com/pricing) before you start:**
-
-| Piece | Blueprint value | Ballpark |
-| --- | --- | --- |
-| Web service | `starter` (0.5 CPU, 512 MB) | ~$7 / month, always on |
-| Persistent disk | 5 GB at `/data/var` | ~$0.25 / GB / month |
-| Postgres | `0.1c-256mb`, 16, ~1 GB storage | ~$6 / month + storage |
-| Hobby workspace | — | $0, 5 GB bandwidth included |
-
-If PDF preview or ingest runs out of memory, bump the web service to `standard` / `1c-2g` (~$25 / month) in the dashboard or in `render.yaml`.
+**Current Blueprint is the free tier:** web `plan: free`, Postgres `plan: free`, no disk. The service sleeps after ~15 minutes idle (open the URL to wake it). Stored PDFs/audio live on the instance disk and vanish on sleep/redeploy — re-run `tools/seed_demo.py` after a wake if previews 404. Free Postgres expires after 30 days.
 
 Region is chosen at creation and cannot be changed. Default is Oregon. Singapore is usually closer if you are in India.
 

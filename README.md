@@ -62,7 +62,7 @@ Load the sales demo: `tools/reset_demo.sh && python3 tools/seed_demo.py`. Start 
 
 The API is a long-running FastAPI process (PDF preview in memory, local blob files, PyMuPDF). Host it as **one Docker web service** that also serves the built console. Blueprint: `render.yaml`. Steps, env vars, seeding, and cost notes: **`docs/RENDER.md`**.
 
-You will need a paid web instance (the free web plan has no persistent disk and sleeps) plus a small Postgres. Create **fresh** Sarvam / Ollama / `NIYAM_API_KEY` values before you paste them into the dashboard.
+The Blueprint defaults to Render **free** (sleeps when idle; re-seed after a wake if PDFs 404). Create **fresh** Sarvam / Ollama / `NIYAM_API_KEY` values before you paste them into the dashboard.
 
 AI features: the language model is Ollama (`gpt-oss:120b`) when `OLLAMA_API_KEY` is set, otherwise Sarvam. Speech-to-text for voice notes always needs `SARVAM_API_KEY`. Without keys the deterministic checks still run and AI-drafted wording and voice are off.
 

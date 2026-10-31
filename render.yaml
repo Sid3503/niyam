@@ -1,21 +1,14 @@
-# Niyam on Render: one Docker web service + Postgres + a disk for stored PDFs and audio.
-# Dashboard: New > Blueprint > this repo. You will be prompted for the secrets (sync: false).
-# Full steps: docs/RENDER.md
-#
-# Persistent disks and a live (non-sleeping) instance need a paid web plan. Free web has no disk
-# and sleeps when idle. Free Postgres expires after 30 days. Check https://render.com/pricing.
+# Niyam on Render (free tier): one Docker web service + free Postgres. No disk.
+# Sleeps when idle — open the URL to wake it, then re-run seed_demo.py if PDFs 404.
+# Free Postgres expires after 30 days. Dashboard: New > Blueprint > this repo.
 
 services:
   - type: web
     name: niyam
     runtime: docker
-    plan: starter
+    plan: free
     dockerfilePath: ./Dockerfile
     healthCheckPath: /healthz
-    disk:
-      name: niyam-blobs
-      mountPath: /data/var
-      sizeGB: 5
     envVars:
       - key: NIYAM_ENV
         value: prod
@@ -48,7 +41,7 @@ services:
 
 databases:
   - name: niyam-db
-    plan: 0.1c-256mb
+    plan: free
     postgresMajorVersion: "16"
     databaseName: niyam
     user: niyam
