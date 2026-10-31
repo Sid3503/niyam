@@ -4,7 +4,7 @@ from __future__ import annotations
 from functools import lru_cache
 from pathlib import Path
 
-from pydantic import Field
+from pydantic import Field, field_validator
 from pydantic_settings import BaseSettings, SettingsConfigDict
 
 
@@ -14,6 +14,7 @@ class Settings(BaseSettings):
     env: str = "dev"                                   # dev | prod
     database_url: str = "postgresql+psycopg://niyam:niyam@db:5432/niyam"
     tenant_id: str = "default"
+    console_dir: str = ""                              # built web console (empty: API only)
     # Data roots (mounted read-only in Docker). corpus_roots maps a kind to a directory.
     data_root: Path = Path("/data")
     regulations_dir: str = "regulations"               # corpus_kind=regulation
@@ -34,6 +35,19 @@ class Settings(BaseSettings):
     ollama_api_key: str | None = Field(default=None, validation_alias="OLLAMA_API_KEY")
     ollama_model: str = Field(default="gpt-oss:120b", validation_alias="NIYAM_OLLAMA_MODEL")
     llm_provider: str = Field(default="auto", validation_alias="NIYAM_LLM_PROVIDER")   # auto | sarvam | ollama
+
+    @field_validator("database_url", mode="before")
+    @classmethod
+    def _psycopg_url(cls, v: object) -> object:
+        """Render (and most hosts) hand out postgres:// or postgresql://; SQLAlchemy needs +psycopg."""
+        if not isinstance(v, str):
+            return v
+        url = v
+        if url.startswith("postgres://"):
+            url = "postgresql://" + url[len("postgres://"):]
+        if url.startswith("postgresql://"):
+            url = "postgresql+psycopg://" + url[len("postgresql://"):]
+        return url
 
     @property
     def regulations_path(self) -> Path:
@@ -63,6 +77,13 @@ class Settings(BaseSettings):
     @property
     def rules_path(self) -> Path:
         return self.data_root / self.rules_dir
+
+    @property
+    def console_path(self) -> Path | None:
+        if not self.console_dir:
+            return None
+        p = Path(self.console_dir)
+        return p if p.is_dir() else None
 
 
 @lru_cache

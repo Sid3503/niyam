@@ -30,6 +30,7 @@ circular → rule approved → library scanned → fix drafted → named approve
 | `docs/` | Product, contract and architecture documents. Start with `docs/README.md` |
 | `tools/` | `reset_demo.sh`, `seed_demo.py`, `make_demo_pdfs.py` |
 | `infra/` | Docker Compose and `.env.example` |
+| `render.yaml`, `Dockerfile` | One-service Render deploy (API + console + disk). See `docs/RENDER.md` |
 | `niyam-web/` | The earlier console prototype, kept for reference |
 
 ## Run it (host development)
@@ -57,6 +58,12 @@ cd apps/web && npm install && npm run dev      # http://localhost:5173
 
 Load the sales demo: `tools/reset_demo.sh && python3 tools/seed_demo.py`. Start over any time with `tools/reset_demo.sh`.
 
+## Deploy on Render
+
+The API is a long-running FastAPI process (PDF preview in memory, local blob files, PyMuPDF). Host it as **one Docker web service** that also serves the built console. Blueprint: `render.yaml`. Steps, env vars, seeding, and cost notes: **`docs/RENDER.md`**.
+
+You will need a paid web instance (the free web plan has no persistent disk and sleeps) plus a small Postgres. Create **fresh** Sarvam / Ollama / `NIYAM_API_KEY` values before you paste them into the dashboard.
+
 AI features: the language model is Ollama (`gpt-oss:120b`) when `OLLAMA_API_KEY` is set, otherwise Sarvam. Speech-to-text for voice notes always needs `SARVAM_API_KEY`. Without keys the deterministic checks still run and AI-drafted wording and voice are off.
 
 ## Tests
@@ -74,7 +81,7 @@ cd apps/web && npm test
 - **The regulatory corpus is not committed wholesale.** One source file alone is 138 MB (over GitHub's limit) and most documents belong to other organisations. The repo contains the manifests (`regulations/*/MANIFEST.csv`, with source URLs and hashes) and only the files the rule cards cite, so every card still verifies. The knowledge base is therefore small until you re-fetch documents from the manifests and run the ingest. `paytm-terms/` is likewise not committed.
 - **Everything demo is synthetic**: documents, merchant names, fees, settlement terms and the approvers' names. The product facts in `rules/product-facts.json` stand in for records only a real company could supply.
 - **Rule cards are drafts until a named person approves them**, and several carry open issues noted in the card itself (for example paragraph numbers that must be confirmed against the page). Treat the rule set as a demonstration, not a validated compliance library.
-- **Not built:** OCR of scanned PDFs, PII redaction and encryption of the evidence pack, live call monitoring, spoken read-back, authentication beyond a static API key, and verified Docker images (the compose files exist but were not built in the author's environment).
+- **Not built:** OCR of scanned PDFs, PII redaction and encryption of the evidence pack, live call monitoring, spoken read-back, and authentication beyond a static API key. The root `Dockerfile` (Render) was not built on the author's machine (local Docker pulls are blocked by a TLS-inspecting proxy); Render builds in its own cloud.
 - Document text and circular text are sent to a hosted language model (Ollama or Sarvam) for drafting and judging. Do not load real merchant or customer data without making a data decision first.
 
 ## License

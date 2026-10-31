@@ -7,7 +7,7 @@ from contextlib import asynccontextmanager
 
 from fastapi import FastAPI, HTTPException, Request
 from fastapi.exceptions import RequestValidationError
-from fastapi.responses import JSONResponse
+from fastapi.responses import FileResponse, JSONResponse
 from sqlalchemy import text
 
 from niyam.api import check as check_api, fix as fix_api, guard as guard_api, kb as kb_api, review as review_api, rules as rules_api
@@ -44,8 +44,43 @@ def _err(status: int, code: str, message: str) -> JSONResponse:
     return JSONResponse(status_code=status, content={"error": {"code": code, "message": message}})
 
 
+def _console_file(url_path: str) -> FileResponse | None:
+    """Built web console, same origin as the API. None if it is not bundled or this is an API path."""
+    if url_path.startswith("/api/") or url_path in {"/api", "/healthz", "/readyz"}:
+        return None
+    root = get_settings().console_path
+    if root is None:
+        return None
+    base = root.resolve()
+    rel = url_path.lstrip("/")
+    target = (root / rel).resolve() if rel else (root / "index.html").resolve()
+    try:
+        target.relative_to(base)
+    except ValueError:
+        return None
+    if rel and target.is_file():
+        return FileResponse(target)
+    index = root / "index.html"
+    return FileResponse(index) if index.is_file() else None
+
+
+@app.exception_handler(404)
+async def not_found(request: Request, exc: Exception):
+    if request.method in ("GET", "HEAD"):
+        page = _console_file(request.url.path)
+        if page is not None:
+            return page
+    if isinstance(exc, HTTPException) and isinstance(exc.detail, dict):
+        d = exc.detail
+        body = {"code": d.get("code", "not_found"), "message": d.get("message", ""), **{k: v for k, v in d.items() if k not in ("code", "message")}}
+        return JSONResponse(status_code=404, content={"error": body})
+    return _err(404, "not_found", "not found")
+
+
 @app.exception_handler(HTTPException)
-async def http_exc(_: Request, exc: HTTPException):
+async def http_exc(request: Request, exc: HTTPException):
+    if exc.status_code == 404:
+        return await not_found(request, exc)
     d = exc.detail if isinstance(exc.detail, dict) else {"code": "http_error", "message": str(exc.detail)}
     body = {"code": d.get("code", "http_error"), "message": d.get("message", ""), **{k: v for k, v in d.items() if k not in ("code", "message")}}
     return JSONResponse(status_code=exc.status_code, content={"error": body})
@@ -70,7 +105,10 @@ async def access_log(request: Request, call_next):
     resp = await call_next(request)
     resp.headers["x-request-id"] = rid
     resp.headers["x-content-type-options"] = "nosniff"
-    resp.headers["cache-control"] = "no-store"
+    if request.url.path.startswith("/assets/"):
+        resp.headers["cache-control"] = "public, max-age=31536000, immutable"
+    else:
+        resp.headers["cache-control"] = "no-store"
     if not request.url.path.startswith("/healthz"):
         log.info("%s %s %s %dms rid=%s", request.method, request.url.path, resp.status_code, (time.perf_counter() - t0) * 1000, rid)
     return resp

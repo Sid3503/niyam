@@ -1,0 +1,54 @@
+# Niyam on Render: one Docker web service + Postgres + a disk for stored PDFs and audio.
+# Dashboard: New > Blueprint > this repo. You will be prompted for the secrets (sync: false).
+# Full steps: docs/RENDER.md
+#
+# Persistent disks and a live (non-sleeping) instance need a paid web plan. Free web has no disk
+# and sleeps when idle. Free Postgres expires after 30 days. Check https://render.com/pricing.
+
+services:
+  - type: web
+    name: niyam
+    runtime: docker
+    plan: starter
+    dockerfilePath: ./Dockerfile
+    healthCheckPath: /healthz
+    disk:
+      name: niyam-blobs
+      mountPath: /data/var
+      sizeGB: 5
+    envVars:
+      - key: NIYAM_ENV
+        value: prod
+      - key: NIYAM_API_KEY
+        sync: false
+      - key: NIYAM_DATABASE_URL
+        fromDatabase:
+          name: niyam-db
+          property: connectionString
+      - key: NIYAM_DATA_ROOT
+        value: /data
+      - key: NIYAM_BLOB_DIR
+        value: /data/var/blobs
+      - key: NIYAM_CONSOLE_DIR
+        value: /app/console
+      - key: NIYAM_INGEST_ON_START
+        value: "true"
+      - key: WEB_CONCURRENCY
+        value: "1"
+      - key: NIYAM_STORE_CHECK_TEXT
+        value: "true"
+      - key: SARVAM_API_KEY
+        sync: false
+      - key: OLLAMA_API_KEY
+        sync: false
+      - key: NIYAM_LLM_PROVIDER
+        value: auto
+      - key: NIYAM_OLLAMA_MODEL
+        value: gpt-oss:120b
+
+databases:
+  - name: niyam-db
+    plan: 0.1c-256mb
+    postgresMajorVersion: "16"
+    databaseName: niyam
+    user: niyam

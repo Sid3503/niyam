@@ -12,7 +12,7 @@ Seven documents answer what Niyam is, how it is sold, how the PDF apply step wor
 | [`NIYAM-PRODUCTION-ARCHITECTURE.md`](./NIYAM-PRODUCTION-ARCHITECTURE.md) | Production-ready scalable shape: process split (api-hot, api-control, voice-relay, workers), chat vs voice vs corpus-ask, tool loop, Postgres/Redis/object store, outbox jobs, security, grow-from-today. Demo stays Compose; this is the post-demo target. |
 | [`REGULATORY-CORPUS.md`](./REGULATORY-CORPUS.md) | The regulator document corpus (`../regulations/`, `../paytm-terms/`): what is stored, corrections to the rule cards (e.g. UPI merchant TAT is T+5, not T+1), revised and new rule cards, effective-date calendar, how it maps to the nine stages, gaps and manual downloads. Tags every claim [V] verified / [A] agent-read / [I] inference. |
 
-Also in this folder (build contracts, not the product story): [`PLATFORM-BUILD.md`](./PLATFORM-BUILD.md), [`ENGINE.md`](./ENGINE.md), [`REVAMP-CONTRACT.md`](./REVAMP-CONTRACT.md).
+Also in this folder (build contracts, not the product story): [`PLATFORM-BUILD.md`](./PLATFORM-BUILD.md), [`ENGINE.md`](./ENGINE.md), [`REVAMP-CONTRACT.md`](./REVAMP-CONTRACT.md), [`RENDER.md`](./RENDER.md) (one-service Render deploy).
 
 ## Source hierarchy used
 

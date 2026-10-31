@@ -37,6 +37,7 @@ services:
       OLLAMA_API_KEY: ${OLLAMA_API_KEY:-}
       NIYAM_OLLAMA_MODEL: ${NIYAM_OLLAMA_MODEL:-gpt-oss:120b}
       NIYAM_LLM_PROVIDER: ${NIYAM_LLM_PROVIDER:-auto}
+      WEB_CONCURRENCY: "1"   # PDF preview lives in process memory; extra workers make those links fail at random
     volumes:                                      # corpus + cards are read-only inside the container
       - ../regulations:/data/regulations:ro
       - ../paytm-terms:/data/paytm-terms:ro

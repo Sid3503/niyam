@@ -2,6 +2,7 @@
 """Load the SALES story into a freshly reset demo workspace, through the public API (no database shortcuts).
 
     tools/reset_demo.sh && python3 tools/seed_demo.py        # API on http://127.0.0.1:8000, or set NIYAM_API
+    NIYAM_API=https://YOUR-SERVICE.onrender.com NIYAM_API_KEY=... python3 tools/seed_demo.py
 
 What it sets up (all synthetic):
   1. A real circular: RBI Master Direction on Payment Aggregators (settlement and merchant terms), taken from the knowledge base.
@@ -23,8 +24,12 @@ COUNSEL, SALES = "priya.sharma (counsel)", "asha.verma (sales)"
 
 
 def call(method, path, body=None, actor=COUNSEL, timeout=300):
+    headers = {"Content-Type": "application/json", "X-Actor": actor}
+    key = os.environ.get("NIYAM_API_KEY")
+    if key:
+        headers["X-API-Key"] = key
     req = urllib.request.Request(API + path, method=method, data=json.dumps(body).encode() if body is not None else None,
-                                 headers={"Content-Type": "application/json", "X-Actor": actor})
+                                 headers=headers)
     try:
         return json.load(urllib.request.urlopen(req, timeout=timeout))
     except urllib.error.HTTPError as e:
