@@ -3,9 +3,11 @@ import { useQueryClient } from "@tanstack/react-query";
 import { Check as CheckIcon } from "lucide-react";
 import { HereStrip, PageHeader, Field } from "@/components/Page";
 import { currentActor, currentApiKey, DEFAULT_ACTOR, setActor, setApiKey } from "@/lib/settings";
+import { useTour } from "@/components/Tour";
 
 export default function SettingsPage() {
   const qc = useQueryClient();
+  const tour = useTour();
   const [key, setKey] = React.useState(currentApiKey());
   const [actor, setActorValue] = React.useState(currentActor());
   const [saved, setSaved] = React.useState(false);
@@ -33,9 +35,10 @@ export default function SettingsPage() {
         <p className="mt-2 text-[12px] text-[var(--muted-foreground)]">
           Both are kept in this browser only and sent only to this workspace's server. Leave the name empty to act as {DEFAULT_ACTOR}.
         </p>
-        <div className="mt-4 flex items-center gap-3">
+        <div className="mt-4 flex flex-wrap items-center gap-3">
           <button type="submit" className="btn btn-primary">Save</button>
           {saved ? <span role="status" className="flex items-center gap-1 text-[12px] text-[var(--ok-ink)]"><CheckIcon size={14} /> Saved</span> : null}
+          <button type="button" className="btn" onClick={tour.start}>Start the 2-minute walkthrough</button>
         </div>
       </form>
     </>

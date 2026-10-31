@@ -1,5 +1,5 @@
 import { afterEach, describe, expect, it, vi } from "vitest";
-import { render, screen } from "@testing-library/react";
+import { fireEvent, render, screen } from "@testing-library/react";
 import { MemoryRouter } from "react-router-dom";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import App from "@/App";
@@ -32,6 +32,15 @@ describe("landing", () => {
     expect(screen.getAllByText("Decision support, not legal advice. Demo documents and product facts are synthetic.").length).toBe(1);
     expect(screen.getAllByText(/Auto-reversal within T \+ 5 days/).length).toBeGreaterThan(0);
     expect(screen.queryByLabelText("Niyam sections")).toBeNull();
+    expect(screen.getByRole("heading", { name: /A two-minute dry run, on one sentence/ })).toBeTruthy();
+    expect(screen.getByRole("button", { name: /Start the 2-minute walkthrough/ })).toBeTruthy();
+  });
+
+  it("opens the walkthrough overlay from the landing", () => {
+    renderAt("/");
+    fireEvent.click(screen.getByRole("button", { name: /Start the 2-minute walkthrough/ }));
+    expect(screen.getByRole("dialog", { name: /You send the proposal/ })).toBeTruthy();
+    expect(screen.getByText(/BlueCart’s payment-gateway proposal still says/)).toBeTruthy();
   });
   it("makes none of the banned claims", () => {
     renderAt("/");
@@ -56,6 +65,14 @@ describe("overview", () => {
     expect(list.querySelectorAll('[aria-current="step"]').length).toBe(1);
     expect(screen.getByText("1h 02m 05s")).toBeTruthy();
     expect(screen.getByText(/Approved in 1h 02m 05s/)).toBeTruthy();
+  });
+
+  it("asks for the demo key in plain English on 401", async () => {
+    vi.stubGlobal("fetch", vi.fn(async () => new Response(JSON.stringify({ error: { code: "unauthorized", message: "missing or invalid X-API-Key" } }), { status: 401, headers: { "Content-Type": "application/json" } })));
+    renderAt("/overview");
+    expect(await screen.findByText("Unlock this demo workspace")).toBeTruthy();
+    expect(screen.getByLabelText("Demo API key")).toBeTruthy();
+    expect(screen.getByRole("button", { name: /Unlock and start the walkthrough/ })).toBeTruthy();
   });
 
   it("falls back to derived steps when the backend has no steps", () => {

@@ -1,6 +1,7 @@
 import * as React from "react";
 import { Link, Outlet, useLocation, useNavigate } from "react-router-dom";
-import { Activity, BookOpenCheck, ClipboardCheck, Gauge, Library, Settings as SettingsIcon, ShieldCheck } from "lucide-react";
+import { Activity, BookOpenCheck, ClipboardCheck, Gauge, Library, Map, Settings as SettingsIcon, ShieldCheck } from "lucide-react";
+import { useTour } from "@/components/Tour";
 import {
   Sidebar,
   SidebarFooter,
@@ -69,6 +70,7 @@ function RailNav() {
         { path: "/library", label: "Documents", icon: <Library size={S} strokeWidth={1.75} /> },
         { path: "/rules", label: "Rules", icon: <BookOpenCheck size={S} strokeWidth={1.75} /> },
         { path: "/impact", label: "Circular impact", icon: <Activity size={S} strokeWidth={1.75} /> },
+        { path: "/guide", label: "How to use", icon: <Map size={S} strokeWidth={1.75} /> },
       ],
     },
     {
@@ -142,7 +144,16 @@ function WorkspaceFooter() {
 }
 
 const NARROW = "(max-width: 1024px)";
-const TITLES: Record<string, string> = { overview: "Overview", library: "Documents", rules: "Rules", impact: "Circular impact", approvals: "Approvals", evidence: "Evidence", settings: "Settings" };
+const TITLES: Record<string, string> = { overview: "Overview", library: "Documents", rules: "Rules", impact: "Circular impact", approvals: "Approvals", evidence: "Evidence", guide: "How to use", settings: "Settings" };
+
+function WalkthroughButton() {
+  const tour = useTour();
+  return (
+    <button type="button" className="btn btn-sm" onClick={tour.start}>
+      2-min walkthrough
+    </button>
+  );
+}
 
 export function AppShell() {
   const { pathname } = useLocation();
@@ -190,6 +201,7 @@ export function AppShell() {
             <span>{TITLES[seg] ?? "Niyam"}</span>
           </nav>
           <div className="flex items-center gap-2">
+            <WalkthroughButton />
             <span className="chip chip-plain hidden sm:inline-flex">Synthetic demo data</span>
           </div>
         </div>

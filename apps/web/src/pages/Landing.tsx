@@ -2,6 +2,7 @@ import { useEffect } from "react";
 import { Link } from "react-router-dom";
 import { ArrowRight, Check, X } from "lucide-react";
 import { NiyamMark } from "@/components/AppShell";
+import { useTour } from "@/components/Tour";
 import { FOOTER_TEXT } from "@/lib/format";
 
 export const HERO_LINE = "Proposals and brochures stop shipping claims that are out of date, and you can see when a fix is approved.";
@@ -59,6 +60,15 @@ const FAQ: [string, string][] = [
   ["Where does our data go?", "In this demo, only synthetic documents are used. Document text is sent to a hosted language model for drafting and judging. A production deployment would need a data decision made with you first."],
 ];
 
+function WalkthroughCta() {
+  const tour = useTour();
+  return (
+    <button type="button" className="btn btn-lg" onClick={tour.start}>
+      Start the 2-minute walkthrough
+    </button>
+  );
+}
+
 function Cta({ className = "" }: { className?: string }) {
   return (
     <div className={`flex flex-wrap items-center gap-3 ${className}`}>
@@ -106,6 +116,7 @@ export default function Landing() {
           <span className="text-[16px] font-semibold tracking-[-0.01em]">Niyam</span>
         </Link>
         <nav aria-label="Page" className="flex items-center gap-5">
+          <a href="#walkthrough" className="hidden text-[13px] text-[var(--muted-foreground)] hover:text-[var(--foreground)] sm:inline">Dry run</a>
           <a href="#how" className="hidden text-[13px] text-[var(--muted-foreground)] hover:text-[var(--foreground)] sm:inline">How it works</a>
           <a href="#faq" className="hidden text-[13px] text-[var(--muted-foreground)] hover:text-[var(--foreground)] sm:inline">Questions</a>
           <Link to="/overview" className="btn btn-sm">Open the demo workspace</Link>
@@ -121,7 +132,10 @@ export default function Landing() {
             </h1>
             <p className="rise mt-5 text-[clamp(20px,2.4vw,28px)] font-light leading-snug tracking-[-0.02em]" style={{ animationDelay: "140ms" }}>...and you can see when a fix is approved.</p>
             <p className="sr-only">{HERO_LINE}</p>
-            <Cta className="rise mt-8" />
+            <div className="rise mt-8 flex flex-wrap items-center gap-3">
+              <Cta />
+              <WalkthroughCta />
+            </div>
             <p className="rise mt-4 text-[12.5px] text-[var(--muted-foreground)]" style={{ animationDelay: "320ms" }}>Synthetic Bluecart and Sunrise demo documents. No sign-up.</p>
           </div>
           <div className="rise" style={{ animationDelay: "240ms" }}><ClauseCard /></div>
@@ -146,6 +160,35 @@ export default function Landing() {
                   <p className="mt-2 text-[14px] leading-relaxed text-[var(--muted-foreground)]">{d}</p>
                 </div>
               ))}
+            </div>
+          </div>
+        </section>
+
+        <section id="walkthrough" className="land-section land-tint" aria-labelledby="walk-h">
+          <div className="land-wrap">
+            <h2 id="walk-h" className="land-h2 max-w-[22ch]">A two-minute dry run, on one sentence</h2>
+            <p className="land-p mt-3">Follow BlueCart’s payment-gateway proposal. This is the file a sales-ops teammate would send. Everything below is synthetic.</p>
+            <ol className="mt-8 grid gap-3 lg:grid-cols-4">
+              {[
+                ["Monday morning", "A circular lands. Failed UPI payments must auto-reverse within T+5 days."],
+                ["The deck still out", "BlueCart’s proposal still says refunds in 7 working days. That sentence is already in merchants’ inboxes."],
+                ["Niyam marks it", "The line is outdated. Suggested wording is ready: reversed within T+5 working days. Original file untouched."],
+                ["A name on the fix", "Counsel approves. Sales sends version 2. You can see who signed, and when."],
+              ].map(([t, d], i) => (
+                <li key={t} className="sheet p-4">
+                  <p className="label">{i + 1}. {t}</p>
+                  <p className="mt-3 text-[15px] leading-relaxed">{d}</p>
+                </li>
+              ))}
+            </ol>
+            <div className="sheet mt-4 p-5">
+              <h3 className="text-[16px] font-semibold">How you run this demo</h3>
+              <ol className="mt-3 grid gap-2 text-[14px] leading-relaxed text-[var(--muted-foreground)]">
+                <li>1. Open the demo workspace. Paste the API key from the submission notes (one field). It stays in this browser.</li>
+                <li>2. Click <b className="font-semibold text-[var(--foreground)]">2-min walkthrough</b> in the top bar, or read <Link to="/guide" className="font-medium text-[var(--taupe-strong)] hover:underline">How to use</Link>.</li>
+                <li>3. Open Documents → BlueCart payment-gateway proposal. Find “7 working days”.</li>
+                <li>4. Open Approvals. One fix already has a name on it. The rest wait for you.</li>
+              </ol>
             </div>
           </div>
         </section>
