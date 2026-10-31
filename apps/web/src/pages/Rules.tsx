@@ -59,7 +59,7 @@ function RuleCards() {
       </div>
       <div className="sheet overflow-hidden">
         {q.isLoading ? <LoadingBlock rows={8} label="Loading rules" /> : q.isError ? <ErrorState error={q.error} onRetry={() => void q.refetch()} /> : rows.length === 0 ? (
-          <EmptyState title="No rules match" hint={data.length ? "Clear a filter or the search box to see the rules again." : "No rules yet. Add a circular and Niyam will draft them for counsel to approve."} />
+          <EmptyState title="No rules match" hint={data.length ? "Clear a filter or the search box to see the rules again." : "No rules yet. Add the circular that landed this morning. Niyam drafts the checks; a named person approves before they apply to your decks."} />
         ) : (
           <div className="overflow-x-auto">
             <table className="tbl min-w-[1000px]">
@@ -210,11 +210,11 @@ export default function Rules() {
     <>
       <PageHeader
         eyebrow="Rules"
-        title="What your documents are checked against"
-        lede="Each rule card is one duty from a circular, with the quote it came from. Only active rules are used in scans; drafts wait for a named approver."
+        title="What you are allowed to promise"
+        lede="Each rule is one duty from a circular, with the quote it came from. Only approved rules run on the decks you send. Drafts wait for a named person."
         actions={<button type="button" className="btn btn-primary" onClick={() => setAddOpen(true)}><FilePlus2 size={14} /> Add a circular</button>}
       />
-      <HereStrip here="Add a circular and Niyam drafts the rules. Nothing counts until a named person approves." next="Next: add a circular, then send its rules for approval." />
+      <HereStrip here="A circular lands. Niyam drafts the checks. Nothing applies to a proposal until a named person approves." next="Next: add the circular, then put a name on its rules." />
       <div role="tablist" aria-label="Rules sections" className="mb-4 flex gap-1.5">
         <button type="button" role="tab" aria-selected={tab === "rules"} className={tab === "rules" ? "btn btn-sm btn-primary" : "btn btn-sm"} onClick={() => setTab("rules")}>Rules</button>
         <button type="button" role="tab" aria-selected={tab === "facts"} className={tab === "facts" ? "btn btn-sm btn-primary" : "btn btn-sm"} onClick={() => setTab("facts")}>Product facts</button>

@@ -18,7 +18,7 @@ export default function GuidePage() {
       <PageHeader
         eyebrow="How to use Niyam"
         title="A two-minute dry run"
-        lede="Follow one sentence from a stale proposal to an approved copy. Simple English. Synthetic BlueCart documents."
+        lede="Follow one sentence from a stale proposal to a pack you can send. Simple English. Synthetic BlueCart documents."
       />
       <HereStrip here="You are reading the written walkthrough." next="Next: start the guided tour, or open Documents." />
 
@@ -28,7 +28,7 @@ export default function GuidePage() {
           BlueCart’s proposal still promises UPI refunds in <span className="rl-del">7 working days</span>.
           The circular says auto-reversal within <ins className="rl-ins">T+5 days</ins>.
           Niyam marks that sentence, drafts the new wording, and waits for a named person.
-          Sales then sends the approved copy. The original file is never changed.
+          Sales then sends the approved copy. Last quarter’s deck stays in the drawer. The original file is never changed.
         </p>
         <button type="button" className="btn btn-primary mt-4" onClick={tour.start}>
           Start the guided walkthrough

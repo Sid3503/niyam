@@ -24,7 +24,7 @@ describe("landing", () => {
     expect(screen.getByRole("heading", { level: 1 }).textContent).toMatch(/Proposals and brochures stop shipping claims that are out of date/);
     expect(screen.getAllByText(/and you can see when a fix is approved/).length).toBeGreaterThan(0);
     expect(screen.getAllByText("Fix approved").length).toBeGreaterThan(0);
-    expect(screen.getAllByRole("link", { name: /Open the demo workspace/ })[0].getAttribute("href")).toBe("/overview");
+    expect(screen.getAllByRole("link", { name: /Open the sales pack/ })[0].getAttribute("href")).toBe("/overview");
     expect(screen.getAllByRole("link", { name: "See how it works" })[0].getAttribute("href")).toBe("#how");
     for (const q of ["Will it slow my deals down?", "Who decides what is out of date?", "Does the AI approve anything?", "Does it change my original file?", "What does it check against?", "What if it is unsure?", "Where does our data go?"]) {
       expect(screen.getByText(q)).toBeTruthy();
@@ -60,9 +60,10 @@ describe("overview", () => {
     }));
     vi.stubGlobal("fetch", vi.fn(async () => new Response(JSON.stringify({ ...base, steps, pack: { circular_title: "UPI circular", started_at: null, approved_at: "2026-10-31T10:00:00Z", elapsed_seconds: 3725, documents_total: 5, documents_affected: 3, documents_clear: 2 } }), { status: 200 })));
     renderAt("/overview");
-    const list = await screen.findByRole("list", { name: "Circular to approved pack" });
+    const list = await screen.findByRole("list", { name: "From circular to a pack you can send" });
     expect(list.querySelectorAll("li").length).toBe(6);
     expect(list.querySelectorAll('[aria-current="step"]').length).toBe(1);
+    expect(screen.getByText(/Don’t send last quarter’s deck/)).toBeTruthy();
     expect(screen.getByText("1h 02m 05s")).toBeTruthy();
     expect(screen.getByText(/Approved in 1h 02m 05s/)).toBeTruthy();
   });
@@ -70,7 +71,7 @@ describe("overview", () => {
   it("asks for the demo key in plain English on 401", async () => {
     vi.stubGlobal("fetch", vi.fn(async () => new Response(JSON.stringify({ error: { code: "unauthorized", message: "missing or invalid X-API-Key" } }), { status: 401, headers: { "Content-Type": "application/json" } })));
     renderAt("/overview");
-    expect(await screen.findByText("Unlock this demo workspace")).toBeTruthy();
+    expect(await screen.findByText("Unlock the BlueCart sales pack")).toBeTruthy();
     expect(screen.getByLabelText("Demo API key")).toBeTruthy();
     expect(screen.getByRole("button", { name: /Unlock and start the walkthrough/ })).toBeTruthy();
   });

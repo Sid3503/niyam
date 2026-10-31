@@ -72,7 +72,7 @@ function WalkthroughCta() {
 function Cta({ className = "" }: { className?: string }) {
   return (
     <div className={`flex flex-wrap items-center gap-3 ${className}`}>
-      <Link to="/overview" className="btn btn-primary btn-lg">Open the demo workspace <ArrowRight size={16} aria-hidden="true" /></Link>
+      <Link to="/overview" className="btn btn-primary btn-lg">Open the sales pack <ArrowRight size={16} aria-hidden="true" /></Link>
       <a href="#how" className="btn btn-lg">See how it works</a>
     </div>
   );
@@ -119,7 +119,7 @@ export default function Landing() {
           <a href="#walkthrough" className="hidden text-[13px] text-[var(--muted-foreground)] hover:text-[var(--foreground)] sm:inline">Dry run</a>
           <a href="#how" className="hidden text-[13px] text-[var(--muted-foreground)] hover:text-[var(--foreground)] sm:inline">How it works</a>
           <a href="#faq" className="hidden text-[13px] text-[var(--muted-foreground)] hover:text-[var(--foreground)] sm:inline">Questions</a>
-          <Link to="/overview" className="btn btn-sm">Open the demo workspace</Link>
+          <Link to="/overview" className="btn btn-sm">Open the sales pack</Link>
         </nav>
       </header>
 
@@ -184,7 +184,7 @@ export default function Landing() {
             <div className="sheet mt-4 p-5">
               <h3 className="text-[16px] font-semibold">How you run this demo</h3>
               <ol className="mt-3 grid gap-2 text-[14px] leading-relaxed text-[var(--muted-foreground)]">
-                <li>1. Open the demo workspace. Paste the API key from the submission notes (one field). It stays in this browser.</li>
+                <li>1. Open the sales pack. Paste the API key from the submission notes (one field). It stays in this browser.</li>
                 <li>2. Click <b className="font-semibold text-[var(--foreground)]">2-min walkthrough</b> in the top bar, or read <Link to="/guide" className="font-medium text-[var(--taupe-strong)] hover:underline">How to use</Link>.</li>
                 <li>3. Open Documents → BlueCart payment-gateway proposal. Find “7 working days”.</li>
                 <li>4. Open Approvals. One fix already has a name on it. The rest wait for you.</li>
@@ -290,8 +290,8 @@ export default function Landing() {
 
         <section className="land-section land-cta" aria-labelledby="final-h">
           <div className="land-wrap flex flex-col items-start gap-6">
-            <h2 id="final-h" className="land-h2 max-w-[24ch]">See a fix go from drafted to approved.</h2>
-            <p className="land-p">Open the demo workspace and follow one clause from the stale sentence to the approved fix. Synthetic Bluecart and Sunrise documents. No sign-up.</p>
+            <h2 id="final-h" className="land-h2 max-w-[24ch]">See a stale proposal become clear to send.</h2>
+            <p className="land-p">Open the sales pack and follow one clause from the stale sentence to the approved fix. Synthetic BlueCart and Sunrise documents. No sign-up.</p>
             <Cta />
           </div>
         </section>

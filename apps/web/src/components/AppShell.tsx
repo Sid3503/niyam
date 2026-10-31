@@ -36,7 +36,7 @@ function WorkspaceMark() {
       {mark}
       <span className="flex min-w-0 flex-col leading-none">
         <span className="truncate text-[14px] font-semibold tracking-[-0.01em]">Niyam</span>
-        <span className="mt-1 truncate text-[10.5px] font-medium uppercase tracking-[0.09em] text-[var(--muted-foreground)]">Circular to pack</span>
+        <span className="mt-1 truncate text-[10.5px] font-medium uppercase tracking-[0.09em] text-[var(--muted-foreground)]">Clear to send</span>
       </span>
     </Link>
   );
@@ -64,12 +64,12 @@ function RailNav() {
 
   const groups: { label: string; routes: Route[] }[] = [
     {
-      label: "The pack",
+      label: "Before you send",
       routes: [
         { path: "/overview", label: "Overview", icon: <Gauge size={S} strokeWidth={1.75} /> },
         { path: "/library", label: "Documents", icon: <Library size={S} strokeWidth={1.75} /> },
         { path: "/rules", label: "Rules", icon: <BookOpenCheck size={S} strokeWidth={1.75} /> },
-        { path: "/impact", label: "Circular impact", icon: <Activity size={S} strokeWidth={1.75} /> },
+        { path: "/impact", label: "What this circular breaks", icon: <Activity size={S} strokeWidth={1.75} /> },
         { path: "/guide", label: "How to use", icon: <Map size={S} strokeWidth={1.75} /> },
       ],
     },
@@ -134,9 +134,9 @@ function WorkspaceFooter() {
       <div className="flex min-w-0 flex-1 flex-col leading-tight">
         <span className="flex items-center gap-1.5 text-[12px] font-medium">
           <span className="size-1.5 shrink-0 rounded-full bg-[var(--taupe)]" />
-          Demo workspace
+          BlueCart sales pack
         </span>
-        <span className="mt-0.5 truncate text-[10.5px] text-[var(--muted-foreground)]">Synthetic demo data only</span>
+        <span className="mt-0.5 truncate text-[10.5px] text-[var(--muted-foreground)]">Synthetic merchant docs</span>
       </div>
       {settingsBtn}
     </>
@@ -144,7 +144,7 @@ function WorkspaceFooter() {
 }
 
 const NARROW = "(max-width: 1024px)";
-const TITLES: Record<string, string> = { overview: "Overview", library: "Documents", rules: "Rules", impact: "Circular impact", approvals: "Approvals", evidence: "Evidence", guide: "How to use", settings: "Settings" };
+const TITLES: Record<string, string> = { overview: "Overview", library: "Documents", rules: "Rules", impact: "What this circular breaks", approvals: "Approvals", evidence: "Evidence", guide: "How to use", settings: "Settings" };
 
 function WalkthroughButton() {
   const tour = useTour();
@@ -205,6 +205,9 @@ export function AppShell() {
             <span className="chip chip-plain hidden sm:inline-flex">Synthetic demo data</span>
           </div>
         </div>
+        <p className="pitch-bar">
+          Don’t send last quarter’s deck. <strong>BlueCart still promises 7-day UPI refunds; the rule is T+5.</strong> A named person has to approve the fix before it goes out.
+        </p>
         <main id="main" tabIndex={-1} className="mx-auto flex w-full max-w-[1200px] flex-1 flex-col px-4 py-7 outline-none sm:px-8 sm:py-9">
           <div className="flex-1">
             <Outlet />

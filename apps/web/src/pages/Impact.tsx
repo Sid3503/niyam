@@ -83,8 +83,8 @@ export default function Impact() {
 
   return (
     <>
-      <PageHeader eyebrow="Circular impact" title="Which documents does this circular break?" lede="Pick a rule from the circular. You get every affected document with the out-of-date sentence, the reason and corrected wording. Draft rules work too, as a clearly labelled dry run." />
-      <HereStrip here="Each affected document shows the out-of-date sentence, the reason and corrected wording." next="Next: once a fix is approved, re-test the document." />
+      <PageHeader eyebrow="What this circular breaks" title="Which of your proposals this circular hits" lede="Pick a rule. You get every affected deck with the stale sentence, the reason, and replacement wording. Draft rules run as a labelled dry run — nothing has gone out." />
+      <HereStrip here="Each hit is a file sales would send, with the out-of-date sentence and the fix." next="Next: once a named person signs the fix, re-test that proposal." />
       <div className="sheet mb-5 p-3.5">
         <Field label="Rule" htmlFor="impact-pick">
           <select id="impact-pick" className="field" value={pick} onChange={(e) => setParams((p) => { if (e.target.value) p.set("pick", e.target.value); else p.delete("pick"); return p; }, { replace: true })}>
@@ -95,7 +95,7 @@ export default function Impact() {
         {list.isError ? <ErrorState error={list.error} onRetry={() => void list.refetch()} /> : null}
         {list.isLoading ? <p className="mt-2 text-[12px] text-[var(--muted-foreground)]">Loading rules…</p> : null}
       </div>
-      {!ruleId ? <div className="sheet"><EmptyState title="Choose a rule to see what it breaks" hint="Pick a rule above and Niyam lists every document it breaks. No rules yet? Add a circular under Rules." /></div> : q.isLoading ? <div className="sheet"><LoadingBlock rows={6} label="Loading impact" /></div> : q.isError ? <div className="sheet"><ErrorState error={q.error} onRetry={() => void q.refetch()} /></div> : q.data ? <ImpactBody d={q.data} /> : null}
+      {!ruleId ? <div className="sheet"><EmptyState title="Choose a rule to see which decks it hits" hint="Pick a rule above. Niyam lists every proposal and agreement that still says the old thing. No rules yet? Add a circular under Rules." /></div> : q.isLoading ? <div className="sheet"><LoadingBlock rows={6} label="Loading impact" /></div> : q.isError ? <div className="sheet"><ErrorState error={q.error} onRetry={() => void q.refetch()} /></div> : q.data ? <ImpactBody d={q.data} /> : null}
       <RuleDrawer />
     </>
   );

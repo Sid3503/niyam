@@ -65,9 +65,9 @@ def overview() -> dict:
         nxt = {"label": "Add a circular", "route": "/rules", "kind": "add_circular"}
     steps, pack = _loop(t, docs, row.open_n, rcm.get("active", 0), rules_p, fixes)
     cur = next(x for x in steps if x["state"] == "current")
-    cta = {"circular": ("Add a circular", "add_circular"), "rules": (f"Review {rules_p} draft rule(s)" if rules_p else "Approve a rule", "approve_rules"),
-           "scan": ("Scan library", "scan"), "fixes": (f"Review {fixes} approval(s)" if fixes else "Open a flagged document and send a fix", "approve_fixes"),
-           "retest": ("Re-test a corrected document", "retest"), "evidence": ("Export the evidence pack", "evidence")}[cur["key"]]
+    cta = {"circular": ("Add the circular that just landed", "add_circular"), "rules": (f"Put a name on {rules_p} draft rule(s)" if rules_p else "Approve a rule", "approve_rules"),
+           "scan": ("Scan the decks you send", "scan"), "fixes": (f"Put a name on {fixes} waiting fix(es)" if fixes else "Open a flagged proposal and send a fix", "approve_fixes"),
+           "retest": ("Re-test a corrected proposal", "retest"), "evidence": ("Download the proof pack", "evidence")}[cur["key"]]
     nxt = {"label": cta[0], "route": cur["route"], "kind": cta[1]}
     return {"documents_scanned": scanned, "documents_total": len(docs), "open_findings": row.open_n, "fixes_awaiting_approval": fixes,
             "rules_pending_approval": rules_p, "citation_coverage": round(row.cited / row.total_n, 3) if row.total_n else 1.0,
@@ -84,12 +84,12 @@ def _loop(t: str, docs: list[dict], open_n: int, active_rules: int, rules_p: int
     scanned = [d for d in docs if d["last_reviewed_at"]]
     affected = [d for d in scanned if d["open_findings"] > 0]
     done = [bool(circ) or active_rules > 0, active_rules > 0, bool(scanned), fixes_ok[0] > 0, rt[0] > 0, rt[0] > 0]
-    spec = [("circular", "Circular added", "/rules", (f"{circ.title}" if circ else ("Using the seeded rule set; no new circular added yet" if active_rules else "Add the RBI or NPCI circular that just landed"))),
-            ("rules", "Rule approved", "/approvals", f"{active_rules} active rule(s)" + (f", {rules_p} waiting for approval" if rules_p else "")),
-            ("scan", "Library scanned", "/library", f"{len(scanned)} of {len(docs)} documents reviewed, {open_n} open finding(s)"),
-            ("fixes", "Fixes approved", "/approvals", f"{fixes_ok[0]} approved, {fixes_pending} waiting for approval"),
-            ("retest", "Re-tested", "/library", f"{rt[0]} passing re-test(s)"),
-            ("evidence", "Evidence filed", "/evidence", "Export the pack for audit" if rt[0] else "Available once a document passes re-test")]
+    spec = [("circular", "Circular landed", "/rules", (f"{circ.title}" if circ else ("Using the seeded rule set; no new circular added yet" if active_rules else "Add the RBI or NPCI circular that just landed"))),
+            ("rules", "Rule approved", "/approvals", f"{active_rules} active rule(s)" + (f", {rules_p} waiting for a name" if rules_p else "")),
+            ("scan", "Decks scanned", "/library", f"{len(scanned)} of {len(docs)} proposals reviewed, {open_n} stale claim(s)"),
+            ("fixes", "Fix approved", "/approvals", f"{fixes_ok[0]} signed, {fixes_pending} waiting for a name"),
+            ("retest", "Clear to send", "/library", f"{rt[0]} passing re-test(s)"),
+            ("evidence", "Proof filed", "/evidence", "Hand over who signed, and when" if rt[0] else "Available once a document passes re-test")]
     cur = next((i for i, d in enumerate(done) if not d), len(spec) - 1)
     steps = [{"key": k, "label": lab, "state": "done" if done[i] else ("current" if i == cur else "todo"), "detail": det, "route": rte} for i, (k, lab, rte, det) in enumerate(spec)]
     now = dt.datetime.now(dt.timezone.utc)

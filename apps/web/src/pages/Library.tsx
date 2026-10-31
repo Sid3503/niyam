@@ -215,8 +215,8 @@ export default function Library() {
     <>
       <PageHeader
         eyebrow="Documents"
-        title="Which of our documents are out of date?"
-        lede="Every proposal, agreement, brochure and voice note you send, with its open findings and where each fix stands. Scan documents re-checks what is new or changed and skips the rest."
+        title="The decks you would send today"
+        lede="Every proposal, agreement, brochure and voice note in the BlueCart pack. Open findings are sentences a merchant could still read. Scan re-checks what is new or changed and skips the rest."
         actions={
           <div className="flex gap-2">
             <button type="button" className="btn" onClick={() => setUploadOpen(true)}><Plus size={14} /> Add a document</button>
@@ -226,13 +226,13 @@ export default function Library() {
           </div>
         }
       />
-      <HereStrip here="Fix status shows whether a corrected wording is drafted, waiting for approval or approved by a named person." next="Next: open the document with the most open findings." />
+      <HereStrip here="Fix status is the only thing that makes a deck safe to send: drafted, waiting for a name, or approved." next="Next: open BlueCart’s payment-gateway proposal — look for “7 working days”." />
       {scan.isError ? <div className="sheet mb-4"><ErrorState error={scan.error} /></div> : null}
       {result ? <ScanPanel r={result} onClose={() => setResult(null)} /> : null}
 
       <div className="sheet overflow-hidden">
         {q.isLoading ? <LoadingBlock rows={8} label="Loading documents" /> : q.isError ? <ErrorState error={q.error} onRetry={() => void q.refetch()} /> : rows.length === 0 ? (
-          <EmptyState title="No documents to review yet" hint="Press Scan documents to read the monitored folder, or add one: paste text, upload a PDF or audio file, or record a voice note. Findings appear here as soon as a document is reviewed." />
+          <EmptyState title="No decks in this pack yet" hint="Press Scan documents to pull in the BlueCart / Sunrise files, or add a proposal: paste text, upload a PDF, or drop a voice note. Stale sentences show up as soon as a file is reviewed." />
         ) : (
           <div className="overflow-x-auto">
             <table className="tbl min-w-[880px]">

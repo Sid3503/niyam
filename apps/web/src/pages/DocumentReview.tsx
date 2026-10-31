@@ -158,9 +158,9 @@ function Body({ d }: { d: DocumentDetail }) {
     <>
       <Link to="/library" className="mb-3 inline-flex items-center gap-1.5 text-[12px] text-[var(--muted-foreground)] hover:text-[var(--foreground)]"><ArrowLeft size={13} /> Documents</Link>
       <PageHeader
-        eyebrow="Document review"
+        eyebrow="A file sales would send"
         title={doc.title}
-        lede={`${humanize(doc.doc_type)} · ${FORMAT_LABEL[format]}${size} · ${doc.product} · owner ${doc.owner} · version ${d.version.version}${readOnly ? ` of ${latest}` : ""} · reviewed ${fmtDateTime(doc.last_reviewed_at)}`}
+        lede={`${humanize(doc.doc_type)} · ${FORMAT_LABEL[format]}${size} · ${doc.product} · owner ${doc.owner} · version ${d.version.version}${readOnly ? ` of ${latest}` : ""} · reviewed ${fmtDateTime(doc.last_reviewed_at)}. Stale sentences are marked. The original is never changed.`}
         actions={<div className="flex items-center gap-2"><DocStatusChip status={doc.status} />{doc.demo_data ? <span className="chip chip-plain">{format === "voice" ? "Synthetic demo audio" : "Synthetic demo document"}</span> : null}<button type="button" className="btn btn-primary" onClick={retest}><FlaskConical size={14} /> Re-test</button></div>}
       />
       <details className="mb-4 text-[12.5px] text-[var(--muted-foreground)]">
@@ -209,7 +209,7 @@ function Body({ d }: { d: DocumentDetail }) {
                 <FilterSelect id="fs" label="Status" value={filter} onChange={setFilter} options={STATUSES.map((s) => ({ value: s, label: FINDING_LABEL[s] }))} />
               </div>
               <div className="flex flex-col gap-3">
-                {visible.length ? visible.map((f) => <FindingCard key={f.id} f={f} clause={d.clauses.find((c) => c.idx === f.clause_idx)} onRetest={retest} docId={doc.id} readOnly={readOnly} />) : <div className="sheet"><EmptyState title="No findings here" hint={d.findings.length ? "Clear the clause selection or the status filter to see the rest." : "Nothing was flagged in this version. Add a circular under Rules and re-test to check it against new rules."} /></div>}
+                {visible.length ? visible.map((f) => <FindingCard key={f.id} f={f} clause={d.clauses.find((c) => c.idx === f.clause_idx)} onRetest={retest} docId={doc.id} readOnly={readOnly} />) : <div className="sheet"><EmptyState title="No stale claims on this version" hint={d.findings.length ? "Clear the clause selection or the status filter to see the rest." : "If sales sent this file today, Niyam did not find a stale promise. Add a circular under Rules and re-test to check it against new rules."} /></div>}
               </div>
             </section>
           </div>

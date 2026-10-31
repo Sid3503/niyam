@@ -23,8 +23,8 @@ export default function SettingsPage() {
 
   return (
     <>
-      <PageHeader eyebrow="Settings" title="Your name on approvals" lede="Your name is recorded on every decision you make and in the evidence file, so others can see who approved a fix. If the server asks for a key, paste it here." />
-      <HereStrip here="This is the name that appears on each approval you make." next="Next: save, then open Approvals." />
+      <PageHeader eyebrow="Settings" title="Your name on every yes" lede="When you approve a fix, this name is what sales sees on the deck and what the proof pack records. Paste the demo API key here if you have not unlocked the pack yet." />
+      <HereStrip here="A fix without a name is not clear to send." next="Next: save, then open Approvals and sign the top item." />
       <form onSubmit={save} className="sheet max-w-[560px] p-5">
         <Field label="API key" htmlFor="api-key">
           <input id="api-key" className="field font-mono" type="password" autoComplete="off" spellCheck={false} value={key} onChange={(e) => setKey(e.target.value)} placeholder="Leave empty when the API is open" />

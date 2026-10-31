@@ -65,9 +65,9 @@ function UnlockPanel({ onRetry, detail }: { onRetry?: () => void; detail: string
   return (
     <div role="alert" className="mx-auto flex max-w-[440px] flex-col items-center gap-3 px-6 py-8 text-center">
       <span className="text-[var(--taupe)]"><KeyRound size={22} strokeWidth={1.6} /></span>
-      <p className="text-[16px] font-semibold tracking-[-0.01em]">Unlock this demo workspace</p>
+      <p className="text-[16px] font-semibold tracking-[-0.01em]">Unlock the BlueCart sales pack</p>
       <p className="text-[13px] leading-relaxed text-[var(--muted-foreground)]">
-        Paste the demo API key from the submission notes. It stays in this browser. Then we start a two-minute walkthrough of one stale sentence.
+        Paste the demo API key from the submission notes. It stays in this browser. Then we walk one stale sentence — 7-day UPI refunds vs T+5 — from the proposal to a named yes.
       </p>
       <p className="sr-only">{detail}</p>
       <form onSubmit={save} className="mt-1 flex w-full flex-col gap-2 text-left">

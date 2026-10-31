@@ -83,14 +83,14 @@ export default function Approvals() {
 
   return (
     <>
-      <PageHeader eyebrow="Approvals" title="Fixes waiting for approval" lede="A named person decides every fix and every rule, here. Highest severity and lowest confidence come first. Once a fix is approved you can see who approved it and when, on the document and in the evidence file." />
-      <HereStrip here="Nothing here counts until a named person decides. Their name and the time are recorded on every decision." next="Next: approve, reject or defer the top item." />
+      <PageHeader eyebrow="Approvals" title="A name on every fix before it goes out" lede="Sales does not send a deck from this queue. A named person approves, rejects, or defers. Highest severity and lowest confidence come first. After a yes, the name and time sit on the document and in the proof pack." />
+      <HereStrip here="Nothing ships without a name. Their name and the time are recorded on every decision." next="Next: put your name on the top item, or reject it." />
       <div className="sheet mb-4 flex flex-wrap items-end gap-3 p-3.5">
         <FilterSelect id="ap-status" label="Status" value={status} onChange={setF("status")} options={(["pending", "approved", "rejected", "deferred"] as const).map((v) => ({ value: v }))} />
         <FilterSelect id="ap-kind" label="Kind" value={kind} onChange={setF("kind")} options={[{ value: "rule", label: "Rule" }, { value: "fix", label: "Fix" }]} />
       </div>
       {q.isLoading ? <div className="sheet"><LoadingBlock rows={6} label="Loading approvals" /></div> : q.isError ? <div className="sheet"><ErrorState error={q.error} onRetry={() => void q.refetch()} /></div> : rows.length === 0 ? (
-        <div className="sheet"><EmptyState title="Nothing waiting for approval" hint="Nothing matches these filters. Clear them, or scan the documents: new findings with drafted wording arrive here for a named person to decide." /></div>
+        <div className="sheet"><EmptyState title="Nothing waiting for a name" hint="Nothing matches these filters. Clear them, or scan the decks: new stale sentences with drafted wording arrive here before anyone sends the file." /></div>
       ) : (
         <div className="flex flex-col gap-3">{rows.map((a) => <ApprovalCard key={a.id} a={a} />)}</div>
       )}

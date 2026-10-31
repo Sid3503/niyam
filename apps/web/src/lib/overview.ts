@@ -8,12 +8,12 @@ export function packSteps(o: Overview): PackStep[] {
   const scanned = o.documents_scanned > 0;
   const fixesDone = scanned && o.fixes_awaiting_approval === 0;
   const raw: [PackStep["key"], string, boolean, string, string][] = [
-    ["circular", "Circular", hasRules, hasRules ? "Rules were drafted from a circular." : "Add the RBI or NPCI circular.", "/rules"],
-    ["rules", "Rule approved", rulesDone, o.rules_pending_approval ? `${o.rules_pending_approval} rule${o.rules_pending_approval === 1 ? "" : "s"} waiting for counsel.` : "Counsel has approved the rules.", "/approvals?kind=rule&status=pending"],
-    ["scan", "Scan", scanned, scanned ? `${o.documents_scanned} documents scanned.` : "Scan the document library.", "/library"],
-    ["fixes", "Counsel approves", fixesDone, o.fixes_awaiting_approval ? `${o.fixes_awaiting_approval} fix${o.fixes_awaiting_approval === 1 ? "" : "es"} waiting for counsel.` : "No fix is waiting.", "/approvals?kind=fix&status=pending"],
-    ["retest", "Re-test", fixesDone && o.open_findings === 0, o.open_findings ? `${o.open_findings} findings still open.` : "No open findings.", "/impact"],
-    ["evidence", "Evidence", false, "Export the audit file.", "/evidence"],
+    ["circular", "Circular landed", hasRules, hasRules ? "A circular is in the pack." : "Add the RBI or NPCI circular that just landed.", "/rules"],
+    ["rules", "Rule approved", rulesDone, o.rules_pending_approval ? `${o.rules_pending_approval} rule${o.rules_pending_approval === 1 ? "" : "s"} waiting for a name.` : "A named person approved the rules.", "/approvals?kind=rule&status=pending"],
+    ["scan", "Decks scanned", scanned, scanned ? `${o.documents_scanned} proposals and agreements scanned.` : "Scan the decks you send.", "/library"],
+    ["fixes", "Fix approved", fixesDone, o.fixes_awaiting_approval ? `${o.fixes_awaiting_approval} fix${o.fixes_awaiting_approval === 1 ? "" : "es"} waiting for a name.` : "No fix is waiting.", "/approvals?kind=fix&status=pending"],
+    ["retest", "Clear to send", fixesDone && o.open_findings === 0, o.open_findings ? `${o.open_findings} stale claims still in the pack.` : "No open findings.", "/impact"],
+    ["evidence", "Proof filed", false, "Hand over who signed, and when.", "/evidence"],
   ];
   let currentSet = false;
   return raw.map(([key, label, done, detail, route]) => {

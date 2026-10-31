@@ -21,7 +21,7 @@ function Stat({ label, value, note }: { label: string; value: React.ReactNode; n
 
 export function StepRibbon({ steps }: { steps: PackStep[] }) {
   return (
-    <ol aria-label="Circular to approved pack" className="ribbon grid gap-2 sm:grid-cols-2 lg:grid-cols-6">
+    <ol aria-label="From circular to a pack you can send" className="ribbon grid gap-2 sm:grid-cols-2 lg:grid-cols-6">
       {steps.map((s, i) => (
         <li key={s.key} data-state={s.state} aria-current={s.state === "current" ? "step" : undefined} className="ribbon-step">
           <Link to={s.route} className="ribbon-link">
@@ -48,14 +48,14 @@ function ClockCard({ o, fetchedAt }: { o: OverviewT; fetchedAt: number }) {
   const secs = liveElapsed(pack, fetchedAt, now);
   const known = !!o.pack;
   return (
-    <section className="sheet clock-card grid gap-6 p-5 sm:p-6 lg:grid-cols-[1.3fr_1fr]" aria-label="Circular to approved pack">
+    <section className="sheet clock-card grid gap-6 p-5 sm:p-6 lg:grid-cols-[1.3fr_1fr]" aria-label="From circular to a pack you can send">
       <div>
-        <div className="label">Circular to approved pack</div>
-        <p className="mt-2 text-[13px] text-[var(--muted-foreground)]">{pack.circular_title ?? "No circular added yet. Add one under Rules to start the clock."}</p>
+        <div className="label">Time from circular to a pack you can send</div>
+        <p className="mt-2 text-[13px] text-[var(--muted-foreground)]">{pack.circular_title ?? "No circular added yet. Add the one that landed this morning to start the clock."}</p>
         <div className="clock-num num mt-3" aria-live="off">{secs === null ? "Not started" : fmtElapsed(secs)}</div>
         <p className="mt-2 text-[12px] text-[var(--muted-foreground)]">
-          {pack.approved_at ? `Approved in ${fmtElapsed(pack.elapsed_seconds)}. ` : running ? "The clock runs until the pack is approved. " : ""}
-          Timed in this demo workspace on synthetic documents.
+          {pack.approved_at ? `Approved in ${fmtElapsed(pack.elapsed_seconds)}. ` : running ? "The clock runs until a named person has signed the pack. " : ""}
+          Timed on the synthetic BlueCart / Sunrise sales pack.
         </p>
       </div>
       <dl className="grid grid-cols-3 gap-3 self-end">
@@ -76,23 +76,23 @@ export default function Overview() {
   const approved = useApprovals({ kind: "fix", status: "approved" });
   return (
     <>
-      <PageHeader eyebrow="Overview" title="From circular to approved pack" lede="See which proposals and brochures say something out of date, which fixes are waiting, and which a named person has approved. Check Documents before you send." />
-      <HereStrip here="Six steps take a circular to an approved pack. One waits for a named approver." next={d ? `Next: ${d.next_action.label}.` : "Next: see below."} />
+      <PageHeader eyebrow="Overview" title="What’s clear to send" lede="This is the BlueCart sales pack. See which proposals still say something out of date, which fixes wait for a name, and which a named person has already signed. Check Documents before a merchant sees the file." />
+      <HereStrip here="Six steps take a circular to a pack you can send. One step always waits for a named person." next={d ? `Next: ${d.next_action.label}.` : "Next: see below."} />
       {q.isLoading ? <div className="sheet"><LoadingBlock rows={4} label="Loading overview" /></div> : q.isError ? <div className="sheet"><ErrorState error={q.error} onRetry={() => void q.refetch()} /></div> : d ? (
         <div className="flex flex-col gap-5">
           <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
-            <Stat label="Documents scanned" value={d.documents_scanned} />
-            <Stat label="Out-of-date claims still open" value={d.open_findings} note="Open findings across your documents" />
-            <Stat label="Fixes approved" value={approved.isError || !Array.isArray(approved.data) ? "—" : approved.data.length} note="Each one has a named approver" />
-            <Stat label="Fixes waiting for approval" value={d.fixes_awaiting_approval} note="A named person has not approved these yet" />
-            <Stat label="Rules waiting for approval" value={d.rules_pending_approval} />
-            <Stat label="Citation coverage" value={pct(d.citation_coverage)} note="Findings backed by a verified quote" />
+            <Stat label="Decks scanned" value={d.documents_scanned} note="Proposals, agreements, brochures in this pack" />
+            <Stat label="Stale claims still in the pack" value={d.open_findings} note="Sentences a merchant could still read" />
+            <Stat label="Fixes a named person signed" value={approved.isError || !Array.isArray(approved.data) ? "—" : approved.data.length} note="Clear to send, with a name on them" />
+            <Stat label="Fixes waiting for a name" value={d.fixes_awaiting_approval} note="Wording is drafted. Do not send yet." />
+            <Stat label="Rules waiting for a name" value={d.rules_pending_approval} note="Draft checks are not used on decks" />
+            <Stat label="Every finding has a quote" value={pct(d.citation_coverage)} note="The sentence plus the rule behind it" />
           </div>
           <StepRibbon steps={packSteps(d)} />
           <ClockCard o={d} fetchedAt={q.dataUpdatedAt || Date.now()} />
           <div className="sheet flex flex-wrap items-center justify-between gap-3 p-4 sm:p-5">
             <div>
-              <div className="label">What to do next</div>
+              <div className="label">What to do before you send</div>
               <p className="mt-1 text-[14px]">{d.next_action.label}</p>
             </div>
             <Link to={d.next_action.route} className="btn btn-primary btn-lg">{d.next_action.label} <ArrowRight size={15} /></Link>

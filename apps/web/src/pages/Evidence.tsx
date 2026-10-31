@@ -104,9 +104,9 @@ export default function Evidence() {
   const rows = q.data ?? [];
   return (
     <>
-      <PageHeader eyebrow="Evidence" title="The proof pack" lede="For each document: what was out of date, which fix was approved and by whom, whether the re-test passed, and a tamper-evident log. Open a row to export it." />
+      <PageHeader eyebrow="Evidence" title="Proof you can hand over" lede="For each proposal: what was out of date, who signed the fix, whether the re-test passed, and a tamper-evident log. This is what a manager or audit asks for. Sales needed to know the deck is clear to send." />
       <div className="sheet overflow-hidden">
-        {q.isLoading ? <LoadingBlock rows={6} label="Loading evidence" /> : q.isError ? <ErrorState error={q.error} onRetry={() => void q.refetch()} /> : rows.length === 0 ? <EmptyState title="No proof to show yet" hint="Scan a document and its evidence record starts here. It grows with every approval and re-test, and exports for audit." /> : (
+        {q.isLoading ? <LoadingBlock rows={6} label="Loading evidence" /> : q.isError ? <ErrorState error={q.error} onRetry={() => void q.refetch()} /> : rows.length === 0 ? <EmptyState title="No proof pack yet" hint="Scan a proposal and the record starts here. It grows with every named approval and re-test. Export it when someone asks who signed." /> : (
           <div className="overflow-x-auto">
             <table className="tbl min-w-[760px]">
               <caption className="sr-only">Evidence per document. Select a row to open the record.</caption>
